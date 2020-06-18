@@ -24,7 +24,7 @@ void Tcplistener::Run(){
 	char buff[49192];
 	SOCKET listening = create_socket();
 	if (listening == INVALID_SOCKET) {
-		break;
+		return;
 	}	
 	fd_set master;
 	FD_ZERO(&master);
@@ -48,7 +48,7 @@ void Tcplistener::Run(){
 						FD_CLR(sock, &master);
 					}
 					else {
-						msg_Rec(this, sock, std::string(buff, 0, bytes_Rec);
+						msg_Rec(this, sock, std::string(buff, 0, bytes_Rec));
 					}
 				}
 			}
@@ -60,7 +60,7 @@ void Tcplistener::Run(){
 	closesocket(listening);
 	if (master.fd_array[1] != INVALID_SOCKET) {
 		closesocket(master.fd_array[1]);
-	}FD_CLR(&master);	
+	}	
 };
 void Tcplistener::cleanup(){
 	WSACleanup();
