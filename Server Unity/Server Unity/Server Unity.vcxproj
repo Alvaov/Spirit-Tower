@@ -143,6 +143,7 @@
     <ClCompile Include="Tcplistener.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Linked_List.hpp" />
     <ClInclude Include="Tcplistener.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

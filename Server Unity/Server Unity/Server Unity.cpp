@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "Tcplistener.h"
-
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);

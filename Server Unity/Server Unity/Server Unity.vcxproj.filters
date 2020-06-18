@@ -26,5 +26,8 @@
     <ClInclude Include="Tcplistener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Linked_List.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
