@@ -60,7 +60,7 @@ void Tcplistener::Run(){
 	closesocket(listening);
 	if (master.fd_array[1] != INVALID_SOCKET) {
 		closesocket(master.fd_array[1]);
-	}FD_CLR(master.fd_array[0],&master);	
+	}FD_ZERO(&master);
 };
 void Tcplistener::cleanup(){
 	WSACleanup();
