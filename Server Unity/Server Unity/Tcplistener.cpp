@@ -22,26 +22,45 @@ bool Tcplistener::Init(){
 };
 void Tcplistener::Run(){
 	char buff[49192];
+	SOCKET listening = create_socket();
+	if (listening == INVALID_SOCKET) {
+		break;
+	}	
+	fd_set master;
+	FD_ZERO(&master);
+	FD_SET(listening, &master);
+		
 	while (true) {
-		SOCKET listening = create_socket();
-		if (listening == INVALID_SOCKET) {
-			break;
-		}SOCKET client = wait_For_Socket(listening);
-		if (client != INVALID_SOCKET) {
-			closesocket(listening);
-			int bytesRecieved = recv(client,buff,49192,0);
-			do {
-				ZeroMemory(buff, 49192);
-				int bytes_Rec = recv(client, buff, 49192, 0);
-				if (bytes_Rec > 0) {
-					if (msg_Rec != NULL) {
-						msg_Rec(this, client, std::string(buff, 0, bytes_Rec));
+		try {
+			fd_set copy = master;
+			int socketCount = select(0, &copy, NULL, NULL, NULL);
+			for (int i = 0; i < socketCount; i++) {
+				SOCKET sock = copy.fd_array[i];
+				if (sock == listening && socketCount <= 2) {//el <=2 puede generar bugs
+					SOCKET client = wait_For_Socket(listening);
+					FD_SET(client, &master);
+				}
+				else {
+					ZeroMemory(buff, 49192);
+					int bytes_Rec = recv(sock, buff, 49192, 0);
+					if (bytes_Rec < 0) {
+						closesocket(sock);
+						FD_CLR(sock, &master);
+					}
+					else {
+						msg_Rec(this, sock, std::string(buff, 0, bytes_Rec);
 					}
 				}
-			} while (bytesRecieved > 0);
-		}closesocket(client);
+			}
+		}catch (...) {
+			std::cerr << "Hubo un error en el servidor\n";
+			break;
+		}
 	}
-
+	closesocket(listening);
+	if (master.fd_array[1] != INVALID_SOCKET) {
+		closesocket(master.fd_array[1]);
+	}FD_CLR(&master);	
 };
 void Tcplistener::cleanup(){
 	WSACleanup();
