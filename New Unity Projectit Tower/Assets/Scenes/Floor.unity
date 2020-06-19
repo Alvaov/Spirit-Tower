@@ -328,6 +328,7 @@ GameObject:
   - component: {fileID: 489424116}
   - component: {fileID: 489424115}
   - component: {fileID: 489424119}
+  - component: {fileID: 489424120}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -419,9 +420,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 489424114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98c0ab62f04bfa344bc02113f2d2e231, type: 3}
+  m_Script: {fileID: 11500000, guid: 06fdfc2ff120d8f468ac0ca207e822fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 489424120}
+  wayPoints: []
+  moveSpeed: 5
+--- !u!143 &489424120
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489424114}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.49999997
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &619708687
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,6 +783,7 @@ GameObject:
   - component: {fileID: 1494438547}
   - component: {fileID: 1494438546}
   - component: {fileID: 1494438545}
+  - component: {fileID: 1494438548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -801,7 +824,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -833,6 +856,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1494438548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494438544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c135318691dea4c9e48650b37c807f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 3, z: -2}
+  target: {fileID: 489424114}
+  lerpValue: 1
 --- !u!1 &1602975076
 GameObject:
   m_ObjectHideFlags: 0
