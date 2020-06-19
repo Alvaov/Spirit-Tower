@@ -3,16 +3,16 @@
 
 #include <iostream>
 #include "Tcplistener.h"
-
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
-    Tcplistener server(54010, "127.0.0.1", Listener_MesssageRec);
+    Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
     if (server.Init()) {
         server.Run();
     }
 }
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
+    std::cout << msg << std::endl;
     listener->Send(client, msg);
 };
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

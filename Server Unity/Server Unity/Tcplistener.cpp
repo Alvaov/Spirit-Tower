@@ -1,7 +1,6 @@
 #include "Tcplistener.h"
 Tcplistener::Tcplistener(int _port, std::string _ip, MessageRecievedHandler handler)
 : my_Ip_Adrr(_ip), my_Port(_port), msg_Rec(handler){
-
 };
 Tcplistener::~Tcplistener() {
 	cleanup();
@@ -21,34 +20,35 @@ bool Tcplistener::Init(){
 	}
 };
 void Tcplistener::Run(){
-	char buff[49192];
 	SOCKET listening = create_socket();
 	if (listening == INVALID_SOCKET) {
-		break;
+		return;
 	}	
 	fd_set master;
 	FD_ZERO(&master);
 	FD_SET(listening, &master);
-		
 	while (true) {
 		try {
 			fd_set copy = master;
-			int socketCount = select(0, &copy, NULL, NULL, NULL);
+			int socketCount = select(0, &copy, nullptr, nullptr, nullptr);
 			for (int i = 0; i < socketCount; i++) {
 				SOCKET sock = copy.fd_array[i];
-				if (sock == listening && socketCount <= 2) {//el <=2 puede generar bugs
-					SOCKET client = wait_For_Socket(listening);
+				if (sock == listening && socketCount < 3) {
+					SOCKET client = accept(listening, nullptr, nullptr);
+					std::cout << "Se conecto el cliente\n";
 					FD_SET(client, &master);
 				}
 				else {
-					ZeroMemory(buff, 49192);
-					int bytes_Rec = recv(sock, buff, 49192, 0);
-					if (bytes_Rec < 0) {
+					char buff[4096];
+					ZeroMemory(buff, 4096);
+					int bytes_Rec = recv(sock, buff, 4096, 0);
+					if (bytes_Rec <= 0) {
 						closesocket(sock);
+						std::cout << "Se desconecto el cliente\n";
 						FD_CLR(sock, &master);
 					}
 					else {
-						msg_Rec(this, sock, std::string(buff, 0, bytes_Rec);
+						msg_Rec(this, sock, std::string(buff, 0, bytes_Rec));
 					}
 				}
 			}
@@ -60,7 +60,7 @@ void Tcplistener::Run(){
 	closesocket(listening);
 	if (master.fd_array[1] != INVALID_SOCKET) {
 		closesocket(master.fd_array[1]);
-	}FD_CLR(&master);	
+	}FD_ZERO(&master);
 };
 void Tcplistener::cleanup(){
 	WSACleanup();
