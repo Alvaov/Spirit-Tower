@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 using System;
+using System.Text;
 
 public class Client : MonoBehaviour
 {
@@ -55,6 +56,8 @@ public class Client : MonoBehaviour
 
             receiveBuffer = new byte[dataBufferSize];
             socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
+            Console.WriteLine("Se conectó");
+            SendData("Hola Server!");
         }
 
         private void ConnectCallback(IAsyncResult _result)
@@ -69,6 +72,21 @@ public class Client : MonoBehaviour
             stream = socket.GetStream();
 
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+        }
+
+        public void SendData(String dataToSend)
+        {
+            try
+            {
+                if (socket != null)
+                {
+                    stream.BeginWrite(Encoding.ASCII.GetBytes(dataToSend), 0, dataToSend.Length, null, null);
+                }
+            }
+            catch (Exception _ex)
+            {
+                Console.WriteLine($"Error sending data to player via TCP: {_ex}");
+            }
         }
 
         private void ReceiveCallback(IAsyncResult _result)

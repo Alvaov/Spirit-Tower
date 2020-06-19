@@ -38,7 +38,7 @@ void Tcplistener::Run(){
 				SOCKET sock = copy.fd_array[i];
 				if (sock == listening && socketCount <= 2) {//el <=2 puede generar bugs
 					SOCKET client = wait_For_Socket(listening);
-					std::cout << "Se conecto un pito, ademas usted es bien pto\n";
+					std::cout << "Se conectó \n";
 					FD_SET(client, &master);
 				}
 				else {
