@@ -30,6 +30,8 @@ public class MoveTarget : MonoBehaviour
         movement = new Vector3(horizontal, 0f, vertical) * speed * Time.deltaTime;
         movement = Vector3.ClampMagnitude(movement, 1);
         player.Move(movement);
+        string msg = ":Player:Posistion:x=" + transform.position.x + ",y=" + transform.position.y + ",z=" + transform.position.z;
+        Client.instance.Send_Data(msg.Length+msg);
     }
 
 }
