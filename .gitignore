@@ -428,3 +428,8 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
+*.dll
+
+Spirit Tower/Library/ShaderCache/
+
+Spirit Tower/Library/
