@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 using System;
+using System.Text;
 
 public class Client : MonoBehaviour
 {
@@ -15,8 +16,7 @@ public class Client : MonoBehaviour
     public int myId = 0;
     public TCP tcp;
 
-
-    public void Awake()
+    private void Awake()
     {
         if (instance == null)
         {
@@ -56,6 +56,7 @@ public class Client : MonoBehaviour
 
             receiveBuffer = new byte[dataBufferSize];
             socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
+            Console.WriteLine("Se conectó");
         }
 
         private void ConnectCallback(IAsyncResult _result)
@@ -72,24 +73,43 @@ public class Client : MonoBehaviour
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
         }
 
+        public void SendData(String dataToSend)
+        {
+            Debug.Log("primero que nada si entra a esta function");
+            try
+            {
+                byte[] buffer = Encoding.ASCII.GetBytes(dataToSend);
+                stream = socket.GetStream();
+                stream.Write(buffer, 0, buffer.Length);
+
+                Debug.Log("se mando el dato");
+            }
+            catch (Exception _ex)
+            {
+                Debug.Log($"Error sending data to player via TCP: {_ex}");
+            }
+        }
+
         private void ReceiveCallback(IAsyncResult _result)
         {
             try
             {
-                int _byteLenght = stream.EndRead(_result);
-                if (_byteLenght <= 0)
+                int _byteLength = stream.EndRead(_result);
+                if (_byteLength <= 0)
                 {
+                    // TODO: disconnect
                     return;
                 }
 
-                byte[] _data = new byte[_byteLenght];
-                Array.Copy(receiveBuffer, _data, _byteLenght);
+                byte[] _data = new byte[_byteLength];
+                Array.Copy(receiveBuffer, _data, _byteLength);
 
+                // TODO: handle data
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
             }
             catch
             {
-
+                // TODO: disconnect
             }
         }
     }
