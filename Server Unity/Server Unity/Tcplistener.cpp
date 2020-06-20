@@ -39,6 +39,7 @@ void Tcplistener::Run(){
 				if (sock == listening && socketCount < 3) {
 					SOCKET client = wait_For_Socket(listening);
 					FD_SET(client, &master);
+					std::cout << "se agrega un cliente\n";
 				}
 				else {
 					ZeroMemory(buff, 4096);
@@ -46,6 +47,7 @@ void Tcplistener::Run(){
 					if (bytes_Rec <= 0) {
 						closesocket(sock);
 						FD_CLR(sock, &master);
+						std::cout << "se elimino un cliente\n";
 					}
 					else {
 						msg_Rec(this, sock, std::string(buff, 0, bytes_Rec));

@@ -38,7 +38,13 @@ public class Client : MonoBehaviour
     {
         tcp.Connect();
     }
-
+    public void Send_Data(string msg)
+    {
+        if(instance.tcp != null)
+        {
+            tcp.SendData(msg);
+        }
+    }
     public class TCP
     {
         public TcpClient socket;
