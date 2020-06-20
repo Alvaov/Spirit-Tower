@@ -21,46 +21,42 @@ bool Tcplistener::Init(){
 	}
 };
 void Tcplistener::Run(){
-	char buff[49192];
+	char buff[4096];
 	SOCKET listening = create_socket();
 	if (listening == INVALID_SOCKET) {
-		break;
+		std::cerr << "could not create listening socket\n";
+		return;
 	}	
 	fd_set master;
 	FD_ZERO(&master);
 	FD_SET(listening, &master);
-		
-	while (true) {
-		try {
+	try {
+		while (true) {
 			fd_set copy = master;
 			int socketCount = select(0, &copy, NULL, NULL, NULL);
 			for (int i = 0; i < socketCount; i++) {
 				SOCKET sock = copy.fd_array[i];
-				if (sock == listening && socketCount <= 2) {//el <=2 puede generar bugs
+				if (sock == listening && socketCount < 3) {
 					SOCKET client = wait_For_Socket(listening);
 					FD_SET(client, &master);
 				}
 				else {
-					ZeroMemory(buff, 49192);
-					int bytes_Rec = recv(sock, buff, 49192, 0);
-					if (bytes_Rec < 0) {
+					ZeroMemory(buff, 4096);
+					int bytes_Rec = recv(sock, buff, 4096, 0);
+					if (bytes_Rec <= 0) {
 						closesocket(sock);
 						FD_CLR(sock, &master);
 					}
 					else {
-						msg_Rec(this, sock, std::string(buff, 0, bytes_Rec);
+						msg_Rec(this, sock, std::string(buff, 0, bytes_Rec));
 					}
 				}
 			}
-		}catch (...) {
-			std::cerr << "Hubo un error en el servidor\n";
-			break;
 		}
+	}catch (...) {
+		std::cerr << "Hubo un error en el servidor\n";
+		closesocket(listening);
 	}
-	closesocket(listening);
-	if (master.fd_array[1] != INVALID_SOCKET) {
-		closesocket(master.fd_array[1]);
-	}FD_CLR(&master);	
 };
 void Tcplistener::cleanup(){
 	WSACleanup();
