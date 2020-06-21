@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: d2037c0a2e450954e958b4431233d49e
+guid: b8fbb1c756aec9346aaef91b100ab779
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
       74: -2463781497245029270
-    second: JoggingRight
+    second: JoggingBackward
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -35,14 +35,14 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: JoggingRight
+      name: JoggingBackward
       takeName: metarig|metarigAction.001
       internalID: 0
       firstFrame: 0
       lastFrame: 20
       wrapMode: 0
-      orientationOffsetY: -90
-      level: 0.04
+      orientationOffsetY: 180
+      level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
