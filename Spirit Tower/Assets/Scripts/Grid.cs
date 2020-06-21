@@ -12,7 +12,7 @@ public class Grid : MonoBehaviour
     int gridSizeX, gridSizeY;
     public Transform player;
     private void Start(){
-        nodeDiameter = nodeRadius*2;
+        nodeDiameter = nodeRadius*10;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
@@ -39,7 +39,9 @@ public class Grid : MonoBehaviour
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+        Client.instance.tcp.SendData("[" + x + "," + y + "]");
         return grid[x, y]; //return the position in grid
+        
     }
     
     private void OnDrawGizmos()

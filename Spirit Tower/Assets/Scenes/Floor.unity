@@ -592,6 +592,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!4 &528421799 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0a92c242d09f98e46b90c04ca7223d8f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2086826924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &595652255
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,7 +723,7 @@ GameObject:
   - component: {fileID: 619708689}
   - component: {fileID: 619708688}
   m_Layer: 0
-  m_Name: A*
+  m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -732,9 +738,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 619708687}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3b36e7f3b5b4d469e20715395e1e20, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f544eb22fdcbcf458ffe0f568b26558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unwalkableMask:
+    serializedVersion: 2
+    m_Bits: 256
+  gridWorldSize: {x: 600, y: 600}
+  nodeRadius: 0.5
+  player: {fileID: 528421799}
 --- !u!4 &619708689
 Transform:
   m_ObjectHideFlags: 0
@@ -743,7 +755,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619708687}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
