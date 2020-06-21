@@ -31,15 +31,11 @@ public class PlayerControllerTransform : MonoBehaviour{
             movement = new Vector3(horizontal, 0f, vertical) * speed * Time.deltaTime;
             movement = Vector3.ClampMagnitude(movement, 1);
             player.Move(movement);
-            string msg = ":Player:Posistion:x=" + transform.position.x + ",y=" + transform.position.y + ",z=" + transform.position.z;
-            Client.instance.Send_Data(msg.Length + msg);
         }
         else
         {
             movement = new Vector3(0, gravity, 0) * Time.deltaTime;
             player.Move(movement);
-            string msg = ":Player:Posistion:x=" + transform.position.x + ",y=" + transform.position.y + ",z=" + transform.position.z;
-            Client.instance.Send_Data(msg.Length + msg);
         }
     }
 }
