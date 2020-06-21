@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include "Tcplistener.h"
-float playerPos[3];
-
+int playerPos[2];
+char map[60][60];
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
@@ -16,7 +16,19 @@ int main(){
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     std::cout << msg << std::endl;
-    
+    std::string msg_arr[3];
+    if (msg_arr[0] == "Player") {
+        if (msg_arr[1] == "Position") {
+            std::string player_pos_x;
+            std::string player_pos_y;
+            int i = 0;
+            for (int i = 0; msg_arr[2][i] != ','; i++) {
+                player_pos_x += msg_arr[2][i];
+            }player_pos_y = msg_arr[2].substr(i++, msg_arr[2].size() - 1);
+            map[playerPos[0]][playerPos[1]] = 'w';
+            std::cout << "pos x = " << player_pos_x << "pos y = " << player_pos_y << "\n";
+        }
+    }
     listener->Send(client, msg);
 };
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
