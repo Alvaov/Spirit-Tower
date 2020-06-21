@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "Tcplistener.h"
+float playerPos[3];
+
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
@@ -14,6 +16,7 @@ int main(){
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     std::cout << msg << std::endl;
+    
     listener->Send(client, msg);
 };
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
