@@ -37,16 +37,22 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     }
     if (msg_arr[0] == "Player") {
         if (msg_arr[1] == "Position") {
-            std::string player_pos_x;
-            std::string player_pos_y;
-            int i = 0;
-            for (; msg_arr[2][i] != ','; i++) {
-                player_pos_x += msg_arr[2][i];
-            }player_pos_y = msg_arr[2].substr(i+1, msg_arr[2].size());
-            map[playerPos[0]][playerPos[1]] = 'w';
-            playerPos[0] = std::stoi(player_pos_x);
-            playerPos[1] = std::stoi(player_pos_y);
-            map[playerPos[0]][playerPos[1]] = 'c';
+            try {
+                std::string player_pos_x;
+                std::string player_pos_y;
+                int i = 0;
+                for (; msg_arr[2][i] != ','; i++) {
+                    player_pos_x += msg_arr[2][i];
+                }player_pos_y = msg_arr[2].substr(i+1, msg_arr[2].size());
+                map[playerPos[0]][playerPos[1]] = 'w';
+            
+                playerPos[0] = std::stoi(player_pos_x);
+                playerPos[1] = std::stoi(player_pos_y);
+                map[playerPos[0]][playerPos[1]] = 'c';
+            }
+            catch (...) {
+                std::cerr<<"Se trato de hacer un numero de un string no valido o array values ot of bounds\n";
+            }
         }
     }
     listener->Send(client, msg);
