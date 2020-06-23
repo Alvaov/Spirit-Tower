@@ -12,7 +12,7 @@ public class Grid : MonoBehaviour
     int gridSizeX, gridSizeY;
     public Transform player;
     private void Start(){
-        nodeDiameter = nodeRadius*2;
+        nodeDiameter = nodeRadius*10;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
@@ -21,6 +21,7 @@ public class Grid : MonoBehaviour
 
     void CreateGrid(){
         grid = new Node[gridSizeX, gridSizeY];
+        Debug.Log(gridSizeX);
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
         for(int x= 0; x < gridSizeX; x++){
             for (int y = 0; y < gridSizeY; y++){
@@ -39,7 +40,9 @@ public class Grid : MonoBehaviour
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+        Client.instance.tcp.SendData("Player:Position:" + x + "," + y+":");
         return grid[x, y]; //return the position in grid
+        
     }
     
     private void OnDrawGizmos()
