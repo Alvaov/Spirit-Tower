@@ -21,6 +21,7 @@ public class Grid : MonoBehaviour
 
     void CreateGrid(){
         grid = new Node[gridSizeX, gridSizeY];
+        Debug.Log(gridSizeX);
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
         for(int x= 0; x < gridSizeX; x++){
             for (int y = 0; y < gridSizeY; y++){
@@ -56,6 +57,7 @@ public class Grid : MonoBehaviour
                 if(playerNode == n)
                 {
                     Gizmos.color = Color.cyan;
+                    Client.instance.tcp.SendData("[" + playerNode + "]"); // send [x,y] to server
                 }
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
