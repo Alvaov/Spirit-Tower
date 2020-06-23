@@ -40,7 +40,7 @@ public class Grid : MonoBehaviour
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
-        //Client.instance.tcp.SendData("[" + x + "," + y + "]"); // send to server
+        Client.instance.tcp.SendData("Player:Position:" + x + "," + y+":");
         return grid[x, y]; //return the position in grid
         
     }
@@ -57,7 +57,6 @@ public class Grid : MonoBehaviour
                 if(playerNode == n)
                 {
                     Gizmos.color = Color.cyan;
-                    Client.instance.tcp.SendData("[" + playerNode + "]"); // send [x,y] to server
                 }
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
