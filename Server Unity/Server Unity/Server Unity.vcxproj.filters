@@ -21,9 +21,18 @@
     <ClCompile Include="Tcplistener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Pathfinding_A.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tcplistener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinding_A.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Linked_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
