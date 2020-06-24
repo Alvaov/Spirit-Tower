@@ -144,6 +144,7 @@
     <ClCompile Include="Tcplistener.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Linked_list.h" />
     <ClInclude Include="Pathfinding_A.h" />
     <ClInclude Include="Tcplistener.h" />

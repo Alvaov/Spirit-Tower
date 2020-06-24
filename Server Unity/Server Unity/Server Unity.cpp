@@ -8,6 +8,11 @@ int playerPos[2];
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
+    Path_Astar pito = Path_Astar();
+    pito.CreateMap();
+    int playerT[2] = { 0,2 };
+    int playerT2[2] = { 40,32 };
+    std::cout << pito.print_route(playerT,playerT2) << "\n";
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
     if (server.Init()) {
         server.Run();
@@ -22,15 +27,25 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             msg_arr[arr_pos] += msg[pos_in_msg];
         }pos_in_msg++;
     }
-    if (msg_arr[0] == "Player") {
+    if (msg_arr[0] == "0Player") {
         if (msg_arr[1] == "Position") {
             try {
-                //PLAYER POS in path       
+                std::string player_pos_x;
+                std::string player_pos_y;
+                int i = 0;
+                for (; msg_arr[2][i] != ','; i++) {
+                    player_pos_x += msg_arr[2][i];
+                }player_pos_y = msg_arr[2].substr(i + 1, msg_arr[2].size());
+                playerPos[0] = std::stoi(player_pos_x);
+                playerPos[1] = std::stoi(player_pos_y);
             }
             catch (...) {
                 std::cerr << "jaja se cayo\n";
             }
         }
+    }
+    else if (msg_arr[0].substr(1, msg_arr[0].size()) == "Espectro") {
+        
     }
     listener->Send(client, msg);
 };

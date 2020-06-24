@@ -22,13 +22,10 @@ private:
 	node_map* nodes = nullptr;
 	int nMapWidth = 60;
 	int nMapHeight = 60;
-
 	node_map* nodeStart = nullptr;
 	node_map* nodeEnd = nullptr;
-
-
-protected:
+public:
 	bool CreateMap();
-	bool Solve_AStar();
-	std::string print_route();
+	bool Solve_AStar(int posPlayer[2], int posEnemy[2]);
+	std::string print_route(int posPlayer[2], int posEnemy[2]);
 };
