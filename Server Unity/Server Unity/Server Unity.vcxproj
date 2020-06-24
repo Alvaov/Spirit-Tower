@@ -139,10 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Pathfinding_A.cpp" />
     <ClCompile Include="Server Unity.cpp" />
     <ClCompile Include="Tcplistener.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Linked_list.h" />
+    <ClInclude Include="Pathfinding_A.h" />
     <ClInclude Include="Tcplistener.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
