@@ -4,15 +4,18 @@
 #include <iostream>
 #include "Tcplistener.h"
 #include "Pathfinding_A.h"
+#include "Linked_list.h"
+#include "Espectro.h"
 int playerPos[2];
+lista<Espectro> espectros;
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
-    Path_Astar pito = Path_Astar();
-    pito.CreateMap();
+    //Path_Astar prueba = Path_Astar();
+    //prueba.CreateMap();
     int playerT[2] = { 0,2 };
     int playerT2[2] = { 40,32 };
-    std::cout << pito.print_route(playerT,playerT2) << "\n";
+    //std::cout << prueba.print_route(playerT,playerT2) << "\n";
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
     if (server.Init()) {
         server.Run();
