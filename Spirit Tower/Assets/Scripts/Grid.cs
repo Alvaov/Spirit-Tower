@@ -12,6 +12,7 @@ public class Grid : MonoBehaviour
     int gridSizeX, gridSizeY;
     public Transform player;
     private void Start(){
+        //size
         nodeDiameter = nodeRadius*10;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
@@ -23,10 +24,11 @@ public class Grid : MonoBehaviour
         grid = new Node[gridSizeX, gridSizeY];
         Debug.Log(gridSizeX);
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+
         for(int x= 0; x < gridSizeX; x++){
             for (int y = 0; y < gridSizeY; y++){
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
-                bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask)); // true->collision walkable-> false
+                bool walkable = !(Physics.CheckSphere(worldPoint, nodeDiameter, unwalkableMask)); // true->collision walkable-> false
                 grid[x, y] = new Node(walkable, worldPoint);
             }
         }
@@ -40,7 +42,8 @@ public class Grid : MonoBehaviour
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
-        Client.instance.tcp.SendData("Player5:Position:" + x + "," + y+":");
+        Client.instance.tcp.SendData("0Player:Position:" + x + "," + y+":");
+        //Debug.Log("Position:" + x + "," + y);     
         return grid[x, y]; //return the position in grid
         
     }
