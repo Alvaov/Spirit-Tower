@@ -11,6 +11,7 @@ public class Grid : MonoBehaviour
     float nodeDiameter;
     int gridSizeX, gridSizeY;
     public Transform player;
+    int frameInterval = 3;
     private void Start(){
         //size
         nodeDiameter = nodeRadius*10;
@@ -42,8 +43,10 @@ public class Grid : MonoBehaviour
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
-        Client.instance.tcp.SendData("0Player:Position:" + x + "," + y+":");
-        //Debug.Log("Position:" + x + "," + y);     
+        if (Time.frameCount % frameInterval == 0)
+        {
+            Client.instance.tcp.SendData("0Player:Position:" + x + "," + y + ":");
+        }
         return grid[x, y]; //return the position in grid
         
     }

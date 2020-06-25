@@ -1,10 +1,11 @@
 #pragma once
 
 #include <iostream>
+#include "Enemy.h"
 
-class Espectro{
+class Espectro : public Enemy{
 
-	Espectro() {
+	Espectro(int x, int y) : Enemy(x,y){
 
 	}
 
