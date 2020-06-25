@@ -112,11 +112,20 @@ public class Client : MonoBehaviour
 
                 // TODO: handle data
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+                string msg = Encoding.UTF8.GetString(_data, 0, _data.Length);
+                handleData(msg);
             }
             catch
             {
-                // TODO: disconnect
+                Debug.Log("Error recibiendo dato del servidor");
             }
         }
+
+        private void handleData(string msg)
+        {
+
+        }
+    
     }
+
 }

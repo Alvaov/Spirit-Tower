@@ -13,7 +13,9 @@ public class Grid : MonoBehaviour
     int gridSizeX, gridSizeY;
     public Transform player;
     int frameInterval = 3;
+    public static Grid instance;
     private void Start(){
+        instance = this;
         //size
         nodeDiameter = nodeRadius*10;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -24,7 +26,6 @@ public class Grid : MonoBehaviour
 
     void CreateGrid(){
         grid = new Node[gridSizeX, gridSizeY];
-        Debug.Log(gridSizeX);
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
         for(int x= 0; x < gridSizeX; x++){
@@ -36,7 +37,7 @@ public class Grid : MonoBehaviour
         }
     }
     //Convert real world position into exact grid location
-    public Node GetNodeFromWorldPoint(Vector3 worldPosition){
+    public string GetAxesFromWorldPoint(Vector3 worldPosition){
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
         float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y; //z because the axis
         percentX = Mathf.Clamp01(percentX);
@@ -44,14 +45,23 @@ public class Grid : MonoBehaviour
 
         int x = Mathf.RoundToInt((gridSizeX) * percentX);
         int y = Mathf.RoundToInt((gridSizeY) * percentY);
-        if (Time.frameCount % frameInterval == 0)
-        {
-            Client.instance.tcp.SendData("0Player:Position:" + x + "," + y + ":");
-        }
-        return grid[x, y]; //return the position in grid
+        return x + "," + y + ":"; //return the position in grid
         
     }
-    
+
+    public Node GetNodeFromWorldPoint(Vector3 worldPosition)
+    {
+        float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
+        float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y; //z because the axis
+        percentX = Mathf.Clamp01(percentX);
+        percentY = Mathf.Clamp01(percentY);
+
+        int x = Mathf.RoundToInt((gridSizeX) * percentX);
+        int y = Mathf.RoundToInt((gridSizeY) * percentY);
+        return grid[x,y]; //return the position in grid
+
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));

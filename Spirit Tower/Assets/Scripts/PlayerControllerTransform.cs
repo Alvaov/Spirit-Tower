@@ -10,6 +10,7 @@ public class PlayerControllerTransform : MonoBehaviour{
     public float vertical;
     public float gravity = -9.8f;
     public float speed = 10;
+    int frameInterval = 3;
     public CharacterController player;
     public Animator animator;
     // Start is called before the first frame update
@@ -36,6 +37,11 @@ public class PlayerControllerTransform : MonoBehaviour{
         {
             movement = new Vector3(0, gravity, 0) * Time.deltaTime;
             player.Move(movement);
+        }
+
+        if (Time.frameCount % frameInterval == 0)
+        {
+            Client.instance.tcp.SendData("0Player:Position:" + Grid.instance.GetAxesFromWorldPoint(player.transform.position));
         }
     }
 }

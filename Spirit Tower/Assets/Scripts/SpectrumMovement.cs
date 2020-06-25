@@ -31,7 +31,7 @@ public class SpectrumMovement : MonoBehaviour
         spectrum = GetComponent<CharacterController>();
         player = GameObject.FindGameObjectWithTag("Player");
         frameInterval = 3;
-        visionRadius = 20;
+        visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
 
@@ -50,10 +50,9 @@ public class SpectrumMovement : MonoBehaviour
                 checkVisualRange();
             }
         }
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
 
     }
+
 
     void checkVisualRange()
     {
@@ -62,13 +61,20 @@ public class SpectrumMovement : MonoBehaviour
         float angle = Vector3.Angle(direction, transform.forward);
 
         if (angle < visionAngle * 0.5f){
-            RaycastHit hit;
-            if(Physics.Raycast(transform.position,direction.normalized, out hit, visionRadius))
-            {
+            //RaycastHit hit;
+            Debug.Log("Detectado");
+            //if (Physics.Raycast(transform.position,direction.normalized, out hit, visionRadius))
+            //{
+                //Debug.Log("Detectado2");
                 detected = true;
                 Client.instance.tcp.SendData(myId+"Spectrum:detectado::");
                 
-            }
+            //}
+        }
+        if (detected == true)
+        {
+            Client.instance.tcp.SendData(myId+"Espectrum:Position:" + 
+            Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position));
         }
     }
 
