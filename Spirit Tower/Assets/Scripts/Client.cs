@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using System;
 using System.Text;
+using UnityEditor.XR;
+using System.Reflection;
 
 public class Client : MonoBehaviour
 {
@@ -14,7 +16,7 @@ public class Client : MonoBehaviour
     public string ip = "127.0.0.1";
     public int port = 54100;
     public int myId = 0;
-    public TCP tcp;
+    public TCP tcp = new TCP();
 
     private void Awake()
     {
@@ -81,20 +83,22 @@ public class Client : MonoBehaviour
 
         public void SendData(String dataToSend)
         {
-            Debug.Log("primero que nada si entra a esta function");
+           // Debug.Log("primero que nada si entra a esta function");
             try
             {
                 byte[] buffer = Encoding.ASCII.GetBytes(dataToSend);
                 stream = socket.GetStream();
                 stream.Write(buffer, 0, buffer.Length);
 
-                Debug.Log("se mando el dato");
+               // Debug.Log("se mando el dato");
             }
             catch (Exception _ex)
             {
                 Debug.Log($"Error sending data to player via TCP: {_ex}");
             }
         }
+
+    
 
         private void ReceiveCallback(IAsyncResult _result)
         {
@@ -107,11 +111,15 @@ public class Client : MonoBehaviour
                     return;
                 }
 
-                byte[] _data = new byte[_byteLength];
+
+                byte[] _data = new byte[_byteLength * 3];
                 Array.Copy(receiveBuffer, _data, _byteLength);
 
-                // TODO: handle data
+
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+                string str = Encoding.UTF8.GetString(_data, 0, _data.Length);
+                Debug.Log(str);
+
             }
             catch
             {

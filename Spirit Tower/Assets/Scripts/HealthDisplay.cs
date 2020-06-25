@@ -26,8 +26,8 @@ public class HealthDisplay : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             health--;
-            string hlt = "Salud restante: " + health;
-            Client.instance.Send_Data(hlt.Length + hlt);
+           // string msg = "Player:Health:" + health + ":";
+            Client.instance.Send_Data("Player:Health:" + health + ":");
         }
 
     }

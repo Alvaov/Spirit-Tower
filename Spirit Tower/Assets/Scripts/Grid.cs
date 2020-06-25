@@ -40,7 +40,7 @@ public class Grid : MonoBehaviour
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
-        Client.instance.tcp.SendData("Player:Position:" + x + "," + y+":");
+        Client.instance.tcp.SendData("Player5:Position:" + x + "," + y+":");
         return grid[x, y]; //return the position in grid
         
     }

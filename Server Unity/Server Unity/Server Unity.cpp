@@ -35,7 +35,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             msg_arr[arr_pos] += msg[pos_in_msg];
         }pos_in_msg++;
     }
-    if (msg_arr[0] == "Player") {
+    if (msg_arr[0] == "Player5") {
         if (msg_arr[1] == "Position") {
             try {
                 std::string player_pos_x;
@@ -49,14 +49,27 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 playerPos[0] = std::stoi(player_pos_x);
                 playerPos[1] = std::stoi(player_pos_y);
                 map[playerPos[0]][playerPos[1]] = 'c';
-            }
+            } 
             catch (...) {
                 std::cerr<<"Se trato de hacer un numero de un string no valido o array values ot of bounds\n";
+            }
+        }
+        else if (msg_arr[1] == "Health") {
+            try {
+                if (msg_arr[1][2] == 0) {
+                    std::cout << "Salud ha alcanzado 0, terminando juego :(";
+                }
+            }
+            catch (...) {
+                std::cerr << "Se trato de hacer un numero de un string no valido o array values ot of bounds\n";
             }
         }
     }
     listener->Send(client, msg);
 };
+
+
+
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 
