@@ -12,7 +12,6 @@ public class Grid : MonoBehaviour
     float nodeDiameter;
     int gridSizeX, gridSizeY;
     public Transform player;
-    int frameInterval = 3;
     public static Grid instance;
     private void Start(){
         instance = this;
@@ -45,7 +44,7 @@ public class Grid : MonoBehaviour
 
         int x = Mathf.RoundToInt((gridSizeX) * percentX);
         int y = Mathf.RoundToInt((gridSizeY) * percentY);
-        return x + "," + y + ":"; //return the position in grid
+        return x + "," + y; //return the position in grid
         
     }
 
@@ -90,7 +89,7 @@ public class Grid : MonoBehaviour
         {
             if (n.walkable == false)
             {
-                Client.instance.tcp.SendData("Grid:Obstacle:" + n.x + "," + n.y + ":");
+                Client.instance.tcp.SendData("0:Grid:Obstacle:" + n.x + "," + n.y + ":");
                 Thread.Sleep(5);
             }
         }

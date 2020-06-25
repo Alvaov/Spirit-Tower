@@ -5,15 +5,19 @@
 
 class Espectro : public Enemy{
 
-	Espectro(int x, int y) : Enemy(x,y){
+public:
 
+	Espectro(int x, int y,int _id) : Enemy(x,y){
+		id = _id;
+		pos_x = x;
+		pos_y = y;
 	}
-
+private:
 	std::string backtracking_path;
 	std::string patrullar;
 	std::string path_a;
 	int follow_speed;
-
+	int id;
 	void runaway();
 	void backtracking();
 	void pathfinding_A();

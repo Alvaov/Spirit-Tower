@@ -10,7 +10,7 @@ public class Client : MonoBehaviour
 {
     public static Client instance;
     public static int dataBufferSize = 4096;
-
+    public static Lista<SpectrumMovement> spectrums;
     public string ip = "127.0.0.1";
     public int port = 54100;
     public int myId = 0;
@@ -123,9 +123,17 @@ public class Client : MonoBehaviour
 
         private void handleData(string msg)
         {
+            string[] msg_arr = msg.Split(':');
+            if (msg_arr[1] == "Spectrum")
+            {
+                if(msg_arr[2] == "pathfinding")
+                {
+                    Debug.Log(msg);
+                }
+                
+            }
 
         }
-    
     }
 
 }

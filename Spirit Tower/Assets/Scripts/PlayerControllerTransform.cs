@@ -41,7 +41,7 @@ public class PlayerControllerTransform : MonoBehaviour{
 
         if (Time.frameCount % frameInterval == 0)
         {
-            Client.instance.tcp.SendData("0Player:Position:" + Grid.instance.GetAxesFromWorldPoint(player.transform.position));
+            Client.instance.tcp.SendData("0:Player:Position:" + Grid.instance.GetAxesFromWorldPoint(player.transform.position)+":");
         }
     }
 }

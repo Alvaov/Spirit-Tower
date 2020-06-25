@@ -28,5 +28,5 @@ private:
 public:
 	node_map* CreateMap();
 	bool Solve_AStar(int posPlayer[2], int posEnemy[2]);
-	std::string print_route(int spectrumId, int posPlayer[2], int posEnemy[2]);
+	std::string send_route(int spectrumId, int posPlayer[2], int posEnemy[2]);
 };
