@@ -864,7 +864,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 89b1864ec74ee9444b9a18633b81f482,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.96
+      value: -56.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 89b1864ec74ee9444b9a18633b81f482,
         type: 3}
@@ -874,7 +874,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 89b1864ec74ee9444b9a18633b81f482,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 247.25
+      value: 256.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 89b1864ec74ee9444b9a18633b81f482,
         type: 3}
@@ -956,6 +956,48 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &461742924 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 89b1864ec74ee9444b9a18633b81f482,
+    type: 3}
+  m_PrefabInstance: {fileID: 432059410}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &461742925
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461742924}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4358016485227608572, guid: 89b1864ec74ee9444b9a18633b81f482, type: 3}
+--- !u!114 &461742926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461742924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec643062c158d124e8a24336c5e12a89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  horizontal: 0
+  vertical: 0
+  visionRadius: 0
+  detected: 0
+  gravity: -9.8
+  speed: 10
+  player: {fileID: 0}
+  spectrum: {fileID: 0}
+  patrol_path: 
+  frameInterval: 0
 --- !u!1 &506179211
 GameObject:
   m_ObjectHideFlags: 0
@@ -1936,7 +1978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18fd29fda767c0546a0735c3599fd887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startMenu: {fileID: 0}
+  startMenu: {fileID: 436553842}
   userNameField: {fileID: 1068574440}
 --- !u!114 &1016704922
 MonoBehaviour:
@@ -3570,7 +3612,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 0a92c242d09f98e46b90c04ca7223d8f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.7
+      value: -58.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a92c242d09f98e46b90c04ca7223d8f,
         type: 3}
@@ -3580,7 +3622,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 0a92c242d09f98e46b90c04ca7223d8f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -136.7
+      value: 240.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a92c242d09f98e46b90c04ca7223d8f,
         type: 3}

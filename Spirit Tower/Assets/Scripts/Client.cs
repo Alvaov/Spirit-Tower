@@ -14,6 +14,7 @@ public class Client : MonoBehaviour
     public string ip = "127.0.0.1";
     public int port = 54100;
     public int myId = 0;
+    public static int spectrumId = 0;
     public TCP tcp;
 
     private void Awake()
@@ -62,7 +63,6 @@ public class Client : MonoBehaviour
 
             receiveBuffer = new byte[dataBufferSize];
             socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
-            Console.WriteLine("Se conectó");
         }
 
         private void ConnectCallback(IAsyncResult _result)
@@ -81,14 +81,13 @@ public class Client : MonoBehaviour
 
         public void SendData(String dataToSend)
         {
-            Debug.Log("primero que nada si entra a esta function");
             try
             {
                 byte[] buffer = Encoding.ASCII.GetBytes(dataToSend);
                 stream = socket.GetStream();
                 stream.Write(buffer, 0, buffer.Length);
 
-                Debug.Log("se mando el dato");
+                //Debug.Log("se mando el dato");
             }
             catch (Exception _ex)
             {
