@@ -30,7 +30,7 @@ public class Client : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void Start()
     {
         tcp = new TCP();
     }
@@ -38,6 +38,7 @@ public class Client : MonoBehaviour
     public void ConnectToServer()
     {
         tcp.Connect();
+        Grid.getGridWalls();
     }
     public void Send_Data(string msg)
     {

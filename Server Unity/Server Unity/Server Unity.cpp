@@ -8,11 +8,12 @@
 #include "Espectro.h"
 int playerPos[2];
 lista<Espectro> espectros;
+node_map* mapaActual;
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
-    //Path_Astar prueba = Path_Astar();
-    //prueba.CreateMap();
+    Path_Astar prueba = Path_Astar();
+    mapaActual = prueba.CreateMap();
     int playerT[2] = { 0,2 };
     int playerT2[2] = { 40,32 };
     //std::cout << prueba.print_route(playerT,playerT2) << "\n";
@@ -49,6 +50,20 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     }
     else if (msg_arr[0].substr(1, msg_arr[0].size()) == "Espectro") {
         
+    }
+    else if (msg_arr[0].substr(1, msg_arr[0].size()) == "Grid") {
+        if (msg_arr[1] == "Obstacle") {
+            std::string pos_x;
+            std::string pos_y;
+            int i = 0;
+            for (; msg_arr[2][i] != ','; i++) {
+                pos_x += msg_arr[2][i];
+            }
+            pos_y = msg_arr[2].substr(i + 1, msg_arr[2].size());
+            int x = std::stoi(pos_x);
+            int y = std::stoi(pos_y);
+            mapaActual[(y * 60) + (x + (y / 60))].bObstacle = true;
+        }
     }
     listener->Send(client, msg);
 };

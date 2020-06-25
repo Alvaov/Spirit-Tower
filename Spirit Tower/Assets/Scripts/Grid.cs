@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading;
 
 
 public class Grid : MonoBehaviour
@@ -7,7 +8,7 @@ public class Grid : MonoBehaviour
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    Node[,] grid;
+    static Node[,] grid;
     float nodeDiameter;
     int gridSizeX, gridSizeY;
     public Transform player;
@@ -30,7 +31,7 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++){
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeDiameter, unwalkableMask)); // true->collision walkable-> false
-                grid[x, y] = new Node(walkable, worldPoint);
+                grid[x, y] = new Node(walkable, worldPoint,x,y);
             }
         }
     }
@@ -41,8 +42,8 @@ public class Grid : MonoBehaviour
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
-        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+        int x = Mathf.RoundToInt((gridSizeX) * percentX);
+        int y = Mathf.RoundToInt((gridSizeY) * percentY);
         if (Time.frameCount % frameInterval == 0)
         {
             Client.instance.tcp.SendData("0Player:Position:" + x + "," + y + ":");
@@ -59,7 +60,11 @@ public class Grid : MonoBehaviour
             Node playerNode = GetNodeFromWorldPoint(player.position); //get the location on grid
             foreach(Node n in grid)
             {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red; //white->walkable, red->unwalkable
+                if (n.walkable) {
+                    Gizmos.color = Color.white;
+                } else {
+                    Gizmos.color = Color.red;
+                }
                 if(playerNode == n)
                 {
                     Gizmos.color = Color.cyan;
@@ -69,4 +74,16 @@ public class Grid : MonoBehaviour
         }
     }
 
+    public static void getGridWalls()
+    {
+        foreach (Node n in grid)
+        {
+            if (n.walkable == false)
+            {
+                Client.instance.tcp.SendData("Grid:Obstacle:" + n.x + "," + n.y + ":");
+                Thread.Sleep(5);
+            }
+        }
+    }
+    
 }
