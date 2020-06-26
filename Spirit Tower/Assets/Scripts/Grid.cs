@@ -48,6 +48,21 @@ public class Grid : MonoBehaviour
         
     }
 
+    public Vector3 GetWorldPointFromAxes(int x, int y)
+    {
+        float percentX = (x + gridWorldSize.x / 2) / gridWorldSize.x;
+        
+        float percentY = (y + gridWorldSize.y / 2) / gridWorldSize.y; //z because the axis
+        percentX = Mathf.Clamp01(percentX);
+        percentY = Mathf.Clamp01(percentY);
+
+        int horizontal = x / gridSizeX;
+        int vertical = y / gridSizeY;
+        movement = new Vector3(horizontal, 0f, vertical) ;
+        return movement; //return the position in world
+
+    }
+
     public Node GetNodeFromWorldPoint(Vector3 worldPosition)
     {
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
