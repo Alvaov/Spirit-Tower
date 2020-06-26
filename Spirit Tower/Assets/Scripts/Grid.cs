@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Threading;
 
-
 public class Grid : MonoBehaviour
 {
     public LayerMask unwalkableMask;
@@ -17,6 +16,7 @@ public class Grid : MonoBehaviour
         instance = this;
         //size
         nodeDiameter = nodeRadius*10;
+        Debug.Log(nodeDiameter);
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
@@ -50,15 +50,9 @@ public class Grid : MonoBehaviour
 
     public Vector3 GetWorldPointFromAxes(int x, int y)
     {
-        float percentX = (x + gridWorldSize.x / 2) / gridWorldSize.x;
-        
-        float percentY = (y + gridWorldSize.y / 2) / gridWorldSize.y; //z because the axis
-        percentX = Mathf.Clamp01(percentX);
-        percentY = Mathf.Clamp01(percentY);
-
-        int horizontal = x / gridSizeX;
-        int vertical = y / gridSizeY;
-        movement = new Vector3(horizontal, 0f, vertical) ;
+        int horizontal = 10*x-290;
+        int vertical = 10*y - 292;
+        Vector3 movement = new Vector3(horizontal, 0f, vertical) ;
         return movement; //return the position in world
 
     }

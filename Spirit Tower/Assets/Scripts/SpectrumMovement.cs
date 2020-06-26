@@ -35,9 +35,9 @@ public class SpectrumMovement : MonoBehaviour
         visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
-        Client.spectrums.añadirElementos(this);
         Client.instance.tcp.SendData(myId + ":Spectrum:New:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) +","+myId+ ":");
-
+        movement = Grid.instance.GetWorldPointFromAxes(14, 51) * speed * Time.deltaTime;
+        spectrum.Move(movement);
     }
 
     // Update is called once per frame
@@ -60,8 +60,11 @@ public class SpectrumMovement : MonoBehaviour
             }
         }
 
+        //Vector3 movement = Grid.instance.GetWorldPointFromAxes(14,51) * speed * Time.deltaTime;
+        //movement = Vector3.ClampMagnitude(movement, 1);
+        //spectrum.Move(movement);
+        //Debug.Log(spectrum.transform.position);
     }
-
 
     void checkVisualRange()
     {
@@ -83,7 +86,6 @@ public class SpectrumMovement : MonoBehaviour
 
     private void walk()
     {
-
     }
 
 }

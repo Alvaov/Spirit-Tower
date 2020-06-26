@@ -193,9 +193,9 @@ std::string Path_Astar::send_route(int spectrumId,int posPlayer[2], int posEnemy
 	if (Solve_AStar(posPlayer, posEnemy)) {
 		node_map* temp_node = nodeEnd;
 		while (temp_node->parent != nullptr) {
-			msg += "[" + std::to_string(temp_node->x);
+			msg += std::to_string(temp_node->x);
 			msg += "," + std::to_string(temp_node->y);
-			msg += "]:";
+			msg += ":";
 			temp_node = temp_node->parent;
 		}
 	}return msg;
