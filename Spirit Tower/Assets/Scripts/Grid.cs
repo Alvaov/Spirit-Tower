@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading;
 
 
 public class Grid : MonoBehaviour
@@ -7,12 +8,13 @@ public class Grid : MonoBehaviour
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    Node[,] grid;
+    static Node[,] grid;
     float nodeDiameter;
     int gridSizeX, gridSizeY;
     public Transform player;
-    int frameInterval = 3;
+    public static Grid instance;
     private void Start(){
+        instance = this;
         //size
         nodeDiameter = nodeRadius*10;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -23,34 +25,42 @@ public class Grid : MonoBehaviour
 
     void CreateGrid(){
         grid = new Node[gridSizeX, gridSizeY];
-        Debug.Log(gridSizeX);
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
         for(int x= 0; x < gridSizeX; x++){
             for (int y = 0; y < gridSizeY; y++){
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeDiameter, unwalkableMask)); // true->collision walkable-> false
-                grid[x, y] = new Node(walkable, worldPoint);
+                grid[x, y] = new Node(walkable, worldPoint,x,y);
             }
         }
     }
     //Convert real world position into exact grid location
-    public Node GetNodeFromWorldPoint(Vector3 worldPosition){
+    public string GetAxesFromWorldPoint(Vector3 worldPosition){
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
         float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y; //z because the axis
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
-        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
-        if (Time.frameCount % frameInterval == 0)
-        {
-            Client.instance.tcp.SendData("0Player:Position:" + x + "," + y + ":");
-        }
-        return grid[x, y]; //return the position in grid
+        int x = Mathf.RoundToInt((gridSizeX) * percentX);
+        int y = Mathf.RoundToInt((gridSizeY) * percentY);
+        return x + "," + y; //return the position in grid
         
     }
-    
+
+    public Node GetNodeFromWorldPoint(Vector3 worldPosition)
+    {
+        float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
+        float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y; //z because the axis
+        percentX = Mathf.Clamp01(percentX);
+        percentY = Mathf.Clamp01(percentY);
+
+        int x = Mathf.RoundToInt((gridSizeX) * percentX);
+        int y = Mathf.RoundToInt((gridSizeY) * percentY);
+        return grid[x,y]; //return the position in grid
+
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
@@ -59,7 +69,11 @@ public class Grid : MonoBehaviour
             Node playerNode = GetNodeFromWorldPoint(player.position); //get the location on grid
             foreach(Node n in grid)
             {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red; //white->walkable, red->unwalkable
+                if (n.walkable) {
+                    Gizmos.color = Color.white;
+                } else {
+                    Gizmos.color = Color.red;
+                }
                 if(playerNode == n)
                 {
                     Gizmos.color = Color.cyan;
@@ -69,4 +83,16 @@ public class Grid : MonoBehaviour
         }
     }
 
+    public static void getGridWalls()
+    {
+        foreach (Node n in grid)
+        {
+            if (n.walkable == false)
+            {
+                Client.instance.tcp.SendData("0:Grid:Obstacle:" + n.x + "," + n.y + ":");
+                Thread.Sleep(5);
+            }
+        }
+    }
+    
 }

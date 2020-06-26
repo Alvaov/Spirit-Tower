@@ -27,6 +27,5 @@ public class UIManager : MonoBehaviour
         startMenu.SetActive(false);
         userNameField.interactable = false;
         Client.instance.ConnectToServer();
-        Client.instance.tcp.SendData("k:l:l:");
     }
 }

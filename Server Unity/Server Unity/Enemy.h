@@ -1,14 +1,14 @@
 #pragma once
 class Enemy
 {
-private:
+protected:
 	int pos_x;
 	int pos_y;
 	int health;
 	int speed;
 	int vision_range;
 	int dmg;
-protected:
+
 	Enemy(int _health, int x, int y, int _speed, int _dmg, int vision) {
 		pos_x = x;
 		pos_y = y;
@@ -21,8 +21,8 @@ protected:
 		pos_x = x;
 		pos_y = y;
 	}
-	virtual void hit_player();
-	virtual void recive_dmg();
+	//virtual void hit_player();
+	//virtual void recive_dmg();
 	void set_x(int x) {
 		pos_x = x;
 	}

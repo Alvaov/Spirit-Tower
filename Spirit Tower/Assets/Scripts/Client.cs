@@ -10,7 +10,7 @@ public class Client : MonoBehaviour
 {
     public static Client instance;
     public static int dataBufferSize = 4096;
-
+    public static Lista<SpectrumMovement> spectrums;
     public string ip = "127.0.0.1";
     public int port = 54100;
     public int myId = 0;
@@ -30,7 +30,7 @@ public class Client : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void Start()
     {
         tcp = new TCP();
     }
@@ -38,6 +38,7 @@ public class Client : MonoBehaviour
     public void ConnectToServer()
     {
         tcp.Connect();
+        Grid.getGridWalls();
     }
     public void Send_Data(string msg)
     {
@@ -111,11 +112,28 @@ public class Client : MonoBehaviour
 
                 // TODO: handle data
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+                string msg = Encoding.UTF8.GetString(_data, 0, _data.Length);
+                handleData(msg);
             }
             catch
             {
-                // TODO: disconnect
+                Debug.Log("Error recibiendo dato del servidor");
             }
         }
+
+        private void handleData(string msg)
+        {
+            string[] msg_arr = msg.Split(':');
+            if (msg_arr[1] == "Spectrum")
+            {
+                if(msg_arr[2] == "pathfinding")
+                {
+                    Debug.Log(msg);
+                }
+                
+            }
+
+        }
     }
+
 }

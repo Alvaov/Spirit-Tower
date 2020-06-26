@@ -16,7 +16,6 @@ public class SpectrumMovement : MonoBehaviour
     //Rango de visión
     public float visionRadius;
     public float visionAngle = 160f;
-    public bool detected = false;
 
     //Aspectos generales
     public GameObject player;
@@ -24,6 +23,8 @@ public class SpectrumMovement : MonoBehaviour
     public string path;
     public float frameInterval;
     public int myId;
+    public static bool detected = false;
+    public bool attack = false;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +32,11 @@ public class SpectrumMovement : MonoBehaviour
         spectrum = GetComponent<CharacterController>();
         player = GameObject.FindGameObjectWithTag("Player");
         frameInterval = 3;
-        visionRadius = 20;
+        visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
+        Client.spectrums.añadirElementos(this);
+        Client.instance.tcp.SendData(myId + ":Spectrum:New:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) +","+myId+ ":");
 
     }
 
@@ -43,17 +46,22 @@ public class SpectrumMovement : MonoBehaviour
 
         
         float distance = Vector3.Distance(player.transform.position,transform.position); // faster than Vector3.Distance
-        if (distance < visionRadius)
+        
+        if (Time.frameCount % frameInterval == 0)
         {
-            if (Time.frameCount % frameInterval == 0)
+            if (distance < visionRadius)
             {
                 checkVisualRange();
             }
+
+            if (detected == true)
+            {
+                Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
+            }
         }
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
 
     }
+
 
     void checkVisualRange()
     {
@@ -62,14 +70,20 @@ public class SpectrumMovement : MonoBehaviour
         float angle = Vector3.Angle(direction, transform.forward);
 
         if (angle < visionAngle * 0.5f){
-            RaycastHit hit;
-            if(Physics.Raycast(transform.position,direction.normalized, out hit, visionRadius))
-            {
+            //RaycastHit hit;
+            Debug.Log("Detectado");
+            //if (Physics.Raycast(transform.position,direction.normalized, out hit, visionRadius))
+            //{
+                //Debug.Log("Detectado2");
                 detected = true;
-                Client.instance.tcp.SendData(myId+"Spectrum:detectado::");
                 
-            }
+            //}
         }
+    }
+
+    private void walk()
+    {
+
     }
 
 }

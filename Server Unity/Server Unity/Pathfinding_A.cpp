@@ -44,7 +44,7 @@ Last Updated: 08/10/2017
 #include <string>
 #include "Pathfinding_A.h"
 Path_Astar::Path_Astar() {};
-bool Path_Astar::CreateMap()
+node_map* Path_Astar::CreateMap()
 {
 	// Create a 2D array of nodes - this is for convenience of rendering and construction
 	// and is not required for the algorithm to work - the nodes could be placed anywhere
@@ -88,7 +88,7 @@ bool Path_Astar::CreateMap()
 	// Manually positio the start and end markers so they are not nullptr
 	nodeStart = &nodes[(nMapHeight / 2) * nMapWidth + 1];
 	nodeEnd = &nodes[(nMapHeight / 2) * nMapWidth + nMapWidth - 2];
-	return true;
+	return nodes;
 }
 
 bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
@@ -188,14 +188,14 @@ bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 	}
 	return true;
 }
-std::string Path_Astar::print_route(int posPlayer[2], int posEnemy[2]) {
-	std::string msg;
+std::string Path_Astar::send_route(int spectrumId,int posPlayer[2], int posEnemy[2]) {
+	std::string msg = std::to_string(spectrumId) +":Spectrum:pathfinding:";
 	if (Solve_AStar(posPlayer, posEnemy)) {
 		node_map* temp_node = nodeEnd;
 		while (temp_node->parent != nullptr) {
 			msg += "[" + std::to_string(temp_node->x);
 			msg += "," + std::to_string(temp_node->y);
-			msg += "]";
+			msg += "]:";
 			temp_node = temp_node->parent;
 		}
 	}return msg;
