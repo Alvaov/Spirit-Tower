@@ -11,7 +11,7 @@ public class SpectrumMovement : MonoBehaviour
     public float horizontal;
     public float vertical;
     public float gravity = -9.8f;
-    public float speed = 10;
+    public float speed = 40;
 
     //Rango de visión
     public float visionRadius;
@@ -36,8 +36,7 @@ public class SpectrumMovement : MonoBehaviour
         myId = Client.spectrumId;
         Client.spectrumId += 1;
         Client.instance.tcp.SendData(myId + ":Spectrum:New:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) +","+myId+ ":");
-        movement = Grid.instance.GetWorldPointFromAxes(14, 51) * speed * Time.deltaTime;
-        spectrum.Move(movement);
+        movement = Grid.instance.GetWorldPointFromAxes(14, 51);
     }
 
     // Update is called once per frame
@@ -59,7 +58,7 @@ public class SpectrumMovement : MonoBehaviour
                 Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
             }
         }
-
+        transform.position = Vector3.MoveTowards(transform.position, movement, speed * Time.deltaTime);
         //Vector3 movement = Grid.instance.GetWorldPointFromAxes(14,51) * speed * Time.deltaTime;
         //movement = Vector3.ClampMagnitude(movement, 1);
         //spectrum.Move(movement);

@@ -50,9 +50,10 @@ public class Grid : MonoBehaviour
 
     public Vector3 GetWorldPointFromAxes(int x, int y)
     {
-        int horizontal = 10*x-290;
-        int vertical = 10*y - 292;
+        int horizontal = (29/3)*x-301;
+        int vertical = 10*y - 315;
         Vector3 movement = new Vector3(horizontal, 0f, vertical) ;
+        Debug.Log(movement);
         return movement; //return the position in world
 
     }
