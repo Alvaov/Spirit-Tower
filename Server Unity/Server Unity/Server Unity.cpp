@@ -25,13 +25,19 @@ int main(){
     }
 }
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
-    std::cout <<"Raw Data: "<< msg << std::endl;
+    std::cout << msg << std::endl;
     std::string msg_arr[4];
     int pos_in_msg = 0;
-    for (int arr_pos = 0; arr_pos < 4; arr_pos++) {
-        for (; msg[pos_in_msg] != ':'; pos_in_msg++) {
-            msg_arr[arr_pos] += msg[pos_in_msg];
-        }pos_in_msg++;
+    try {
+        for (int arr_pos = 0; arr_pos < 4; arr_pos++) {
+            for (; msg[pos_in_msg] != ':'; pos_in_msg++) {
+                msg_arr[arr_pos] += msg[pos_in_msg];
+            }pos_in_msg++;
+        }
+    }
+    catch(...){
+        std::cerr << "Sintaxis incorrecta\n";
+        return;
     }
     if (msg_arr[1] == "Player") {
         if (msg_arr[2] == "Position") {
@@ -77,13 +83,14 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 int i = 0;
                 for (; msg_arr[3][i] != ','; i++) {
                     enemy_pos_x += msg_arr[3][i];
-                }for (; msg_arr[3][i] != ','; i++) {
-                    enemy_pos_y += msg_arr[3][i];
-                }enemy_id = std::stoi(msg_arr[3].substr(i + 1, msg_arr[3].size()));
+                }
+                enemy_pos_y += msg_arr[3].substr(i + 1, msg_arr[3].size());;
+                enemy_id = std::stoi(msg_arr[0]);
                 enemyPos[0] = std::stoi(enemy_pos_x);
                 enemyPos[1] = std::stoi(enemy_pos_y);
                 Espectro* espectro = new Espectro(enemyPos[0], enemyPos[1],enemy_id);
                 espectros->insert(espectro);
+                listener->Send(client,msg_arr[0]+":Spectrum:Created:");
             }
             catch (...) {
                 std::cerr << "Dato malo\n";

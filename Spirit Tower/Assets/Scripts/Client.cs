@@ -10,7 +10,7 @@ public class Client : MonoBehaviour
 {
     public static Client instance;
     public static int dataBufferSize = 4096;
-    public static Lista<SpectrumMovement> spectrums;
+    public Lista<SpectrumMovement> spectrums;
     public string ip = "127.0.0.1";
     public int port = 54100;
     public int myId = 0;
@@ -33,6 +33,7 @@ public class Client : MonoBehaviour
     public void Start()
     {
         tcp = new TCP();
+        spectrums = new Lista<SpectrumMovement>();
     }
 
     public void ConnectToServer()
@@ -123,12 +124,32 @@ public class Client : MonoBehaviour
 
         private void handleData(string msg)
         {
-            string[] msg_arr = msg.Split(':');
+            string[] msg_arr = msg.Split(':'); 
             if (msg_arr[1] == "Spectrum")
             {
-                if(msg_arr[2] == "pathfinding")
+                if(msg_arr[2] == "Pathfinding")
                 {
                     Debug.Log(msg);
+                    //Buscar al espectro por ID
+                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                    {
+                        if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
+                        {
+                            Client.instance.spectrums.getValorEnIndice(i).path = msg_arr[3].Split(';');
+
+                        }
+                    }
+                }
+                else if(msg_arr[2]== "Created")
+                {
+                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                    {
+                        if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
+                        {
+                            Client.instance.spectrums.getValorEnIndice(i).addedToList = true;
+
+                        }
+                    }
                 }
                 
             }

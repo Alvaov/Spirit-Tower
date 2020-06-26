@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class SpectrumMovement : MonoBehaviour
@@ -11,7 +12,7 @@ public class SpectrumMovement : MonoBehaviour
     public float horizontal;
     public float vertical;
     public float gravity = -9.8f;
-    public float speed = 40;
+    public float speed = 90;
 
     //Rango de visión
     public float visionRadius;
@@ -20,11 +21,13 @@ public class SpectrumMovement : MonoBehaviour
     //Aspectos generales
     public GameObject player;
     public CharacterController spectrum;
-    public string path;
+    public string[] path;
+    private Vector3 target;
     public float frameInterval;
     public int myId;
     public static bool detected = false;
     public bool attack = false;
+    public bool addedToList = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,17 +38,33 @@ public class SpectrumMovement : MonoBehaviour
         visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
-        Client.instance.tcp.SendData(myId + ":Spectrum:New:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) +","+myId+ ":");
-        movement = Grid.instance.GetWorldPointFromAxes(14, 51);
+       
+        //movement = Grid.instance.GetWorldPointFromAxes(14, 51);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!addedToList)
+        {
+            bool exist = false;
+            for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+            {
+                if(Client.instance.spectrums.getValorEnIndice(i).myId == this.myId)
+                {
+                    exist = true;
 
-        
-        float distance = Vector3.Distance(player.transform.position,transform.position); // faster than Vector3.Distance
-        
+                }
+            }
+            if (!exist)
+            {
+                Client.instance.spectrums.añadirElementos(this);
+            }
+            Client.instance.tcp.SendData(myId + ":Spectrum:New:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position)+":");
+        }
+
+        float distance = Vector3.Distance(player.transform.position, transform.position); // faster than Vector3.Distance
+
         if (Time.frameCount % frameInterval == 0)
         {
             if (distance < visionRadius)
@@ -57,12 +76,9 @@ public class SpectrumMovement : MonoBehaviour
             {
                 Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
             }
+            
         }
-        transform.position = Vector3.MoveTowards(transform.position, movement, speed * Time.deltaTime);
-        //Vector3 movement = Grid.instance.GetWorldPointFromAxes(14,51) * speed * Time.deltaTime;
-        //movement = Vector3.ClampMagnitude(movement, 1);
-        //spectrum.Move(movement);
-        //Debug.Log(spectrum.transform.position);
+        walk();
     }
 
     void checkVisualRange()
@@ -85,6 +101,19 @@ public class SpectrumMovement : MonoBehaviour
 
     private void walk()
     {
+        if (path.Length > 0)
+        {
+            string[] pos_grid = path[path.Length - 1].Split(',');
+            int x = int.Parse(pos_grid[0]);
+            int z = int.Parse(pos_grid[1]);
+            target = Grid.instance.GetWorldPointFromAxes(x, z);
+            if (transform.position != target){
+                transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            }
+            else{
+
+            }
+        }
     }
 
 }
