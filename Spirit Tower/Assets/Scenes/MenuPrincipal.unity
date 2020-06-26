@@ -277,10 +277,50 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 273492784620598965, guid: f69fc35286a38f749b6296c348c349c4,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 273492784620598965, guid: f69fc35286a38f749b6296c348c349c4,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 273492784620598965, guid: f69fc35286a38f749b6296c348c349c4,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 273492784620598965, guid: f69fc35286a38f749b6296c348c349c4,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 273492784620598965, guid: f69fc35286a38f749b6296c348c349c4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273492784620598965, guid: f69fc35286a38f749b6296c348c349c4,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 273492784620598965, guid: f69fc35286a38f749b6296c348c349c4,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 273492785331046136, guid: f69fc35286a38f749b6296c348c349c4,
         type: 3}
       propertyPath: m_Text
       value: Nombre del jugador
+      objectReference: {fileID: 0}
+    - target: {fileID: 273492785375215114, guid: f69fc35286a38f749b6296c348c349c4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 273492785904363789, guid: f69fc35286a38f749b6296c348c349c4,
         type: 3}
