@@ -52,7 +52,6 @@ public class Grid : MonoBehaviour
         int horizontal = (29/3)*x-301;
         int vertical = 10*y - 315;
         Vector3 movement = new Vector3(horizontal, 0f, vertical) ;
-        Debug.Log(movement);
         return movement; //return the position in world
 
     }

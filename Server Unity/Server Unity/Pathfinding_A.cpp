@@ -163,8 +163,9 @@ bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 			auto nodeNeighbour = nodeCurrent->ListNeighbours.get_data_by_pos(o);
 			// ... and only if the neighbour is not visited and is 
 			// not an obstacle, add it to NotTested List
-			if (!nodeNeighbour->bVisited && nodeNeighbour->bObstacle == 0)
+			if (!nodeNeighbour->bVisited && !nodeNeighbour->bObstacle) {
 				OpenList.insert(nodeNeighbour);
+			}
 
 			// Calculate the neighbours potential lowest parent distance
 			float fPossiblyLowerGoal = nodeCurrent->fLocalGoal + distance(nodeCurrent, nodeNeighbour);

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class SpectrumMovement : MonoBehaviour
@@ -12,7 +11,8 @@ public class SpectrumMovement : MonoBehaviour
     public float horizontal;
     public float vertical;
     public float gravity = -9.8f;
-    public float speed = 90;
+    public float speed = 120;
+    private int stepPath = 2;
 
     //Rango de visión
     public float visionRadius;
@@ -34,7 +34,7 @@ public class SpectrumMovement : MonoBehaviour
     {
         spectrum = GetComponent<CharacterController>();
         player = GameObject.FindGameObjectWithTag("Player");
-        frameInterval = 3;
+        frameInterval = 10;
         visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
@@ -88,14 +88,7 @@ public class SpectrumMovement : MonoBehaviour
         float angle = Vector3.Angle(direction, transform.forward);
 
         if (angle < visionAngle * 0.5f){
-            //RaycastHit hit;
-            Debug.Log("Detectado");
-            //if (Physics.Raycast(transform.position,direction.normalized, out hit, visionRadius))
-            //{
-                //Debug.Log("Detectado2");
                 detected = true;
-                
-            //}
         }
     }
 
@@ -103,15 +96,23 @@ public class SpectrumMovement : MonoBehaviour
     {
         if (path.Length > 0)
         {
-            string[] pos_grid = path[path.Length - 1].Split(',');
-            int x = int.Parse(pos_grid[0]);
-            int z = int.Parse(pos_grid[1]);
-            target = Grid.instance.GetWorldPointFromAxes(x, z);
-            if (transform.position != target){
-                transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            try
+            {
+                //path.Length - 2
+                string[] pos_grid = path[path.Length-stepPath].Split(',');
+                int x;
+                int z;
+                Int32.TryParse(pos_grid[0], out x);
+                Int32.TryParse(pos_grid[1], out z);
+                target = Grid.instance.GetWorldPointFromAxes(x, z);
+                if (transform.position != target)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+                }
             }
-            else{
-
+            catch
+            {
+                Debug.Log("Error convirtiendo string a entero");
             }
         }
     }

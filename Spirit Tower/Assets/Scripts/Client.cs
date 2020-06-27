@@ -129,12 +129,12 @@ public class Client : MonoBehaviour
             {
                 if(msg_arr[2] == "Pathfinding")
                 {
-                    Debug.Log(msg);
                     //Buscar al espectro por ID
                     for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
                     {
                         if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
                         {
+                            Debug.Log(msg);
                             Client.instance.spectrums.getValorEnIndice(i).path = msg_arr[3].Split(';');
 
                         }
