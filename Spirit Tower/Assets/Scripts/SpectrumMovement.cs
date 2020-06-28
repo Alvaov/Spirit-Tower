@@ -21,7 +21,7 @@ public class SpectrumMovement : MonoBehaviour
     //Aspectos generales
     public GameObject player;
     public CharacterController spectrum;
-    public string[] path;
+    public string[] path = { "0,0", "0,0" };
     private Vector3 target;
     public float frameInterval;
     public int myId;
