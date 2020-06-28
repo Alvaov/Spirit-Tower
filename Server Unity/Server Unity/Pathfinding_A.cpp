@@ -94,8 +94,8 @@ node_map* Path_Astar::CreateMap()
 bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 {	
 	//passing values from a 2D array to a 1D array;
-	nodeStart = &nodes[(posEnemy[1] * 60) + (posEnemy[0] + (posEnemy[1]/60))];
-	nodeEnd = &nodes[(posPlayer[1] * 60) + (posPlayer[0] + (posPlayer[1] / 60))];
+	nodeStart = &nodes[(posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1]/120))];
+	nodeEnd = &nodes[(posPlayer[1] * 120) + (posPlayer[0] + (posPlayer[1] / 120))];
 	// Reset Navigation Graph - default all node states
 	for (int x = 0; x < nMapWidth; x++)
 		for (int y = 0; y < nMapHeight; y++)

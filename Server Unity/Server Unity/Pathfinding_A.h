@@ -21,8 +21,8 @@ public:
 private:
 
 	node_map* nodes = nullptr;
-	int nMapWidth = 60;
-	int nMapHeight = 60;
+	int nMapWidth = 120;
+	int nMapHeight = 120;
 	node_map* nodeStart = nullptr;
 	node_map* nodeEnd = nullptr;
 public:

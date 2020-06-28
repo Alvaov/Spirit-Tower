@@ -134,7 +134,7 @@ public class Client : MonoBehaviour
                     {
                         if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
                         {
-                            Debug.Log(msg);
+                            //Debug.Log(msg);
                             Client.instance.spectrums.getValorEnIndice(i).path = msg_arr[3].Split(';');
 
                         }

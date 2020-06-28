@@ -12,7 +12,7 @@ public class SpectrumMovement : MonoBehaviour
     public float vertical;
     public float gravity = -9.8f;
     public float speed = 120;
-    private int stepPath = 2;
+    public int stepPath = 2;
 
     //Rango de visión
     public float visionRadius;
@@ -71,11 +71,11 @@ public class SpectrumMovement : MonoBehaviour
             {
                 checkVisualRange();
             }
-
             if (detected == true)
             {
                 Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
             }
+           
             
         }
         walk();
@@ -99,6 +99,7 @@ public class SpectrumMovement : MonoBehaviour
             try
             {
                 //path.Length - 2
+                
                 string[] pos_grid = path[path.Length-stepPath].Split(',');
                 int x;
                 int z;
@@ -108,6 +109,9 @@ public class SpectrumMovement : MonoBehaviour
                 if (transform.position != target)
                 {
                     transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+                }if(transform.position == target)
+                {
+                    stepPath++;
                 }
             }
             catch

@@ -15,7 +15,7 @@ public class Grid : MonoBehaviour
     private void Start(){
         instance = this;
         //size
-        nodeDiameter = nodeRadius*10;
+        nodeDiameter = nodeRadius*5;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
@@ -49,8 +49,8 @@ public class Grid : MonoBehaviour
 
     public Vector3 GetWorldPointFromAxes(int x, int y)
     {
-        int horizontal = (29/3)*x-301;
-        int vertical = 10*y - 315;
+        float horizontal = 5*x-299.3f;
+        float vertical = 5*y-298.9f;
         Vector3 movement = new Vector3(horizontal, 0f, vertical) ;
         return movement; //return the position in world
 
@@ -69,7 +69,7 @@ public class Grid : MonoBehaviour
 
     }
 
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
         if(grid!= null)
@@ -89,7 +89,7 @@ public class Grid : MonoBehaviour
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
         }
-    }
+    }*/
 
     public static void getGridWalls()
     {
@@ -98,7 +98,7 @@ public class Grid : MonoBehaviour
             if (n.walkable == false)
             {
                 Client.instance.tcp.SendData("0:Grid:Obstacle:" + n.x + "," + n.y + ":");
-                Thread.Sleep(5);
+                Thread.Sleep(1);
             }
         }
     }

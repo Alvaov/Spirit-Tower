@@ -16,8 +16,6 @@ int main(){
     escenario = Path_Astar();
     mapaActual = escenario.CreateMap();
     espectros = new lista<Espectro*>();
-    int playerT[2] = { 0,2 };
-    int playerT2[2] = { 40,32 };
     //std::cout << prueba.print_route(playerT,playerT2) << "\n";
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
     if (server.Init()) {
@@ -108,7 +106,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
             int x = std::stoi(pos_x);
             int y = std::stoi(pos_y);
-            mapaActual[(y * 60) + (x + (y / 60))].bObstacle = true;
+            mapaActual[(y * 120) + (x + (y / 120))].bObstacle = true;
         }
     }
     listener->Send(client, msg);
