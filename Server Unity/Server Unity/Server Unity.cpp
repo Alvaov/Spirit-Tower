@@ -109,6 +109,19 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             mapaActual[(y * 120) + (x + (y / 120))].bObstacle = true;
         }
     }
+
+    else if (msg_arr[1] == "Health") {
+        try {
+            if (msg_arr[1][2] == 0) {
+
+                //Por hacer: funcion de gameover 
+                std::cout << "Salud ha alcanzado 0, terminando juego :(";
+            }
+        }
+        catch (...) {
+            std::cerr << "Se trato de hacer un numero de un string no valido o array values ot of bounds\n";
+        }
+    }
     listener->Send(client, msg);
 };
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
