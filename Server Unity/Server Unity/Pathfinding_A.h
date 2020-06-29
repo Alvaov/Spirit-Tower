@@ -31,6 +31,7 @@ public:
 class backtraking{
 public:
 	backtraking(node_map* mapita);
+	backtraking();
 	node_map* nodes;
 	bool is_safe(int posXY);
 	bool is_valid(int posXY);

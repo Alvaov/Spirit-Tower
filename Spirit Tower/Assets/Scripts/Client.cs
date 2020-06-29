@@ -135,14 +135,14 @@ public class Client : MonoBehaviour
                         SpectrumMovement espectroActual = Client.instance.spectrums.getValorEnIndice(i);
                         if (espectroActual.myId == int.Parse(msg_arr[0]))
                         {
-                            //Debug.Log(msg);
-                            if (espectroActual.path.Length == 0 || espectroActual.path[0] != actualPath[0])
-                            {
+                            Debug.Log(msg);
+                            //if (espectroActual.path.Length == 0 || espectroActual.path[espectroActual.path.Length-2] != actualPath[actualPath.Length-2])
+                            //{
                             //Debug.Log("cambio de path");
                                 espectroActual.path = actualPath;
-                                espectroActual.stepPath = 2;
+                                //espectroActual.stepPath = 0;
 
-                            }
+                            //}
 
                         }
                     }
