@@ -10,13 +10,14 @@ int playerPos[2];
 lista<Espectro*>* espectros;
 node_map* mapaActual;
 Path_Astar escenario;
+backtraking trackback;
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
     escenario = Path_Astar();
     mapaActual = escenario.CreateMap();
     espectros = new lista<Espectro*>();
-    //std::cout << prueba.print_route(playerT,playerT2) << "\n";
+    trackback = backtraking(mapaActual);
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
     if (server.Init()) {
         server.Run();
@@ -66,13 +67,13 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 }enemy_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
                 enemyPos[0] = std::stoi(enemy_pos_x);
                 enemyPos[1] = std::stoi(enemy_pos_y);
-                std::string path = escenario.send_route(std::stoi(msg_arr[0]), playerPos, enemyPos);
+                std::string path = escenario.send_route(msg_arr[0], playerPos, enemyPos);
                 listener->Send(client, path);
             }
             catch(...){
-                std::cerr << "Dato malo\n";
+                std::cerr << "A* no se logro calcular\n";
             }
-        }if (msg_arr[2] == "New") {
+        }else if (msg_arr[2] == "New") {
             try {
                 int enemyPos[2];
                 std::string enemy_pos_x;
@@ -91,8 +92,20 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 listener->Send(client,msg_arr[0]+":Spectrum:Created:");
             }
             catch (...) {
-                std::cerr << "Dato malo\n";
+                std::cerr << "no se logro crear el enemigo\n";
             }
+        }else if (msg_arr[2] == "BackTracking"){
+            int enemyPos[2];
+            std::string enemy_pos_x;
+            std::string enemy_pos_y;
+            int i = 0;
+            for (; msg_arr[3][i] != ','; i++) {
+                enemy_pos_x += msg_arr[3][i];
+            }enemy_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
+            enemyPos[0] = std::stoi(enemy_pos_x);
+            enemyPos[1] = std::stoi(enemy_pos_y);
+            std::string path = trackback.send_route(msg_arr[0], playerPos, enemyPos);
+            listener->Send(client, path);
         }
     }
     else if (msg_arr[1] == "Grid") {

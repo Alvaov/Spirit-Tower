@@ -63,12 +63,12 @@ public:
     int fitness;
     bool alive;
 
-    // Obtener valor de un bit en una posición
+    // Obtener valor de un bit en una posiciï¿½n
     int getBit(int index) {
         return (int)((this->bitarray[index / 8] >> 7 - (index & 0x7)) & 0x1);
     }
 
-    // establecer valor de un bit en una posición
+    // establecer valor de un bit en una posiciï¿½n
     void setBit(int index, int value) {
         this->bitarray[index / 8] = this->bitarray[index / 8] | (value & 0x1) << 7 - (index & 0x7);
     }
@@ -191,10 +191,10 @@ public:
     // Lista de enemigos
     Person* people[AMOUNT_OF_PEOPLE];
 
-    // Instanciación de enemigos
+    // Instanciaciï¿½n de enemigos
     for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
         people[i] = new Person();
-        // Generación aleatoria de los parámetros
+        // Generaciï¿½n aleatoria de los parï¿½metros
         // Calcular el fitness del enemigo
     }
 
