@@ -10,7 +10,7 @@ public class Client : MonoBehaviour
 {
     public static Client instance;
     public static int dataBufferSize = 4096;
-
+    public Lista<SpectrumMovement> spectrums;
     public string ip = "127.0.0.1";
     public int port = 54100;
     public int myId = 0;
@@ -30,14 +30,16 @@ public class Client : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void Start()
     {
         tcp = new TCP();
+        spectrums = new Lista<SpectrumMovement>();
     }
 
     public void ConnectToServer()
     {
         tcp.Connect();
+        Grid.getGridWalls();
     }
     public void Send_Data(string msg)
     {
@@ -111,11 +113,55 @@ public class Client : MonoBehaviour
 
                 // TODO: handle data
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+                string msg = Encoding.UTF8.GetString(_data, 0, _data.Length);
+                handleData(msg);
             }
             catch
             {
-                // TODO: disconnect
+                Debug.Log("Error recibiendo dato del servidor");
             }
         }
+
+        private void handleData(string msg)
+        {
+            string[] msg_arr = msg.Split(':'); 
+            if (msg_arr[1] == "Spectrum")
+            {
+                if(msg_arr[2] == "Pathfinding")
+                {
+                    string[] actualPath = msg_arr[3].Split(';');
+                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                    {
+                        SpectrumMovement espectroActual = Client.instance.spectrums.getValorEnIndice(i);
+                        if (espectroActual.myId == int.Parse(msg_arr[0]))
+                        {
+                            //Debug.Log(msg);
+                            if (espectroActual.path.Length == 0 || espectroActual.path[0] != actualPath[0])
+                            {
+                            //Debug.Log("cambio de path");
+                                espectroActual.path = actualPath;
+                                espectroActual.stepPath = 2;
+
+                            }
+
+                        }
+                    }
+                }
+                else if(msg_arr[2]== "Created")
+                {
+                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                    {
+                        if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
+                        {
+                            Client.instance.spectrums.getValorEnIndice(i).addedToList = true;
+
+                        }
+                    }
+                }
+                
+            }
+
+        }
     }
+
 }

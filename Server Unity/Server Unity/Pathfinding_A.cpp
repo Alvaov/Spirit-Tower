@@ -44,7 +44,7 @@ Last Updated: 08/10/2017
 #include <string>
 #include "Pathfinding_A.h"
 Path_Astar::Path_Astar() {};
-bool Path_Astar::CreateMap()
+node_map* Path_Astar::CreateMap()
 {
 	// Create a 2D array of nodes - this is for convenience of rendering and construction
 	// and is not required for the algorithm to work - the nodes could be placed anywhere
@@ -88,14 +88,14 @@ bool Path_Astar::CreateMap()
 	// Manually positio the start and end markers so they are not nullptr
 	nodeStart = &nodes[(nMapHeight / 2) * nMapWidth + 1];
 	nodeEnd = &nodes[(nMapHeight / 2) * nMapWidth + nMapWidth - 2];
-	return true;
+	return nodes;
 }
 
 bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 {	
 	//passing values from a 2D array to a 1D array;
-	nodeStart = &nodes[(posEnemy[1] * 60) + (posEnemy[0] + (posEnemy[1]/60))];
-	nodeEnd = &nodes[(posPlayer[1] * 60) + (posPlayer[0] + (posPlayer[1] / 60))];
+	nodeStart = &nodes[(posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1]/120))];
+	nodeEnd = &nodes[(posPlayer[1] * 120) + (posPlayer[0] + (posPlayer[1] / 120))];
 	// Reset Navigation Graph - default all node states
 	for (int x = 0; x < nMapWidth; x++)
 		for (int y = 0; y < nMapHeight; y++)
@@ -163,8 +163,9 @@ bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 			auto nodeNeighbour = nodeCurrent->ListNeighbours.get_data_by_pos(o);
 			// ... and only if the neighbour is not visited and is 
 			// not an obstacle, add it to NotTested List
-			if (!nodeNeighbour->bVisited && nodeNeighbour->bObstacle == 0)
+			if (!nodeNeighbour->bVisited && !nodeNeighbour->bObstacle) {
 				OpenList.insert(nodeNeighbour);
+			}
 
 			// Calculate the neighbours potential lowest parent distance
 			float fPossiblyLowerGoal = nodeCurrent->fLocalGoal + distance(nodeCurrent, nodeNeighbour);
@@ -188,15 +189,15 @@ bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 	}
 	return true;
 }
-std::string Path_Astar::print_route(int posPlayer[2], int posEnemy[2]) {
-	std::string msg;
+std::string Path_Astar::send_route(int spectrumId,int posPlayer[2], int posEnemy[2]) {
+	std::string msg = std::to_string(spectrumId) +":Spectrum:Pathfinding:";
 	if (Solve_AStar(posPlayer, posEnemy)) {
 		node_map* temp_node = nodeEnd;
 		while (temp_node->parent != nullptr) {
-			msg += "[" + std::to_string(temp_node->x);
+			msg += std::to_string(temp_node->x);
 			msg += "," + std::to_string(temp_node->y);
-			msg += "]";
-			temp_node = temp_node->parent;
+			msg += ";";
+			temp_node = temp_node->parent; //:x,y:
 		}
 	}return msg;
 }
