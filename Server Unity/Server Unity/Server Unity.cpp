@@ -10,14 +10,12 @@ int playerPos[2];
 lista<Espectro*>* espectros;
 node_map* mapaActual;
 Path_Astar escenario;
-backtraking trackback;
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
     escenario = Path_Astar();
     mapaActual = escenario.CreateMap();
     espectros = new lista<Espectro*>();
-    trackback = backtraking(mapaActual);
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
     if (server.Init()) {
         server.Run();
@@ -104,6 +102,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             }enemy_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
             enemyPos[0] = std::stoi(enemy_pos_x);
             enemyPos[1] = std::stoi(enemy_pos_y);
+            backtraking trackback = backtraking(mapaActual);
             std::string path = trackback.send_route(msg_arr[0], playerPos, enemyPos);
             listener->Send(client, path);
         }

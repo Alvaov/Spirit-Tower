@@ -93,8 +93,8 @@ node_map* Path_Astar::CreateMap()
 bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 {	
 	//passing values from a 2D array to a 1D array;
-	nodeStart = &nodes[(posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1]/120))];
-	nodeEnd = &nodes[(posPlayer[1] * 120) + (posPlayer[0] + (posPlayer[1] / 120))];
+	nodeEnd = &nodes[(posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1]/120))];
+	nodeStart = &nodes[(posPlayer[1] * 120) + (posPlayer[0] + (posPlayer[1] / 120))];
 	// Reset Navigation Graph - default all node states
 	for (int x = 0; x < nMapWidth; x++)
 		for (int y = 0; y < nMapHeight; y++)
@@ -205,12 +205,14 @@ bool backtraking::is_safe(int posXY) {
 	if (nodes[posXY].bObstacle || nodes[posXY].bVisited) {
 		return false;
 	}
-	return true;
+	else {
+		return true;
+	}
 }
 bool backtraking::is_valid(int posXY) {
-	if (posXY < 0 || posXY > 14400) {
-		return false;
-	}return true;
+	if (posXY > 0 && posXY < 120*120) {
+		return true;
+	}return false;
 }
 
 void backtraking::find_shortest_path(int posXY, int end_pos, int dist) {
@@ -236,8 +238,11 @@ void backtraking::find_shortest_path(int posXY, int end_pos, int dist) {
 
 backtraking::backtraking(node_map* mapita) {
 	nodes = mapita;
+	min_dist = 8323;
 }
-
+backtraking::backtraking() {
+	min_dist = 8323;
+}
 node_map* backtraking::backtrack(int posEnemy[2], int destination[2]){
 	int posXY = (posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1] / 120));
 	int end_pos = (destination[1] * 120) + (destination[0] + (destination[1] / 120));
