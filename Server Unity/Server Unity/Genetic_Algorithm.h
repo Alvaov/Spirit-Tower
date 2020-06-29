@@ -182,7 +182,7 @@ public:
     }
 
 };
-
+/*
 int main(int argc, char const* argv[])
 {
     // Semilla random
@@ -211,3 +211,4 @@ int main(int argc, char const* argv[])
     return 0;
 
 }
+*/
