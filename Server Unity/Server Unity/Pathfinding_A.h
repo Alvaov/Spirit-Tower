@@ -18,14 +18,15 @@ public:
 	Path_Astar();
 private:
 	node_map* nodes = nullptr;
-	int nMapWidth = 120;
-	int nMapHeight = 120;
+	
 	node_map* nodeStart = nullptr;
 	node_map* nodeEnd = nullptr;
 public:
-	node_map* CreateMap();
+	node_map* CreateMap(int size = 120);
 	bool Solve_AStar(int posPlayer[2], int posEnemy[2]);
 	std::string send_route(std::string spectrumId, int posPlayer[2], int posEnemy[2]);
+	int nMapWidth = 120;
+	int nMapHeight = 120;
 };
 
 class backtraking{

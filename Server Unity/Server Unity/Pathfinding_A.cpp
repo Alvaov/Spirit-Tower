@@ -43,11 +43,13 @@ Last Updated: 08/10/2017
 #include <string>
 #include "Pathfinding_A.h"
 Path_Astar::Path_Astar() {};
-node_map* Path_Astar::CreateMap()
+node_map* Path_Astar::CreateMap(int size)
 {
 	// Create a 2D array of nodes - this is for convenience of rendering and construction
 	// and is not required for the algorithm to work - the nodes could be placed anywhere
 	// in any space, in multiple dimensions...
+	nMapHeight = size;
+	nMapHeight = size;
 	nodes = new node_map[nMapWidth * nMapHeight];
 	for (int x = 0; x < nMapWidth; x++)
 		for (int y = 0; y < nMapHeight; y++)

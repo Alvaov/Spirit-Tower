@@ -118,8 +118,12 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
             int x = std::stoi(pos_x);
             int y = std::stoi(pos_y);
-            mapaActual[(y * 120) + (x + (y / 120))].bObstacle = true;
+            mapaActual[(y * escenario.nMapHeight) + (x + (y / escenario.nMapHeight))].bObstacle = true;
         }
+    }
+
+    else if (msg_arr[1] == "Room") {
+
     }
 
     else if (msg_arr[1] == "Health") {

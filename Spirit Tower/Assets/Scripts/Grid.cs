@@ -98,7 +98,7 @@ public class Grid : MonoBehaviour
             if (n.walkable == false)
             {
                 Client.instance.tcp.SendData("0:Grid:Obstacle:" + n.x + "," + n.y + ":");
-                Thread.Sleep(1);
+                Thread.Sleep(10);
             }
         }
     }

@@ -34,11 +34,10 @@ public class SpectrumMovement : MonoBehaviour
     {
         spectrum = GetComponent<CharacterController>();
         player = GameObject.FindGameObjectWithTag("Player");
-        frameInterval = 10;
         visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
-       
+        frameInterval = 10+(myId*2);
         //movement = Grid.instance.GetWorldPointFromAxes(14, 51);
     }
 
@@ -120,7 +119,6 @@ public class SpectrumMovement : MonoBehaviour
             }
             catch
             {
-                Debug.Log(path[stepPath]);
                 Debug.Log("Error convirtiendo string a entero");
             }
         }
