@@ -39,7 +39,6 @@ Video:
 https://youtu.be/icZj67PTFhc
 Last Updated: 08/10/2017
 */
-
 #include <iostream>
 #include <string>
 #include "Pathfinding_A.h"
@@ -94,8 +93,8 @@ node_map* Path_Astar::CreateMap()
 bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 {	
 	//passing values from a 2D array to a 1D array;
-	nodeStart = &nodes[(posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1]/120))];
-	nodeEnd = &nodes[(posPlayer[1] * 120) + (posPlayer[0] + (posPlayer[1] / 120))];
+	nodeEnd = &nodes[(posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1]/120))];
+	nodeStart = &nodes[(posPlayer[1] * 120) + (posPlayer[0] + (posPlayer[1] / 120))];
 	// Reset Navigation Graph - default all node states
 	for (int x = 0; x < nMapWidth; x++)
 		for (int y = 0; y < nMapHeight; y++)
@@ -189,8 +188,8 @@ bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 	}
 	return true;
 }
-std::string Path_Astar::send_route(int spectrumId,int posPlayer[2], int posEnemy[2]) {
-	std::string msg = std::to_string(spectrumId) +":Spectrum:Pathfinding:";
+std::string Path_Astar::send_route(std::string spectrumId,int posPlayer[2], int posEnemy[2]) {
+	std::string msg = spectrumId +":Spectrum:Pathfinding:";
 	if (Solve_AStar(posPlayer, posEnemy)) {
 		node_map* temp_node = nodeEnd;
 		while (temp_node->parent != nullptr) {
@@ -201,3 +200,74 @@ std::string Path_Astar::send_route(int spectrumId,int posPlayer[2], int posEnemy
 		}
 	}return msg;
 }
+
+bool backtraking::is_safe(int posXY) {
+	if (nodes[posXY].bObstacle || nodes[posXY].bVisited) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+bool backtraking::is_valid(int posXY) {
+	if (posXY > 0 && posXY < 120*120) {
+		return true;
+	}return false;
+}
+
+void backtraking::find_shortest_path(int posXY, int end_pos, int dist) {
+	if (posXY == end_pos) {
+		if (min_dist > dist) {
+			min_dist = dist;
+		}
+		return;
+	}
+	nodes[posXY].bVisited = true;
+	//recorre los nodos vecinos en y mira si son la ruta mas corta.
+	for (int i = 0; i < nodes[posXY].ListNeighbours.get_object_counter(); i++) {
+		node_map* temp_node = nodes[posXY].ListNeighbours.get_data_by_pos(i);
+		//node_pos es la conversion de la matriz 2D en su posicion en la de 1D
+		int node_pos = (temp_node->y * 120) + (temp_node->x + (temp_node->y / 120));
+		if (is_safe(node_pos) && is_valid(node_pos)) {
+			temp_node->parent = &nodes[posXY];
+			find_shortest_path(node_pos, end_pos, dist + 1);
+		}
+	}
+	nodes[posXY].bVisited = false;
+}
+
+backtraking::backtraking(node_map* mapita) {
+	nodes = mapita;
+	min_dist = 8323;
+}
+backtraking::backtraking() {
+	min_dist = 8323;
+}
+node_map* backtraking::backtrack(int posEnemy[2], int destination[2]){
+	int posXY = (posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1] / 120));
+	int end_pos = (destination[1] * 120) + (destination[0] + (destination[1] / 120));
+	for (int x = 0; x < 120; x++) {
+		for (int y = 0; y < 120; y++)
+		{
+			nodes[y * 120 + x].bVisited = false;
+			nodes[y * 120 + x].fGlobalGoal = INFINITY;
+			nodes[y * 120 + x].fLocalGoal = INFINITY;
+			nodes[y * 120 + x].parent = nullptr;	// No parents
+		}
+	}
+	min_dist = 874127;
+	find_shortest_path(posXY, end_pos, 0);
+	return &nodes[end_pos];
+}
+
+std::string backtraking::send_route(std::string spectrumId, int posPlayer[2], int posEnemy[2]) {
+	std::string msg = spectrumId + ":Spectrum:Pathfinding:";
+	node_map* temp_node = backtrack(posEnemy, posPlayer);
+	while (temp_node->parent != nullptr) {
+		msg += std::to_string(temp_node->x);
+		msg += "," + std::to_string(temp_node->y);
+		msg += ";";
+		temp_node = temp_node->parent; //:x,y:
+	}
+	return msg;
+};

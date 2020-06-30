@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -12,7 +12,7 @@ public class SpectrumMovement : MonoBehaviour
     public float vertical;
     public float gravity = -9.8f;
     public float speed = 120;
-    public int stepPath = 2;
+    public int stepPath = 0;
 
     //Rango de visión
     public float visionRadius;
@@ -99,8 +99,11 @@ public class SpectrumMovement : MonoBehaviour
             try
             {
                 //path.Length - 2
-                
-                string[] pos_grid = path[path.Length-stepPath].Split(',');
+                if (stepPath == path.Length - 1)
+                {
+                    stepPath = 0;
+                }
+                string[] pos_grid = path[stepPath].Split(',');
                 int x;
                 int z;
                 Int32.TryParse(pos_grid[0], out x);
@@ -113,9 +116,11 @@ public class SpectrumMovement : MonoBehaviour
                 {
                     stepPath++;
                 }
+
             }
             catch
             {
+                Debug.Log(path[stepPath]);
                 Debug.Log("Error convirtiendo string a entero");
             }
         }

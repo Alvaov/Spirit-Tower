@@ -27,14 +27,23 @@ int randomBool() {
 
 class Person
 {
+    int bitarray[4];
+    int health;
+    int speed;
+    int vision_range;
+    int damage;
+    int fitness;
+    bool alive;
+
 public:
     Person() {
 
         // inicializar memoria
-        for (int i = 0; i < 32; ++i) {
+        for (int i = 0; i < 31; ++i) {
 
             int random_bit = randomBool();
             setBit(i, random_bit);
+            //setBit(this->bitarray, i);
 
         }
 
@@ -55,28 +64,33 @@ public:
 
     }
     ~Person();
-    char bitarray[4];
-    int health;
-    int speed;
-    int vision_range;
-    int damage;
-    int fitness;
-    bool alive;
 
-    // Obtener valor de un bit en una posición
+
+    // Obtener valor de un bit en una posiciï¿½n
+
     int getBit(int index) {
         return (int)((this->bitarray[index / 8] >> 7 - (index & 0x7)) & 0x1);
     }
+    /*
+    int getBit(int bitarray[4], int k) {
+        return (this->bitarray[(k / 32)] & (1 << (k % 32)));
+    }*/
 
-    // establecer valor de un bit en una posición
+    // establecer valor de un bit en una posiciï¿½n
+
     void setBit(int index, int value) {
         this->bitarray[index / 8] = this->bitarray[index / 8] | (value & 0x1) << 7 - (index & 0x7);
     }
+    /*
+    void setBit(int bitarray[4], int k) {
+        (this->bitarray[(k / 32)] |= (1 << (k % 32)));
+    }*/
 
     void map() {
 
         for (int i = 0; i <= 7; ++i) {
             health += getBit(i) * pow(2, i);
+            //health += getBit(this->bitarray[i]) * pow(2, i);
         }
 
         for (int i = 8; i <= 15; ++i) {
@@ -123,6 +137,7 @@ public:
 
         for (int i = 0; i <= 31; ++i) {
 
+            //this->setBit(i, false);
             this->setBit(i, 0);
 
         }
@@ -148,11 +163,12 @@ public:
 
     Person* crossover(Person* person) {
         Person* child = new Person();
-        child->clearMemory();
+        //child->clearMemory();
 
         for (int i = 0; i <= 31; ++i) {
 
             int value_inherited = this->getBit(i) && person->getBit(i);
+
             //child->setBit(i,value_inherited);
 
             std::cout << this->getBit(i) << person->getBit(i) << value_inherited << std::endl;
@@ -183,7 +199,10 @@ public:
 
 };
 
-int main(int argc, char const* argv[])
+
+
+
+/*int main(int argc, char const* argv[])
 {
     // Semilla random
     srand(time(NULL));
@@ -191,10 +210,10 @@ int main(int argc, char const* argv[])
     // Lista de enemigos
     Person* people[AMOUNT_OF_PEOPLE];
 
-    // Instanciación de enemigos
+    // Instanciaciï¿½n de enemigos
     for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
         people[i] = new Person();
-        // Generación aleatoria de los parámetros
+        // Generaciï¿½n aleatoria de los parï¿½metros
         // Calcular el fitness del enemigo
     }
 
@@ -210,4 +229,4 @@ int main(int argc, char const* argv[])
 
     return 0;
 
-}
+}*/

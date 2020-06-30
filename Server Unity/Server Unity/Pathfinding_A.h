@@ -16,10 +16,7 @@ class Path_Astar
 {
 public:
 	Path_Astar();
-	
-
 private:
-
 	node_map* nodes = nullptr;
 	int nMapWidth = 120;
 	int nMapHeight = 120;
@@ -28,5 +25,19 @@ private:
 public:
 	node_map* CreateMap();
 	bool Solve_AStar(int posPlayer[2], int posEnemy[2]);
-	std::string send_route(int spectrumId, int posPlayer[2], int posEnemy[2]);
+	std::string send_route(std::string spectrumId, int posPlayer[2], int posEnemy[2]);
+};
+
+class backtraking{
+public:
+	backtraking(node_map* mapita);
+	backtraking();
+	node_map* nodes;
+	bool is_safe(int posXY);
+	bool is_valid(int posXY);
+	void find_shortest_path(int posXY, int end_pos, int dist);
+	node_map* backtrack(int posEnemy[2], int destination[2]);
+	std::string send_route(std::string spectrumId, int posPlayer[2], int posEnemy[2]);
+private:
+	int min_dist;
 };
