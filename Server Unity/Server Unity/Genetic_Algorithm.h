@@ -199,9 +199,6 @@ public:
 
 };
 
-
-
-
 /*int main(int argc, char const* argv[])
 {
     // Semilla random
@@ -228,5 +225,5 @@ public:
     }
 
     return 0;
-
+    
 }*/
