@@ -22,15 +22,17 @@ private:
 	node_map* nodeStart = nullptr;
 	node_map* nodeEnd = nullptr;
 public:
-	node_map* CreateMap(int size = 120);
+	node_map* CreateMap(int size = 20);
 	bool Solve_AStar(int posPlayer[2], int posEnemy[2]);
 	std::string send_route(std::string spectrumId, int posPlayer[2], int posEnemy[2]);
-	int nMapWidth = 120;
-	int nMapHeight = 120;
+	int nMapWidth = 20;
+	int nMapHeight = 20;
 };
 
 class backtraking{
 public:
+	int nMapWidth = 20;
+	int nMapHeight = 20;
 	backtraking(node_map* mapita);
 	backtraking();
 	node_map* nodes;

@@ -95,8 +95,8 @@ node_map* Path_Astar::CreateMap(int size)
 bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 {	
 	//passing values from a 2D array to a 1D array;
-	nodeEnd = &nodes[(posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1]/120))];
-	nodeStart = &nodes[(posPlayer[1] * 120) + (posPlayer[0] + (posPlayer[1] / 120))];
+	nodeEnd = &nodes[(posEnemy[1] * 60) + (posEnemy[0] + (posEnemy[1]/60))];
+	nodeStart = &nodes[(posPlayer[1] * 60) + (posPlayer[0] + (posPlayer[1] / 60))];
 	// Reset Navigation Graph - default all node states
 	for (int x = 0; x < nMapWidth; x++)
 		for (int y = 0; y < nMapHeight; y++)
@@ -212,7 +212,7 @@ bool backtraking::is_safe(int posXY) {
 	}
 }
 bool backtraking::is_valid(int posXY) {
-	if (posXY > 0 && posXY < 120*120) {
+	if (posXY > 0 && posXY < nMapHeight* nMapHeight) {
 		return true;
 	}return false;
 }
@@ -226,10 +226,11 @@ void backtraking::find_shortest_path(int posXY, int end_pos, int dist) {
 	}
 	nodes[posXY].bVisited = true;
 	//recorre los nodos vecinos en y mira si son la ruta mas corta.
+	
 	for (int i = 0; i < nodes[posXY].ListNeighbours.get_object_counter(); i++) {
 		node_map* temp_node = nodes[posXY].ListNeighbours.get_data_by_pos(i);
 		//node_pos es la conversion de la matriz 2D en su posicion en la de 1D
-		int node_pos = (temp_node->y * 120) + (temp_node->x + (temp_node->y / 120));
+		int node_pos = (temp_node->y * nMapHeight) + (temp_node->x + (temp_node->y / nMapHeight));
 		if (is_safe(node_pos) && is_valid(node_pos)) {
 			temp_node->parent = &nodes[posXY];
 			find_shortest_path(node_pos, end_pos, dist + 1);
@@ -246,15 +247,16 @@ backtraking::backtraking() {
 	min_dist = 8323;
 }
 node_map* backtraking::backtrack(int posEnemy[2], int destination[2]){
-	int posXY = (posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1] / 120));
-	int end_pos = (destination[1] * 120) + (destination[0] + (destination[1] / 120));
-	for (int x = 0; x < 120; x++) {
-		for (int y = 0; y < 120; y++)
+	int posXY = (posEnemy[1] * nMapHeight) + (posEnemy[0] + (posEnemy[1] / nMapWidth));
+	int end_pos = (destination[1] * nMapHeight) + (destination[0] + (destination[1] / nMapHeight));
+	for (int x = 0; x < nMapHeight; x++) {
+		for (int y = 0; y < nMapHeight; y++)
 		{
-			nodes[y * 120 + x].bVisited = false;
-			nodes[y * 120 + x].fGlobalGoal = INFINITY;
-			nodes[y * 120 + x].fLocalGoal = INFINITY;
-			nodes[y * 120 + x].parent = nullptr;	// No parents
+			nodes[y * nMapHeight + x].bVisited = false;
+			nodes[y * nMapHeight + x].fGlobalGoal = INFINITY;
+			nodes[y * nMapHeight + x].fLocalGoal = INFINITY;
+			nodes[y * nMapHeight + x].parent = nullptr;	// No parents
+
 		}
 	}
 	min_dist = 874127;
@@ -273,3 +275,4 @@ std::string backtraking::send_route(std::string spectrumId, int posPlayer[2], in
 	}
 	return msg;
 };
+
