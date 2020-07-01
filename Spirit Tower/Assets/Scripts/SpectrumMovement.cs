@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,7 +11,8 @@ public class SpectrumMovement : MonoBehaviour
     public float horizontal;
     public float vertical;
     public float gravity = -9.8f;
-    public float speed = 10;
+    public float speed = 120;
+    public int stepPath = 0;
 
     //Rango de visión
     public float visionRadius;
@@ -20,48 +21,64 @@ public class SpectrumMovement : MonoBehaviour
     //Aspectos generales
     public GameObject player;
     public CharacterController spectrum;
-    public string path;
+    public string[] path = { "0,0", "0,0" };
+    private Vector3 target;
     public float frameInterval;
     public int myId;
     public static bool detected = false;
     public bool attack = false;
+    public bool addedToList = false;
 
     // Start is called before the first frame update
     void Start()
     {
         spectrum = GetComponent<CharacterController>();
         player = GameObject.FindGameObjectWithTag("Player");
-        frameInterval = 3;
         visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
-        Client.spectrums.añadirElementos(this);
-        Client.instance.tcp.SendData(myId + ":Spectrum:New:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) +","+myId+ ":");
-
+        frameInterval = 10+(myId*2);
+        //movement = Grid.instance.GetWorldPointFromAxes(14, 51);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!addedToList)
+        {
+            bool exist = false;
+            for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+            {
+                if(Client.instance.spectrums.getValorEnIndice(i).myId == this.myId)
+                {
+                    exist = true;
 
-        
-        float distance = Vector3.Distance(player.transform.position,transform.position); // faster than Vector3.Distance
-        
+                }
+            }
+            if (!exist)
+            {
+                Client.instance.spectrums.añadirElementos(this);
+            }
+            Client.instance.tcp.SendData(myId + ":Spectrum:New:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position)+":");
+        }
+
+        float distance = Vector3.Distance(player.transform.position, transform.position); // faster than Vector3.Distance
+
         if (Time.frameCount % frameInterval == 0)
         {
             if (distance < visionRadius)
             {
                 checkVisualRange();
             }
-
             if (detected == true)
             {
                 Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
             }
+           
+            
         }
-
+        walk();
     }
-
 
     void checkVisualRange()
     {
@@ -70,20 +87,41 @@ public class SpectrumMovement : MonoBehaviour
         float angle = Vector3.Angle(direction, transform.forward);
 
         if (angle < visionAngle * 0.5f){
-            //RaycastHit hit;
-            Debug.Log("Detectado");
-            //if (Physics.Raycast(transform.position,direction.normalized, out hit, visionRadius))
-            //{
-                //Debug.Log("Detectado2");
                 detected = true;
-                
-            //}
         }
     }
 
     private void walk()
     {
+        if (path.Length > 0)
+        {
+            try
+            {
+                //path.Length - 2
+                if (stepPath == path.Length - 1)
+                {
+                    stepPath = 0;
+                }
+                string[] pos_grid = path[stepPath].Split(',');
+                int x;
+                int z;
+                Int32.TryParse(pos_grid[0], out x);
+                Int32.TryParse(pos_grid[1], out z);
+                target = Grid.instance.GetWorldPointFromAxes(x, z);
+                if (transform.position != target)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+                }if(transform.position == target)
+                {
+                    stepPath++;
+                }
 
+            }
+            catch
+            {
+                Debug.Log("Error convirtiendo string a entero");
+            }
+        }
     }
 
 }

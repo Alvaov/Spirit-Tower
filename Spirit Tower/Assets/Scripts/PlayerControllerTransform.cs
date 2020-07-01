@@ -10,7 +10,7 @@ public class PlayerControllerTransform : MonoBehaviour{
     public float vertical;
     public float gravity = -9.8f;
     public float speed = 10;
-    int frameInterval = 3;
+    int frameInterval = 10;
     public CharacterController player;
     public Animator animator;
     // Start is called before the first frame update

@@ -10,28 +10,32 @@ int playerPos[2];
 lista<Espectro*>* espectros;
 node_map* mapaActual;
 Path_Astar escenario;
-
+node_map* mapa_backtracking;
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
     escenario = Path_Astar();
     mapaActual = escenario.CreateMap();
     espectros = new lista<Espectro*>();
-    int playerT[2] = { 0,2 };
-    int playerT2[2] = { 40,32 };
-    //std::cout << prueba.print_route(playerT,playerT2) << "\n";
+    mapa_backtracking = backtraking().CreateMap();
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
     if (server.Init()) {
         server.Run();
     }
 }
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
-    std::cout <<"Raw Data: "<< msg << std::endl;
+    std::cout << msg << std::endl;
     std::string msg_arr[4];
     int pos_in_msg = 0;
-    for (int arr_pos = 0; arr_pos < 4; arr_pos++) {
-        for (; msg[pos_in_msg] != ':'; pos_in_msg++) {
-            msg_arr[arr_pos] += msg[pos_in_msg];
-        }pos_in_msg++;
+    try {
+        for (int arr_pos = 0; arr_pos < 4; arr_pos++) {
+            for (; msg[pos_in_msg] != ':'; pos_in_msg++) {
+                msg_arr[arr_pos] += msg[pos_in_msg];
+            }pos_in_msg++;
+        }
+    }
+    catch(...){
+        std::cerr << "Sintaxis incorrecta\n";
+        return;
     }
     if (msg_arr[1] == "Player") {
         if (msg_arr[2] == "Position") {
@@ -62,13 +66,13 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 }enemy_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
                 enemyPos[0] = std::stoi(enemy_pos_x);
                 enemyPos[1] = std::stoi(enemy_pos_y);
-                std::string path = escenario.send_route(std::stoi(msg_arr[0]), playerPos, enemyPos);
+                std::string path = escenario.send_route(msg_arr[0], playerPos, enemyPos);
                 listener->Send(client, path);
             }
             catch(...){
-                std::cerr << "Dato malo\n";
+                std::cerr << "A* no se logro calcular\n";
             }
-        }if (msg_arr[2] == "New") {
+        }else if (msg_arr[2] == "New") {
             try {
                 int enemyPos[2];
                 std::string enemy_pos_x;
@@ -77,17 +81,31 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 int i = 0;
                 for (; msg_arr[3][i] != ','; i++) {
                     enemy_pos_x += msg_arr[3][i];
-                }for (; msg_arr[3][i] != ','; i++) {
-                    enemy_pos_y += msg_arr[3][i];
-                }enemy_id = std::stoi(msg_arr[3].substr(i + 1, msg_arr[3].size()));
+                }
+                enemy_pos_y += msg_arr[3].substr(i + 1, msg_arr[3].size());;
+                enemy_id = std::stoi(msg_arr[0]);
                 enemyPos[0] = std::stoi(enemy_pos_x);
                 enemyPos[1] = std::stoi(enemy_pos_y);
                 Espectro* espectro = new Espectro(enemyPos[0], enemyPos[1],enemy_id);
                 espectros->insert(espectro);
+                listener->Send(client,msg_arr[0]+":Spectrum:Created:");
             }
             catch (...) {
-                std::cerr << "Dato malo\n";
+                std::cerr << "no se logro crear el enemigo\n";
             }
+        }else if (msg_arr[2] == "BackTracking"){
+            int enemyPos[2];
+            std::string enemy_pos_x;
+            std::string enemy_pos_y;
+            int i = 0;
+            for (; msg_arr[3][i] != ','; i++) {
+                enemy_pos_x += msg_arr[3][i];
+            }enemy_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
+            enemyPos[0] = std::stoi(enemy_pos_x);
+            enemyPos[1] = std::stoi(enemy_pos_y);
+            backtraking trackback = backtraking(mapa_backtracking);
+            std::string path = trackback.send_route(msg_arr[0], enemyPos, playerPos);
+            listener->Send(client, path);
         }
     }
     else if (msg_arr[1] == "Grid") {
@@ -101,7 +119,24 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
             int x = std::stoi(pos_x);
             int y = std::stoi(pos_y);
-            mapaActual[(y * 60) + (x + (y / 60))].bObstacle = true;
+            mapaActual[(y * escenario.nMapHeight) + (x + (y / escenario.nMapHeight))].bObstacle = true;
+        }
+    }
+
+    else if (msg_arr[1] == "Room") {
+
+    }
+
+    else if (msg_arr[1] == "Health") {
+        try {
+            if (msg_arr[1][2] == 0) {
+
+                //Por hacer: funcion de gameover 
+                std::cout << "Salud ha alcanzado 0, terminando juego :(";
+            }
+        }
+        catch (...) {
+            std::cerr << "Se trato de hacer un numero de un string no valido o array values ot of bounds\n";
         }
     }
     listener->Send(client, msg);
