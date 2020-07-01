@@ -43,11 +43,13 @@ Last Updated: 08/10/2017
 #include <string>
 #include "Pathfinding_A.h"
 Path_Astar::Path_Astar() {};
-node_map* Path_Astar::CreateMap()
+node_map* Path_Astar::CreateMap(int size)
 {
 	// Create a 2D array of nodes - this is for convenience of rendering and construction
 	// and is not required for the algorithm to work - the nodes could be placed anywhere
 	// in any space, in multiple dimensions...
+	nMapHeight = size;
+	nMapHeight = size;
 	nodes = new node_map[nMapWidth * nMapHeight];
 	for (int x = 0; x < nMapWidth; x++)
 		for (int y = 0; y < nMapHeight; y++)
@@ -93,8 +95,8 @@ node_map* Path_Astar::CreateMap()
 bool Path_Astar::Solve_AStar(int posPlayer[2], int posEnemy[2])
 {	
 	//passing values from a 2D array to a 1D array;
-	nodeEnd = &nodes[(posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1]/120))];
-	nodeStart = &nodes[(posPlayer[1] * 120) + (posPlayer[0] + (posPlayer[1] / 120))];
+	nodeEnd = &nodes[(posEnemy[1] * nMapHeight) + (posEnemy[0] + (posEnemy[1]/nMapHeight))];
+	nodeStart = &nodes[(posPlayer[1] * nMapHeight) + (posPlayer[0] + (posPlayer[1] / nMapHeight))];
 	// Reset Navigation Graph - default all node states
 	for (int x = 0; x < nMapWidth; x++)
 		for (int y = 0; y < nMapHeight; y++)
@@ -210,32 +212,36 @@ bool backtraking::is_safe(int posXY) {
 	}
 }
 bool backtraking::is_valid(int posXY) {
-	if (posXY > 0 && posXY < 120*120) {
+	if (posXY > 0 && posXY < nMapHeight* nMapHeight) {
 		return true;
 	}return false;
 }
 
-void backtraking::find_shortest_path(int posXY, int end_pos, int dist) {
+bool backtraking::find_shortest_path(int posXY, int end_pos, int dist) {
 	if (posXY == end_pos) {
 		if (min_dist > dist) {
 			min_dist = dist;
 		}
-		return;
+		return true;
 	}
 	nodes[posXY].bVisited = true;
+	//ordena los nodos
+	quickSort(&nodes[posXY].ListNeighbours,0,nodes[posXY].ListNeighbours.get_object_counter()-1,&nodes[end_pos]);
 	//recorre los nodos vecinos en y mira si son la ruta mas corta.
 	for (int i = 0; i < nodes[posXY].ListNeighbours.get_object_counter(); i++) {
 		node_map* temp_node = nodes[posXY].ListNeighbours.get_data_by_pos(i);
 		//node_pos es la conversion de la matriz 2D en su posicion en la de 1D
-		int node_pos = (temp_node->y * 120) + (temp_node->x + (temp_node->y / 120));
+		int node_pos = (temp_node->y * nMapHeight) + (temp_node->x + (temp_node->y / nMapHeight));
 		if (is_safe(node_pos) && is_valid(node_pos)) {
 			temp_node->parent = &nodes[posXY];
-			find_shortest_path(node_pos, end_pos, dist + 1);
+			if (find_shortest_path(node_pos, end_pos, dist + 1)) {
+				return true;
+			}
 		}
 	}
 	nodes[posXY].bVisited = false;
+	return false;
 }
-
 backtraking::backtraking(node_map* mapita) {
 	nodes = mapita;
 	min_dist = 8323;
@@ -244,22 +250,22 @@ backtraking::backtraking() {
 	min_dist = 8323;
 }
 node_map* backtraking::backtrack(int posEnemy[2], int destination[2]){
-	int posXY = (posEnemy[1] * 120) + (posEnemy[0] + (posEnemy[1] / 120));
-	int end_pos = (destination[1] * 120) + (destination[0] + (destination[1] / 120));
-	for (int x = 0; x < 120; x++) {
-		for (int y = 0; y < 120; y++)
+	int posXY = (posEnemy[1] * nMapHeight) + (posEnemy[0] + (posEnemy[1] / nMapWidth));
+	int end_pos = (destination[1] * nMapHeight) + (destination[0] + (destination[1] / nMapHeight));
+	for (int x = 0; x < nMapHeight; x++) {
+		for (int y = 0; y < nMapHeight; y++)
 		{
-			nodes[y * 120 + x].bVisited = false;
-			nodes[y * 120 + x].fGlobalGoal = INFINITY;
-			nodes[y * 120 + x].fLocalGoal = INFINITY;
-			nodes[y * 120 + x].parent = nullptr;	// No parents
+			nodes[y * nMapHeight + x].bVisited = false;
+			nodes[y * nMapHeight + x].fGlobalGoal = INFINITY;
+			nodes[y * nMapHeight + x].fLocalGoal = INFINITY;
+			nodes[y * nMapHeight + x].parent = nullptr;	// No parents
+
 		}
 	}
 	min_dist = 874127;
 	find_shortest_path(posXY, end_pos, 0);
 	return &nodes[end_pos];
 }
-
 std::string backtraking::send_route(std::string spectrumId, int posPlayer[2], int posEnemy[2]) {
 	std::string msg = spectrumId + ":Spectrum:Pathfinding:";
 	node_map* temp_node = backtrack(posEnemy, posPlayer);
@@ -271,3 +277,86 @@ std::string backtraking::send_route(std::string spectrumId, int posPlayer[2], in
 	}
 	return msg;
 };
+
+/* This function takes last element as pivot, places
+   the pivot element at its correct position in sorted
+	array, and places all smaller (smaller than pivot)
+   to left of pivot and all greater elements to right
+   of pivot */
+int backtraking::partition(lista<node_map*>* list, int low, int high, node_map* target)
+{
+	int pivot = 
+		std::abs((list->get_data_by_pos(high)->x) - (target->x)) + 
+		std::abs((list->get_data_by_pos(high)->y) - (target->y));    // pivot 
+	
+	int i = (low - 1);  // Index of smaller element 
+
+	for (int j = low; j <= high - 1; j++)
+	{
+		// If current element is smaller than or 
+		// equal to pivot 
+		int dist= 
+			std::abs((list->get_data_by_pos(j)->x) - (target->x)) +
+			std::abs((list->get_data_by_pos(j)->y) - (target->y));
+
+		if (dist <= pivot)
+		{
+			i++;    // increment index of smaller element 
+			list->swap(i,j);
+		}
+	}
+	list->swap(i + 1, high);
+	return (i + 1);
+}
+
+/* The main function that implements QuickSort
+ arr[] --> Array to be sorted,
+  low  --> Starting index,
+  high  --> Ending index */
+void backtraking::quickSort(lista<node_map*>* list, int low, int high, node_map* target)
+{
+	if (low < high)
+	{
+		/* pi is partitioning index, arr[p] is now
+		   at right place */
+		int pi = partition(list, low, high, target);
+
+		// Separately sort elements before 
+		// partition and after partition 
+		quickSort(list, low, pi - 1, target);
+		quickSort(list, pi + 1, high, target);
+	}
+}
+node_map* backtraking::CreateMap(int size)
+{
+	// Create a 2D array of nodes - this is for convenience of rendering and construction
+	// and is not required for the algorithm to work - the nodes could be placed anywhere
+	// in any space, in multiple dimensions...
+	nMapHeight = size;
+	nMapHeight = size;
+	nodes = new node_map[nMapWidth * nMapHeight];
+	for (int x = 0; x < nMapWidth; x++)
+		for (int y = 0; y < nMapHeight; y++)
+		{
+			nodes[y * nMapWidth + x].x = x; // ...because we give each node its own coordinates
+			nodes[y * nMapWidth + x].y = y;
+			nodes[y * nMapWidth + x].bObstacle = false;
+			nodes[y * nMapWidth + x].parent = nullptr;
+			nodes[y * nMapWidth + x].bVisited = false;
+		}
+
+	// Create connections - in this case nodes are on a regular grid
+	for (int x = 0; x < nMapWidth; x++)
+		for (int y = 0; y < nMapHeight; y++)
+		{
+			if (y > 0)
+				nodes[y * nMapWidth + x].ListNeighbours.insert(&nodes[(y - 1) * nMapWidth + (x + 0)]);
+			if (y < nMapHeight - 1)
+				nodes[y * nMapWidth + x].ListNeighbours.insert(&nodes[(y + 1) * nMapWidth + (x + 0)]);
+			if (x > 0)
+				nodes[y * nMapWidth + x].ListNeighbours.insert(&nodes[(y + 0) * nMapWidth + (x - 1)]);
+			if (x < nMapWidth - 1)
+				nodes[y * nMapWidth + x].ListNeighbours.insert(&nodes[(y + 0) * nMapWidth + (x + 1)]);
+		}
+	return nodes;
+}

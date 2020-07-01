@@ -10,16 +10,71 @@ int playerPos[2];
 lista<Espectro*>* espectros;
 node_map* mapaActual;
 Path_Astar escenario;
+node_map* mapa_backtracking;
+
+std::string bresenham(int x1, int y1, int x2, int y2)
+{
+    std::string msg;
+    int dx, dy, p, x, y;
+
+    dx = std::abs(x2 - x1);
+    dy = std::abs(y2 - y1);
+
+    x = x1;
+    y = y1;
+
+    p = 2 * dy - dx;
+    if (y1 < y2) {
+        while (x < x2)
+        {
+            if (p >= 0)
+            {
+                msg += x + "," + y;
+                msg+=";";
+                y = y + 1;
+                p = p + 2 * dy - 2 * dx;
+            }
+            else
+            {
+                msg += x + "," + y;
+                msg += ";";
+                p = p + 2 * dy;
+            }
+            x = x + 1;
+        }
+    }
+    else {
+        while (x < x2)
+        {
+            if (p >= 0)
+            {
+                msg += x + "," + y;
+                msg += ";";
+                y = y - 1;
+                p = p + 2 * dy - 2 * dx;
+            }
+            else
+            {
+                msg += x + "," + y;
+                msg += ";";
+                p = p + 2 * dy;
+            }
+            x = x + 1;
+        }
+    }
+}
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
     escenario = Path_Astar();
     mapaActual = escenario.CreateMap();
     espectros = new lista<Espectro*>();
+    mapa_backtracking = backtraking().CreateMap();
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
     if (server.Init()) {
         server.Run();
     }
+
 }
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     std::cout << msg << std::endl;
@@ -102,8 +157,8 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             }enemy_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
             enemyPos[0] = std::stoi(enemy_pos_x);
             enemyPos[1] = std::stoi(enemy_pos_y);
-            backtraking trackback = backtraking(mapaActual);
-            std::string path = trackback.send_route(msg_arr[0], playerPos, enemyPos);
+            backtraking trackback = backtraking(mapa_backtracking);
+            std::string path = trackback.send_route(msg_arr[0], enemyPos, playerPos);
             listener->Send(client, path);
         }
     }
@@ -118,7 +173,25 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
             int x = std::stoi(pos_x);
             int y = std::stoi(pos_y);
-            mapaActual[(y * 120) + (x + (y / 120))].bObstacle = true;
+            mapaActual[(y * escenario.nMapHeight) + (x + (y / escenario.nMapHeight))].bObstacle = true;
+        }
+    }
+
+    else if (msg_arr[1] == "Chuchu") {
+        if (msg_arr[2] == "New") {
+
+        }
+        else if (msg_arr[2] == "path") {
+            int enemyPos[2];
+            std::string enemy_pos_x;
+            std::string enemy_pos_y;
+            int i = 0;
+            for (; msg_arr[3][i] != ','; i++) {
+                enemy_pos_x += msg_arr[3][i];
+            }enemy_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
+            enemyPos[0] = std::stoi(enemy_pos_x);
+            enemyPos[1] = std::stoi(enemy_pos_y);
+            listener->Send(client, bresenham(enemyPos[0], enemyPos[1],playerPos[0], playerPos[1]));
         }
     }
 
