@@ -15,7 +15,7 @@ public class Grid : MonoBehaviour
     private void Start(){
         instance = this;
         //size
-        nodeDiameter = nodeRadius*30;
+        nodeDiameter = nodeRadius*5;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
@@ -49,8 +49,8 @@ public class Grid : MonoBehaviour
 
     public Vector3 GetWorldPointFromAxes(int x, int y)
     {
-        float horizontal = 30*x-299.3f;
-        float vertical = 30*y-298.9f;
+        float horizontal = 5*x-299.3f;
+        float vertical = 5*y-298.9f;
         Vector3 movement = new Vector3(horizontal, 0f, vertical) ;
         return movement; //return the position in world
 
