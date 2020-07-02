@@ -73,9 +73,7 @@ public class SpectrumMovement : MonoBehaviour
             if (detected == true)
             {
                 Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
-            }
-           
-            
+            }  
         }
         walk();
     }
