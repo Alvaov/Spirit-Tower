@@ -12,11 +12,9 @@
 
 /*
 Notes:
-Revisar y arreglar el setBit para la mutacion,
 Separar todo el archivo
-Adecuarlo a las clases de Enemy y Espectro
 
-De acuerdo al diagrama del funcionamiento de algoritmos geneticos quede en cruce, mutacion (falta inversion)
+Mutacion (falta inversion)
 
 */
 
@@ -27,6 +25,13 @@ int randomBool() {
 
 class Person
 {
+    uint8_t bitArray[4];
+    int health;
+    int speed;
+    int vision_range;
+    int follow_speed;
+    int fitness;
+    bool alive;
 public:
     Person() {
 
@@ -49,28 +54,28 @@ public:
             std::cout << "Health: " << health << std::endl;
             std::cout << "Speed: " << speed << std::endl;
             std::cout << "Vision Range: " << vision_range << std::endl;
-            std::cout << "Damage: " << damage << std::endl;
+            std::cout << "Follow speed: " << follow_speed << std::endl;
             std::cout << "Fitness: " << fitness << std::endl;
         }
 
     }
     ~Person();
-    char bitarray[4];
-    int health;
-    int speed;
-    int vision_range;
-    int damage;
-    int fitness;
-    bool alive;
+    
 
-    // Obtener valor de un bit en una posici�n
+    // Obtener valor de un bit en una posicion
     int getBit(int index) {
-        return (int)((this->bitarray[index / 8] >> 7 - (index & 0x7)) & 0x1);
+        return (this->bitArray[index >> 3] >> (index & 7)) & 1;
     }
 
-    // establecer valor de un bit en una posici�n
+    // establecer valor de un bit en una posicion
     void setBit(int index, int value) {
-        this->bitarray[index / 8] = this->bitarray[index / 8] | (value & 0x1) << 7 - (index & 0x7);
+        uint8_t celda = this->bitArray[index >> 3];
+        celda &= ~(1 << (index & 7));
+
+        celda |= value << (index & 7);
+
+        this->bitArray[index >> 3] = celda;
+        
     }
 
     void map() {
@@ -88,7 +93,7 @@ public:
         }
 
         for (int i = 24; i <= 31; ++i) {
-            damage += getBit(i) * pow(2, i - 24);
+            follow_speed += getBit(i) * pow(2, i - 24);
         }
 
     }
@@ -104,7 +109,7 @@ public:
         double health_normalized = (health / max_value) * 100;
         double speed_normalized = (speed / max_value) * 100;
         double vision_range_normalized = (vision_range / max_value) * 100;
-        double damage_normalized = (damage / max_value) * 100;
+        double damage_normalized = (follow_speed / max_value) * 100;
 
         fitness = health_normalized * health_weight +
             speed_normalized * speed_weight +
@@ -112,7 +117,7 @@ public:
             damage_normalized * damage_weight;
 
     }
-
+    /*
     void clearMemory() {
         std::cout << "Clear: ";
         for (int i = 0; i <= 31; ++i) {
@@ -134,7 +139,7 @@ public:
         }
 
         std::cout << std::endl;
-    }
+    }*/
 
     void selection() {
         if (fitness >= 70) {
@@ -148,14 +153,14 @@ public:
 
     Person* crossover(Person* person) {
         Person* child = new Person();
-        child->clearMemory();
+        //child->clearMemory();
 
         for (int i = 0; i <= 31; ++i) {
 
             int value_inherited = this->getBit(i) && person->getBit(i);
-            //child->setBit(i,value_inherited);
+            child->setBit(i,value_inherited);
 
-            std::cout << this->getBit(i) << person->getBit(i) << value_inherited << std::endl;
+            //std::cout << this->getBit(i) << person->getBit(i) << value_inherited << std::endl;
 
         }
 
@@ -182,8 +187,8 @@ public:
     }
 
 };
-
-/*int main(int argc, char const* argv[])
+/*
+int main(int argc, char const* argv[])
 {
     // Semilla random
     srand(time(NULL));

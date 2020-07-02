@@ -62,6 +62,7 @@ std::string bresenham(int x1, int y1, int x2, int y2)
             x = x + 1;
         }
     }
+    return " ";
 }
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
