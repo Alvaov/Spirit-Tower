@@ -6,63 +6,14 @@
 #include "Pathfinding_A.h"
 #include "Linked_list.h"
 #include "Espectro.h"
+#include <random>
 int playerPos[2];
 lista<Espectro*>* espectros;
 node_map* mapaActual;
 Path_Astar escenario;
 node_map* mapa_backtracking;
 
-std::string bresenham(int x1, int y1, int x2, int y2)
-{
-    std::string msg;
-    int dx, dy, p, x, y;
-
-    dx = std::abs(x2 - x1);
-    dy = std::abs(y2 - y1);
-
-    x = x1;
-    y = y1;
-
-    p = 2 * dy - dx;
-    if (y1 < y2) {
-        while (x < x2)
-        {
-            if (p >= 0)
-            {
-                msg += x + "," + y;
-                msg+=";";
-                y = y + 1;
-                p = p + 2 * dy - 2 * dx;
-            }
-            else
-            {
-                msg += x + "," + y;
-                msg += ";";
-                p = p + 2 * dy;
-            }
-            x = x + 1;
-        }
-    }
-    else {
-        while (x < x2)
-        {
-            if (p >= 0)
-            {
-                msg += x + "," + y;
-                msg += ";";
-                y = y - 1;
-                p = p + 2 * dy - 2 * dx;
-            }
-            else
-            {
-                msg += x + "," + y;
-                msg += ";";
-                p = p + 2 * dy;
-            }
-            x = x + 1;
-        }
-    }
-}
+std::string bresenham(int x1, int y1, int x2, int y2);
 
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
 int main(){
@@ -141,6 +92,9 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 enemyPos[0] = std::stoi(enemy_pos_x);
                 enemyPos[1] = std::stoi(enemy_pos_y);
                 Espectro* espectro = new Espectro(enemyPos[0], enemyPos[1],enemy_id);
+
+
+
                 espectros->insert(espectro);
                 listener->Send(client,msg_arr[0]+":Spectrum:Created:");
             }
@@ -161,8 +115,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             std::string path = trackback.send_route(msg_arr[0], enemyPos, playerPos);
             listener->Send(client, path);
         }
-    }
-    else if (msg_arr[1] == "Grid") {
+    }else if (msg_arr[1] == "Grid") {
         if (msg_arr[2] == "Obstacle") {
             std::string pos_x;
             std::string pos_y;
@@ -175,9 +128,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             int y = std::stoi(pos_y);
             mapaActual[(y * escenario.nMapHeight) + (x + (y / escenario.nMapHeight))].bObstacle = true;
         }
-    }
-
-    else if (msg_arr[1] == "Chuchu") {
+    }else if (msg_arr[1] == "Chuchu") {
         if (msg_arr[2] == "New") {
 
         }
@@ -194,7 +145,36 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             listener->Send(client, bresenham(enemyPos[0], enemyPos[1],playerPos[0], playerPos[1]));
         }
     }
+    else if (msg_arr[1] == "Safe") {
+        listener->Send(client, "Safe");
+    }
+    else if (msg_arr[1] == "Rata") {
+        if (msg_arr[2] == "Move") {
+            std::string rat_pos_x;
+            std::string rat_pos_y;
+            int i = 0;
+            for (; msg_arr[3][i] != ','; i++) {
+                rat_pos_x += msg_arr[3][i];
+            }rat_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
+            int rat_x = std::stoi(rat_pos_x);
+            int rat_y = std::stoi(rat_pos_y);
 
+            std::default_random_engine generator;
+            std::uniform_int_distribution<int> distribution(-1, 1);
+            int movement_x = distribution(generator);
+            int movement_y = distribution(generator);
+            node_map rat_to_move_pos = mapaActual[((rat_y + movement_y) * escenario.nMapHeight) + 
+                ((rat_x + movement_x) + 
+                ((rat_y + movement_y) / escenario.nMapHeight))];
+            if (!rat_to_move_pos.bObstacle) {
+                std::string msg_to_send = msg_arr[0] + ":Rata:Move:";
+                msg_to_send += (rat_x + movement_x);
+                msg_to_send += ",";
+                msg_to_send += (rat_y + movement_y);
+                msg_to_send += ":";
+            }
+        }
+    }
     else if (msg_arr[1] == "Health") {
         try {
             if (msg_arr[1][2] == 0) {

@@ -360,3 +360,55 @@ node_map* backtraking::CreateMap(int size)
 		}
 	return nodes;
 }
+
+std::string bresenham(int x1, int y1, int x2, int y2)
+{
+	std::string msg;
+	int dx, dy, p, x, y;
+
+	dx = std::abs(x2 - x1);
+	dy = std::abs(y2 - y1);
+
+	x = x1;
+	y = y1;
+
+	p = 2 * dy - dx;
+	if (y1 < y2) {
+		while (x < x2)
+		{
+			if (p >= 0)
+			{
+				msg += x + "," + y;
+				msg += ";";
+				y = y + 1;
+				p = p + 2 * dy - 2 * dx;
+			}
+			else
+			{
+				msg += x + "," + y;
+				msg += ";";
+				p = p + 2 * dy;
+			}
+			x = x + 1;
+		}
+	}
+	else {
+		while (x < x2)
+		{
+			if (p >= 0)
+			{
+				msg += x + "," + y;
+				msg += ";";
+				y = y - 1;
+				p = p + 2 * dy - 2 * dx;
+			}
+			else
+			{
+				msg += x + "," + y;
+				msg += ";";
+				p = p + 2 * dy;
+			}
+			x = x + 1;
+		}
+	}
+}
