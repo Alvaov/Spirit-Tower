@@ -136,14 +136,20 @@ public class Client : MonoBehaviour
                         if (espectroActual.myId == int.Parse(msg_arr[0]))
                         {
                             Debug.Log(msg);
-                            //if (espectroActual.path.Length == 0 || espectroActual.path[espectroActual.path.Length-2] != actualPath[actualPath.Length-2])
-                            //{
-                            //Debug.Log("cambio de path");
                                 espectroActual.path = actualPath;
-                                //espectroActual.stepPath = 0;
-
-                            //}
-
+                        }
+                    }
+                }
+                if (msg_arr[2] == "Backtracking")
+                {
+                    string[] actualPath = msg_arr[3].Split(';');
+                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                    {
+                        SpectrumMovement espectroActual = Client.instance.spectrums.getValorEnIndice(i);
+                        if (espectroActual.myId == int.Parse(msg_arr[0]))
+                        {
+                            Debug.Log(msg);
+                            espectroActual.path = actualPath;
                         }
                     }
                 }

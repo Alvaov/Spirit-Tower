@@ -266,7 +266,7 @@ node_map* backtraking::backtrack(int posEnemy[2], int destination[2]){
 	find_shortest_path(posXY, end_pos, 0);
 	return &nodes[end_pos];
 }
-std::string backtraking::send_route(std::string spectrumId, int posPlayer[2], int posEnemy[2]) {
+std::string backtraking::send_route(int spectrumId, int posPlayer[2], int posEnemy[2]) {
 	std::string msg = spectrumId + ":Spectrum:Pathfinding:";
 	node_map* temp_node = backtrack(posEnemy, posPlayer);
 	while (temp_node->parent != nullptr) {
@@ -411,4 +411,5 @@ std::string bresenham(int x1, int y1, int x2, int y2)
 			x = x + 1;
 		}
 	}
+	return msg;
 }

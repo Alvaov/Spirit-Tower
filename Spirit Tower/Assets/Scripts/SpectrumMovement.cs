@@ -70,7 +70,12 @@ public class SpectrumMovement : MonoBehaviour
             {
                 checkVisualRange();
             }
-            if (detected == true)
+            if(Safe.safe == true && detected == true)
+            {
+                detected = false;
+                Client.instance.tcp.SendData(myId + ":Spectrum:Backtracking:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
+            }
+            else if (detected == true)
             {
                 Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
             }  
