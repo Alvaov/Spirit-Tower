@@ -16,7 +16,7 @@ public class Safe : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             safe = true;
-            Client.instance.tcp.SendData("Safe:");
+            Client.instance.tcp.SendData("0:Safe:PlayerSafe:0000:");
         }
     }
 

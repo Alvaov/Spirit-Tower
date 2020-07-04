@@ -25,6 +25,7 @@ public:
 					default:
 						break;
 				}
+				break;
 			case 1:
 				switch (lvl) {
 				case 1:
@@ -35,7 +36,8 @@ public:
 					break;
 				default:
 					break;
-			}
+				}
+				break;
 			case 2:
 				switch (lvl) {
 				case 1:
@@ -49,6 +51,7 @@ public:
 				default:
 					break;
 				}
+				break;
 			default:
 				break;
 		}
@@ -73,7 +76,8 @@ public:
 	}
 	std::string getPath(int contador) {
 		if (contador < path.get_object_counter() && contador > -1) {
-			return path.get_data_by_pos(contador);
+			std::string ruta = path.get_data_by_pos(contador);
+			return ruta;
 		}
 	}
 private:

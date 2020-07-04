@@ -94,7 +94,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             catch (...) {
                 std::cerr << "no se logro crear el enemigo\n";
             }
-        }else if (msg_arr[2] == "BackTracking"){
+        }else if (msg_arr[2] == "Backtracking"){
             int* enemyPos = get_position(msg_arr[3]);
             int id = std::stoi(msg_arr[0]);
             backtraking trackback = backtraking(mapa_backtracking);
@@ -105,6 +105,8 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                     break;
                 }
             }
+            std::string target = espectro->getPath(0);
+            int* intTarget = get_position(target);
             std::string path = trackback.send_route(id, enemyPos, get_position(espectro->getPath(0)));
             listener->Send(client, msg_arr[0]+":Spectrum:Backtracking:"+path);
             delete enemyPos;
