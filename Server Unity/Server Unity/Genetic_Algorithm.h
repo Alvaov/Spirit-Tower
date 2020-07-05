@@ -13,18 +13,11 @@
 /*
 Notes:
 Separar todo el archivo
-
-Mutacion (falta inversion)
-
 */
-
-
-int randomBool() {
-    return 0 + (rand() % (1 - 0 + 1)) == 1;
-}
 
 class Person
 {
+private:
     uint8_t bitArray[4];
     int health;
     int speed;
@@ -32,6 +25,7 @@ class Person
     int follow_speed;
     int fitness;
     bool alive;
+   
 public:
     Person() {
 
@@ -60,7 +54,16 @@ public:
 
     }
     ~Person();
-    
+
+    int randomBool() {
+        return 0 + (rand() % (1 - 0 + 1)) == 1;
+    }
+
+    // Genera un numero random entre 0 y 100
+    int randomNum(int min, int max) {
+        int random_num = rand() % (max - min + 1) + min;
+        return random_num;
+    }
 
     // Obtener valor de un bit en una posicion
     int getBit(int index) {
@@ -75,9 +78,10 @@ public:
         celda |= value << (index & 7);
 
         this->bitArray[index >> 3] = celda;
-        
+
     }
 
+    // Asigna los valores de cada caracteristica del cromosoma
     void map() {
 
         for (int i = 0; i <= 7; ++i) {
@@ -98,6 +102,7 @@ public:
 
     }
 
+    // Funcion Fitness
     void calculateFitness() {
         double max_value = 255;
 
@@ -141,7 +146,9 @@ public:
         std::cout << std::endl;
     }*/
 
+    // Seleccion natural
     void selection() {
+        // si el fitness es mayor a 70 lo selecciona
         if (fitness >= 70) {
             alive = true;
         }
@@ -150,19 +157,24 @@ public:
         }
     }
 
-
+    // Reproduccion: Cruce, mutacion, inversion
     Person* crossover(Person* person) {
+        // Crea el hijo
         Person* child = new Person();
         //child->clearMemory();
 
         for (int i = 0; i <= 31; ++i) {
-
+            // combina los cromosomas de los dos progenitores con &&
             int value_inherited = this->getBit(i) && person->getBit(i);
-            child->setBit(i,value_inherited);
+            // le asigna el valor obtenido de la combinacion al hijo 
+            child->setBit(i, value_inherited);
 
             //std::cout << this->getBit(i) << person->getBit(i) << value_inherited << std::endl;
 
         }
+
+
+        //Pruebas del cruce
 
         // Progenitor 1
         for (int i = 0; i <= 31; ++i) {
@@ -182,37 +194,89 @@ public:
         }
 
         std::cout << std::endl;
+        std::cout << std::endl;
+        std::cout << std::endl;
+
+        int random_n = randomNum(0, 100);
+        std::cout << random_n;
+        std::cout << std::endl;
+
+        // ocurre mutacion
+        if (0 <= random_n <= 25) {
+            std::cout << "Ocurrio una mutacion: ";
+            std::cout << std::endl;
+            child->mutation();
+        }
+
+        // Hijo mutado
+        for (int i = 0; i <= 31; ++i) {
+            std::cout << child->getBit(i);
+        }
+
+        std::cout << std::endl;
+
+        // ocurre inversion
+        if (0 <= random_n <= 30) {
+            std::cout << "Ocurrio inversion: ";
+            std::cout << std::endl;
+            child->inversion();
+        }
+
+        // Hijo con inversion
+        for (int i = 0; i <= 31; ++i) {
+            std::cout << child->getBit(i);
+        }
+
+        std::cout << "HELP";
 
         return child;
     }
 
-};
-/*
-int main(int argc, char const* argv[])
-{
-    // Semilla random
-    srand(time(NULL));
-
-    // Lista de enemigos
-    Person* people[AMOUNT_OF_PEOPLE];
-
-    // Instanciaci�n de enemigos
-    for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
-        people[i] = new Person();
-        // Generaci�n aleatoria de los par�metros
-        // Calcular el fitness del enemigo
+    // Mutacion
+    void mutation() {
+        //bit random donde se aplicara la mutacion
+        int random_bit = randomNum(0,31);
+        //valor random que se le asigna
+        int random_value = randomBool();
+        setBit(random_bit, getBit(random_bit) + 1);
     }
 
-    for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
-        people[i]->selection();
-        // Decidir si un enemigo es apto o no
+    //Inversion
+
+
+    void inversion() {
+        int random_bit = randomNum(0, 31);
+        // se recorre el bloque de bits random donde se aplica la inversion, el tamaño del bloque son 10
+        for (int i = 0; randomNum(0, 31) <= i <= 10 ; i++) {
+            setBit(random_bit, getBit(random_bit) + 1);
+        }
     }
 
-    for (int i = 0; i < AMOUNT_OF_PEOPLE; i = i + 2) {
-        people[i]->crossover(people[i + 1]);
-        // Decidir si un enemigo es apto o no
-    }
+    };
+    /*
+    int main(int argc, char const* argv[]) {
+        // Semilla random
+        srand(time(NULL));
 
-    return 0;
-    
-}*/
+        // Lista de enemigos (Poblacion)
+        Person* people[AMOUNT_OF_PEOPLE];
+
+        // Instanciacion de enemigos
+        for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
+            people[i] = new Person();
+            // Generacion aleatoria de los par�metros
+            // Calcular el fitness del enemigo
+        }
+
+        for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
+            people[i]->selection();
+            // Decidir si un enemigo es apto o no
+        }
+
+        for (int i = 0; i < AMOUNT_OF_PEOPLE; i = i + 2) {
+            people[i]->crossover(people[i + 1]);
+        }
+
+        return 0;
+
+    }*/
