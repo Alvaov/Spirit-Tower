@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "Linked_List.h"
 
 
 #define AMOUNT_OF_PEOPLE 2
@@ -13,6 +14,10 @@
 /*
 Notes:
 Separar todo el archivo
+
+Implementando la lista el get_data_by_pos me da un nullptr y el fitness muere xD
+
+
 */
 
 class Person
@@ -25,7 +30,8 @@ private:
     int follow_speed;
     int fitness;
     bool alive;
-    int mutationRate;
+    Person* child;
+    
    
 public:
     Person() {
@@ -163,21 +169,21 @@ public:
     // Reproduccion: Cruce, mutacion, inversion
     Person* crossover(Person* person) {
         // Crea el hijo
-        Person* child = new Person();
+        this->child = new Person();
         //child->clearMemory();
 
         for (int i = 0; i <= 31; ++i) {
             // combina los cromosomas de los dos progenitores con &&
             int value_inherited = this->getBit(i) && person->getBit(i);
             // le asigna el valor obtenido de la combinacion al hijo 
-            child->setBit(i, value_inherited);
+            this->child->setBit(i, value_inherited);
 
             //std::cout << this->getBit(i) << person->getBit(i) << value_inherited << std::endl;
 
         }
 
 
-        //Pruebas del cruce
+        //Pruebas
 
         // Progenitor 1
         for (int i = 0; i <= 31; ++i) {
@@ -208,12 +214,12 @@ public:
         if (0 <= random_mutation && random_mutation <= 10) {
             std::cout << "Ocurrio una mutacion: ";
             std::cout << std::endl;
-            child->mutation();
+            this->child->mutation();
         }
 
         // Hijo mutado
         for (int i = 0; i <= 31; ++i) {
-            std::cout << child->getBit(i);
+            std::cout << this->child->getBit(i);
         }
 
         std::cout << std::endl;
@@ -226,15 +232,15 @@ public:
         if (0 <= random_inversion  && random_inversion <= 5) {
             std::cout << "Ocurrio inversion: ";
             std::cout << std::endl;
-            child->inversion();
+            this->child->inversion();
         }
 
         // Hijo con inversion
         for (int i = 0; i <= 31; ++i) {
-            std::cout << child->getBit(i);
+            std::cout << this->child->getBit(i);
         }
 
-        return child;
+        return this->child;
     }
 
     // Mutacion
@@ -259,7 +265,8 @@ public:
     }
 
     };
-    /*
+    
+    /*Como array
     int main(int argc, char const* argv[]) {
         // Semilla random
         srand(time(NULL));
@@ -270,7 +277,7 @@ public:
         // Instanciacion de enemigos
         for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
             people[i] = new Person();
-            // Generacion aleatoria de los par�metros
+            // Generacion aleatoria de los parametros
             // Calcular el fitness del enemigo
         }
 
@@ -281,6 +288,59 @@ public:
 
         for (int i = 0; i < AMOUNT_OF_PEOPLE; i = i + 2) {
             people[i]->crossover(people[i + 1]);
+        }
+
+
+        // Mostrar la poblacion
+        for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
+            std::cout << std::endl;
+            std::cout << std::endl;
+            std::cout << std::endl;
+            for (int j = 0; j <= 31; ++j) {
+                std::cout << people[i]->getBit(j);
+            }
+        }
+
+        return 0;
+
+    }*/
+
+/* Utilizando la lista
+    int main(int argc, char const* argv[]) {
+        // Semilla random
+        srand(time(NULL));
+
+        // Lista de enemigos (Poblacion)
+        lista<Person*> Enemies;
+
+        // Instanciacion de enemigos
+        for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
+            Enemies.insert(new Person(), i);
+            // Generacion aleatoria de los parametros
+            // Calcular el fitness del enemigo
+        }
+
+        for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
+            // Decidir si un enemigo es apto o no
+            Enemies.get_data_by_pos(i)->selection();
+            
+        }
+
+        for (int i = 0; i < AMOUNT_OF_PEOPLE; i = i + 2) {
+            // Reproduccion: cruce, mutacion e inversion
+            //Enemies.get_data_by_pos(i)->crossover(Enemies.get_data_by_pos(i + 1));
+            
+        }
+
+
+        // Mostrar la poblacion
+        for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
+            std::cout << std::endl;
+            std::cout << std::endl;
+            std::cout << std::endl;
+            for (int j = 0; j <= 31; ++j) {
+                std::cout << Enemies.get_data_by_pos(i)->getBit(j);
+            }
         }
 
         return 0;
