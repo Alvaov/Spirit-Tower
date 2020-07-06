@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class safePlace : MonoBehaviour
+public class Safe : MonoBehaviour
 {
     // Start is called before the first frame update
-    public bool safe = false;
+    public static bool safe = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +16,7 @@ public class safePlace : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             safe = true;
-            Client.instance.tcp.SendData(":Safe:");
+            Client.instance.tcp.SendData("0:Safe:PlayerSafe:0000:");
         }
     }
 

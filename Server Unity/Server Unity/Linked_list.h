@@ -136,12 +136,12 @@ public:
      * @return generic, it returns the value stored in that position
      */
     generic get_data_by_pos(int pos) {
-        generic retVal = nullptr;
-        if (object_counter <= 0 || pos >= object_counter) {
-            return retVal;
+        if (object_counter < 0 || pos >= object_counter) {
+            return nullptr;
         }
         else {
             node<generic>* temp = head;
+            generic retVal = temp->data;
             for (int i = 0; i < pos; i++) {
                 temp = temp->next;
             }

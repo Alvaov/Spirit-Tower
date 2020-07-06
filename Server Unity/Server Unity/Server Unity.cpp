@@ -7,15 +7,31 @@
 #include "Linked_list.h"
 #include "Espectro.h"
 #include <random>
+
 int playerPos[2];
 lista<Espectro*>* espectros;
 node_map* mapaActual;
 Path_Astar escenario;
 node_map* mapa_backtracking;
+int lvl = 1;
 
-std::string bresenham(int x1, int y1, int x2, int y2);
-
+//function pointer is declared
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
+
+//funcion para limpiar el recibir de mensajes
+int* get_position(std::string pos_in_string) {
+    std::string pos_x;
+    std::string pos_y;
+    int i = 0;
+    for (; pos_in_string[i] != ','; i++) {
+        pos_x += pos_in_string[i];
+    }pos_y = pos_in_string.substr(i + 1, pos_in_string.size());
+    int* pos = new int[2];
+    pos[0] = std::stoi(pos_x);
+    pos[1] = std::stoi(pos_y);
+    return pos;
+}
+
 int main(){
     escenario = Path_Astar();
     mapaActual = escenario.CreateMap();
@@ -45,14 +61,10 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     if (msg_arr[1] == "Player") {
         if (msg_arr[2] == "Position") {
             try {
-                std::string player_pos_x;
-                std::string player_pos_y;
-                int i = 0;
-                for (; msg_arr[3][i] != ','; i++) {
-                    player_pos_x += msg_arr[3][i];
-                }player_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
-                playerPos[0] = std::stoi(player_pos_x);
-                playerPos[1] = std::stoi(player_pos_y);
+                int* pos = get_position(msg_arr[3]);
+                playerPos[0] = pos[0];
+                playerPos[1] = pos[1];
+                delete pos;
             }
             catch (...) {
                 std::cerr << "jaja se cayo\n";
@@ -62,130 +74,87 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     else if (msg_arr[1] == "Spectrum") {
         if (msg_arr[2] == "Detected") {
             try {
-                int enemyPos[2];
-                std::string enemy_pos_x;
-                std::string enemy_pos_y;
-                int i = 0;
-                for (; msg_arr[3][i] != ','; i++) {
-                    enemy_pos_x += msg_arr[3][i];
-                }enemy_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
-                enemyPos[0] = std::stoi(enemy_pos_x);
-                enemyPos[1] = std::stoi(enemy_pos_y);
+                int* enemyPos = get_position(msg_arr[3]);
                 std::string path = escenario.send_route(msg_arr[0], playerPos, enemyPos);
                 listener->Send(client, path);
+                delete enemyPos;
             }
             catch(...){
                 std::cerr << "A* no se logro calcular\n";
             }
         }else if (msg_arr[2] == "New") {
             try {
-                int enemyPos[2];
-                std::string enemy_pos_x;
-                std::string enemy_pos_y;
-                int enemy_id;
-                int i = 0;
-                for (; msg_arr[3][i] != ','; i++) {
-                    enemy_pos_x += msg_arr[3][i];
-                }
-                enemy_pos_y += msg_arr[3].substr(i + 1, msg_arr[3].size());;
-                enemy_id = std::stoi(msg_arr[0]);
-                enemyPos[0] = std::stoi(enemy_pos_x);
-                enemyPos[1] = std::stoi(enemy_pos_y);
-                Espectro* espectro = new Espectro(enemyPos[0], enemyPos[1],enemy_id);
-
-
-
+                int* enemyPos = get_position(msg_arr[3]);
+                int enemy_id = std::stoi(msg_arr[0]);
+                Espectro* espectro = new Espectro(enemyPos[0], enemyPos[1], enemy_id, lvl);
                 espectros->insert(espectro);
                 listener->Send(client,msg_arr[0]+":Spectrum:Created:");
+                delete enemyPos;
             }
             catch (...) {
                 std::cerr << "no se logro crear el enemigo\n";
             }
-        }else if (msg_arr[2] == "BackTracking"){
-            int enemyPos[2];
-            std::string enemy_pos_x;
-            std::string enemy_pos_y;
-            int i = 0;
-            for (; msg_arr[3][i] != ','; i++) {
-                enemy_pos_x += msg_arr[3][i];
-            }enemy_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
-            enemyPos[0] = std::stoi(enemy_pos_x);
-            enemyPos[1] = std::stoi(enemy_pos_y);
+        }else if (msg_arr[2] == "Backtracking"){
+            int* enemyPos = get_position(msg_arr[3]);
+            int id = std::stoi(msg_arr[0]);
             backtraking trackback = backtraking(mapa_backtracking);
-            std::string path = trackback.send_route(msg_arr[0], enemyPos, playerPos);
-            listener->Send(client, path);
+            Espectro* espectro = nullptr;
+            for (int j = 0; j < espectros->get_object_counter(); j++) {
+                if (espectros->get_data_by_pos(j)->getId() == id) {
+                    espectro = espectros->get_data_by_pos(j);
+                    break;
+                }
+            }
+            std::string target = espectro->getPath(0);
+            int* intTarget = get_position(target);
+            std::string path = trackback.send_route(id, enemyPos, get_position(espectro->getPath(0)));
+            listener->Send(client, msg_arr[0]+":Spectrum:Backtracking:"+path);
+            delete enemyPos;
         }
     }else if (msg_arr[1] == "Grid") {
         if (msg_arr[2] == "Obstacle") {
-            std::string pos_x;
-            std::string pos_y;
-            int i = 0;
-            for (; msg_arr[3][i] != ','; i++) {
-                pos_x += msg_arr[3][i];
-            }
-            pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
-            int x = std::stoi(pos_x);
-            int y = std::stoi(pos_y);
-            mapaActual[(y * escenario.nMapHeight) + (x + (y / escenario.nMapHeight))].bObstacle = true;
+            int* pos = get_position(msg_arr[3]);
+            mapaActual[(pos[1] * escenario.nMapHeight) + (pos[0] + (pos[1] / escenario.nMapHeight))].bObstacle = true;
+            delete pos;
         }
     }else if (msg_arr[1] == "Chuchu") {
         if (msg_arr[2] == "New") {
 
         }
         else if (msg_arr[2] == "path") {
-            int enemyPos[2];
-            std::string enemy_pos_x;
-            std::string enemy_pos_y;
-            int i = 0;
-            for (; msg_arr[3][i] != ','; i++) {
-                enemy_pos_x += msg_arr[3][i];
-            }enemy_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
-            enemyPos[0] = std::stoi(enemy_pos_x);
-            enemyPos[1] = std::stoi(enemy_pos_y);
+            int* enemyPos = get_position(msg_arr[3]);
             listener->Send(client, bresenham(enemyPos[0], enemyPos[1],playerPos[0], playerPos[1]));
+            delete enemyPos;
         }
     }
     else if (msg_arr[1] == "Safe") {
-        listener->Send(client, "Safe");
+        std::cout << "Player is in safe zone" << std::endl;
     }
-    else if (msg_arr[1] == "Rata") {
+    else if (msg_arr[1] == "Rat") {
         if (msg_arr[2] == "Move") {
-            std::string rat_pos_x;
-            std::string rat_pos_y;
-            int i = 0;
-            for (; msg_arr[3][i] != ','; i++) {
-                rat_pos_x += msg_arr[3][i];
-            }rat_pos_y = msg_arr[3].substr(i + 1, msg_arr[3].size());
-            int rat_x = std::stoi(rat_pos_x);
-            int rat_y = std::stoi(rat_pos_y);
-
+            int* rat = get_position(msg_arr[3]);
             std::default_random_engine generator;
             std::uniform_int_distribution<int> distribution(-1, 1);
-            int movement_x = distribution(generator);
-            int movement_y = distribution(generator);
-            node_map rat_to_move_pos = mapaActual[((rat_y + movement_y) * escenario.nMapHeight) + 
-                ((rat_x + movement_x) + 
-                ((rat_y + movement_y) / escenario.nMapHeight))];
+            int movement[2] = {distribution(generator), distribution(generator)};
+            
+            node_map rat_to_move_pos = 
+                mapaActual[
+                    ((rat[1] + movement[1]) * escenario.nMapHeight) + 
+                    ((rat[0] + movement[0]) + 
+                    ((rat[1] + movement[1]) / escenario.nMapHeight))
+                ];
             if (!rat_to_move_pos.bObstacle) {
-                std::string msg_to_send = msg_arr[0] + ":Rata:Move:";
-                msg_to_send += (rat_x + movement_x);
+                std::string msg_to_send = msg_arr[0] + ":Rat:Move:";
+                msg_to_send += (rat[0] + movement[0]);
                 msg_to_send += ",";
-                msg_to_send += (rat_y + movement_y);
+                msg_to_send += (rat[1] + movement[1]);
                 msg_to_send += ":";
             }
+            delete rat;
         }
     }
     else if (msg_arr[1] == "Health") {
-        try {
-            if (msg_arr[1][2] == 0) {
 
-                //Por hacer: funcion de gameover 
-                std::cout << "Salud ha alcanzado 0, terminando juego :(";
-            }
-        }
-        catch (...) {
-            std::cerr << "Se trato de hacer un numero de un string no valido o array values ot of bounds\n";
-        }
     }
     listener->Send(client, msg);
 };
