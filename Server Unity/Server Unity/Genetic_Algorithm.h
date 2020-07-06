@@ -25,6 +25,7 @@ private:
     int follow_speed;
     int fitness;
     bool alive;
+    int mutationRate;
    
 public:
     Person() {
@@ -53,7 +54,9 @@ public:
         }
 
     }
-    ~Person();
+    ~Person() {
+
+    }
 
     int randomBool() {
         return 0 + (rand() % (1 - 0 + 1)) == 1;
@@ -197,12 +200,12 @@ public:
         std::cout << std::endl;
         std::cout << std::endl;
 
-        int random_n = randomNum(0, 100);
-        std::cout << random_n;
+        int random_mutation = randomNum(0, 100);
+        std::cout << random_mutation;
         std::cout << std::endl;
-
+        
         // ocurre mutacion
-        if (0 <= random_n <= 25) {
+        if (0 <= random_mutation && random_mutation <= 10) {
             std::cout << "Ocurrio una mutacion: ";
             std::cout << std::endl;
             child->mutation();
@@ -215,8 +218,12 @@ public:
 
         std::cout << std::endl;
 
+        int random_inversion = randomNum(0, 100);
+        std::cout << random_inversion;
+        std::cout << std::endl;
+
         // ocurre inversion
-        if (0 <= random_n <= 30) {
+        if (0 <= random_inversion  && random_inversion <= 5) {
             std::cout << "Ocurrio inversion: ";
             std::cout << std::endl;
             child->inversion();
@@ -227,28 +234,27 @@ public:
             std::cout << child->getBit(i);
         }
 
-        std::cout << "HELP";
-
         return child;
     }
 
     // Mutacion
     void mutation() {
         //bit random donde se aplicara la mutacion
-        int random_bit = randomNum(0,31);
-        //valor random que se le asigna
-        int random_value = randomBool();
+        int random_bit = randomNum(0, 31);
         setBit(random_bit, getBit(random_bit) + 1);
     }
 
     //Inversion
-
-
     void inversion() {
-        int random_bit = randomNum(0, 31);
-        // se recorre el bloque de bits random donde se aplica la inversion, el tamaño del bloque son 10
-        for (int i = 0; randomNum(0, 31) <= i <= 10 ; i++) {
-            setBit(random_bit, getBit(random_bit) + 1);
+
+        int random_bit_inicial = randomNum(0, 31);
+        int random_bit_final = random_bit_inicial + 10;
+        if (random_bit_final > 31) {
+            random_bit_final = 31;
+        }
+        
+        for (int i = random_bit_inicial; i <= random_bit_final; ++i) {
+            setBit(i, getBit(i) + 1);
         }
     }
 
