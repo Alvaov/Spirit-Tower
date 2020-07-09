@@ -21,6 +21,7 @@ protected:
 		pos_x = x;
 		pos_y = y;
 	}
+	Enemy() {};
 	//virtual void hit_player();
 	//virtual void recive_dmg();
 	void set_x(int x) {

@@ -242,13 +242,16 @@ bool backtraking::find_shortest_path(int posXY, int end_pos, int dist) {
 	nodes[posXY].bVisited = false;
 	return false;
 }
+
 backtraking::backtraking(node_map* mapita) {
 	nodes = mapita;
 	min_dist = 8323;
 }
+
 backtraking::backtraking() {
 	min_dist = 8323;
 }
+
 node_map* backtraking::backtrack(int posEnemy[2], int destination[2]){
 	int posXY = (posEnemy[1] * nMapHeight) + (posEnemy[0] + (posEnemy[1] / nMapWidth));
 	int end_pos = (destination[1] * nMapHeight) + (destination[0] + (destination[1] / nMapHeight));
@@ -266,8 +269,9 @@ node_map* backtraking::backtrack(int posEnemy[2], int destination[2]){
 	find_shortest_path(posXY, end_pos, 0);
 	return &nodes[end_pos];
 }
-std::string backtraking::send_route(std::string spectrumId, int posPlayer[2], int posEnemy[2]) {
-	std::string msg = spectrumId + ":Spectrum:Pathfinding:";
+
+std::string backtraking::send_route(int spectrumId, int posPlayer[2], int posEnemy[2]) {
+	std::string msg = "";
 	node_map* temp_node = backtrack(posEnemy, posPlayer);
 	while (temp_node->parent != nullptr) {
 		msg += std::to_string(temp_node->x);
@@ -411,4 +415,5 @@ std::string bresenham(int x1, int y1, int x2, int y2)
 			x = x + 1;
 		}
 	}
+	return msg;
 }

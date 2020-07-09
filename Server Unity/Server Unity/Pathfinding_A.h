@@ -1,6 +1,7 @@
 #pragma once
 #include "Linked_List.h"
 #include <string>
+std::string bresenham(int x1, int y1, int x2, int y2);
 struct node_map
 {
 		bool bObstacle = false;			// Is the node an obstruction?
@@ -38,7 +39,7 @@ public:
 	backtraking();
 	bool find_shortest_path(int posXY, int end_pos, int dist);
 	node_map* backtrack(int posEnemy[2], int destination[2]);
-	std::string send_route(std::string spectrumId, int posPlayer[2], int posEnemy[2]);
+	std::string send_route(int spectrumId, int posPlayer[2], int posEnemy[2]);
 	int partition(lista<node_map*>* list, int low, int high, node_map* target);
 	void quickSort(lista<node_map*>* list, int low, int high, node_map* target);
 private:
