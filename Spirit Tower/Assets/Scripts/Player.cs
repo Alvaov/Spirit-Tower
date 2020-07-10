@@ -30,6 +30,7 @@ public class Player : MonoBehaviour{
     public int tesoros;
     public Text tesorosText;
     public int tesorosMAX; //Numero de cofres que existan en el nivel 
+    public Text Avisos;
 
     // Start is called before the first frame update
     void Start()
@@ -116,7 +117,7 @@ public class Player : MonoBehaviour{
         {
             if(tesoros < tesorosMAX)
             {
-                tesoros++;
+                
             }
             Client.instance.Send_Data("0:Player:Treasures:" + tesoros + "/" + tesorosMAX + ":");
         }
