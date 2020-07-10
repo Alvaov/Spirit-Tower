@@ -159,6 +159,27 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     else if (msg_arr[1] == "Health") {
 
     }
+
+    else if (msg_arr[1] == "Coins") {
+        try {
+            if (msg_arr[1][2] == 0) {
+            }
+        }
+        catch (...) {
+            std::cerr << "Se trato de hacer un numero de un string no valido o array values ot of bounds\n";
+        }
+    }
+
+    else if (msg_arr[1] == "Treasures") {
+        try {
+            if (msg_arr[1][2] == 0) {
+            }
+        }
+        catch (...) {
+            std::cerr << "Se trato de hacer un numero de un string no valido o array values ot of bounds\n";
+        }
+    }
+
     listener->Send(client, msg);
 };
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

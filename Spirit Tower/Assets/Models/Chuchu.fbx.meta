@@ -1,17 +1,23 @@
 fileFormatVersion: 2
-guid: 8fa85df4df5463d42a521bb6d3ff2f56
+guid: e8343e5ade26dfc49b4316527f30e6ce
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
-      74: 3201220307067728279
-    second: ChestArmature|CloseChest
+      74: -1162006761974016736
+    second: Armature|Armature|Armature|dead|Armature|dead
   - first:
-      74: 5431016080711522082
-    second: ChestArmature|IdleChest
+      74: -8849906028899202377
+    second: Armature|Armature|Armature|eat|Armature|eat
   - first:
-      74: -8174378481356320156
-    second: ChestArmature|OpenChest
+      74: 4084113550970173757
+    second: Armature|Armature|Armature|idle|Armature|idle
+  - first:
+      74: -7522873572119961045
+    second: Armature|Armature|Armature|jump|Armature|jump
+  - first:
+      74: 2333660538785789465
+    second: Armature|Armature|Armature|spit|Armature|spit
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -99,7 +105,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 0
   additionalBone: 0
   userData: 
   assetBundleName: 

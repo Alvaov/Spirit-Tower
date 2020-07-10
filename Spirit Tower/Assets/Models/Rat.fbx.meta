@@ -1,17 +1,11 @@
 fileFormatVersion: 2
-guid: 8fa85df4df5463d42a521bb6d3ff2f56
+guid: 9337af4507f531945b25c57a541d4917
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
-      74: 3201220307067728279
-    second: ChestArmature|CloseChest
-  - first:
-      74: 5431016080711522082
-    second: ChestArmature|IdleChest
-  - first:
-      74: -8174378481356320156
-    second: ChestArmature|OpenChest
+      74: -7823548085205815357
+    second: Rat Armature|Rat ArmatureAction
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -99,7 +93,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 0
   additionalBone: 0
   userData: 
   assetBundleName: 

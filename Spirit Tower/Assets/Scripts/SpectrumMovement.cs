@@ -127,6 +127,7 @@ public class SpectrumMovement : MonoBehaviour
             }
             catch
             {
+                Debug.Log(path[stepPath]);
                 Debug.Log("Error convirtiendo string a entero");
             }
         }

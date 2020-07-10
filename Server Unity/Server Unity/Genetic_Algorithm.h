@@ -28,10 +28,11 @@ public:
     Person() {
 
         // inicializar memoria
-        for (int i = 0; i < 32; ++i) {
+        for (int i = 0; i < 31; ++i) {
 
             int random_bit = randomBool();
             setBit(i, random_bit);
+            //setBit(this->bitarray, i);
 
         }
 
@@ -69,6 +70,10 @@ public:
     int getBit(int index) {
         return (this->bitArray[index >> 3] >> (index & 7)) & 1;
     }
+    /*
+    int getBit(int bitarray[4], int k) {
+        return (this->bitarray[(k / 32)] & (1 << (k % 32)));
+    }*/
 
     // establecer valor de un bit en una posicion
     void setBit(int index, int value) {
@@ -80,12 +85,17 @@ public:
         this->bitArray[index >> 3] = celda;
 
     }
+    /*
+    void setBit(int bitarray[4], int k) {
+        (this->bitarray[(k / 32)] |= (1 << (k % 32)));
+    }*/
 
     // Asigna los valores de cada caracteristica del cromosoma
     void map() {
 
         for (int i = 0; i <= 7; ++i) {
             health += getBit(i) * pow(2, i);
+            //health += getBit(this->bitarray[i]) * pow(2, i);
         }
 
         for (int i = 8; i <= 15; ++i) {
@@ -133,6 +143,7 @@ public:
 
         for (int i = 0; i <= 31; ++i) {
 
+            //this->setBit(i, false);
             this->setBit(i, 0);
 
         }
