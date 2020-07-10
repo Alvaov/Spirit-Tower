@@ -26,6 +26,7 @@ public class SpectrumMovement : MonoBehaviour
     public float frameInterval;
     public int myId;
     public static bool detected = false;
+    public bool localDetected = false;
     public bool attack = false;
     public bool addedToList = false;
 
@@ -34,11 +35,10 @@ public class SpectrumMovement : MonoBehaviour
     {
         spectrum = GetComponent<CharacterController>();
         player = GameObject.FindGameObjectWithTag("Player");
-        frameInterval = 10;
         visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
-       
+        frameInterval = 10+(myId*2);
         //movement = Grid.instance.GetWorldPointFromAxes(14, 51);
     }
 
@@ -71,12 +71,19 @@ public class SpectrumMovement : MonoBehaviour
             {
                 checkVisualRange();
             }
-            if (detected == true)
+            if(detected == true)
+            {
+                localDetected = true;
+            }
+            if(Safe.safe == true && localDetected == true)
+            {
+                localDetected = false;
+                Client.instance.tcp.SendData(myId + ":Spectrum:Backtracking:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
+            }
+            else if (detected == true)
             {
                 Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
-            }
-           
-            
+            }  
         }
         walk();
     }
