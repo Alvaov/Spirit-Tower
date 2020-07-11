@@ -39,7 +39,7 @@ int main(){
     espectros = new lista<Espectro*>();
     mapa_backtracking = backtraking().CreateMap();
     Enemy_Genetics* enemy_genetics = new Enemy_Genetics();
-    enemy_genetics->work();
+    //enemy_genetics->work();
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
     if (server.Init()) {
         server.Run();

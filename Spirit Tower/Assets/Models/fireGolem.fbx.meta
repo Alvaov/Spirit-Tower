@@ -12,6 +12,9 @@ ModelImporter:
   - first:
       74: 3048620552519045700
     second: elemental|Agresive
+  - first:
+      74: 2848650938211699243
+    second: elemental|Agresive (1)
   externalObjects: {}
   materials:
     materialImportMode: 1

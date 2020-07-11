@@ -13,6 +13,8 @@ public class SpectrumMovement : MonoBehaviour
     public float gravity = -9.8f;
     public float speed = 120;
     public int stepPath = 0;
+    float rotation = 0f;
+    float rotSpeed = 80;
 
     //Rango de visión
     public float visionRadius;
@@ -21,7 +23,7 @@ public class SpectrumMovement : MonoBehaviour
     //Aspectos generales
     public GameObject player;
     public CharacterController spectrum;
-    public string[] path = { "0,0", "0,0" };
+    public string[] path;// = { "0,0", "0,0" };
     private Vector3 target;
     public float frameInterval;
     public int myId;
@@ -29,11 +31,13 @@ public class SpectrumMovement : MonoBehaviour
     public bool localDetected = false;
     public bool attack = false;
     public bool addedToList = false;
+    Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
         spectrum = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         visionRadius = 10;
         myId = Client.spectrumId;
@@ -71,6 +75,10 @@ public class SpectrumMovement : MonoBehaviour
             {
                 checkVisualRange();
             }
+            if(distance < 7 && detected)
+            {
+                attacking();
+            }
             if(detected == true)
             {
                 localDetected = true;
@@ -78,6 +86,8 @@ public class SpectrumMovement : MonoBehaviour
             if(Safe.safe == true && localDetected == true)
             {
                 localDetected = false;
+                animator.SetInteger("action",0);
+                animator.SetBool("perseguir",false);
                 Client.instance.tcp.SendData(myId + ":Spectrum:Backtracking:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
             }
             else if (detected == true)
@@ -96,6 +106,8 @@ public class SpectrumMovement : MonoBehaviour
 
         if (angle < visionAngle * 0.5f){
                 detected = true;
+                animator.SetInteger("action", 1);
+                animator.SetBool("perseguir", true);
         }
     }
 
@@ -105,7 +117,6 @@ public class SpectrumMovement : MonoBehaviour
         {
             try
             {
-                //path.Length - 2
                 if (stepPath == path.Length - 1)
                 {
                     stepPath = 0;
@@ -115,10 +126,15 @@ public class SpectrumMovement : MonoBehaviour
                 int z;
                 Int32.TryParse(pos_grid[0], out x);
                 Int32.TryParse(pos_grid[1], out z);
+                
                 target = Grid.instance.GetWorldPointFromAxes(x, z);
+                
                 if (transform.position != target)
                 {
+                    rotation += Vector3.Angle(target, transform.forward);//(transform.position.z - target.z) * rotSpeed * Time.deltaTime;
+                    transform.eulerAngles = new Vector3(0, rotation, 0);
                     transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+
                 }if(transform.position == target)
                 {
                     stepPath++;
@@ -133,4 +149,27 @@ public class SpectrumMovement : MonoBehaviour
         }
     }
 
+
+    void attacking()
+    {
+        StartCoroutine(AttackRoutine());
+    }
+
+
+    IEnumerator AttackRoutine()
+    {
+        animator.SetBool("atacar", true);
+        animator.SetInteger("action", 2);
+        yield return new WaitForSeconds(1);
+        if (detected)
+        {
+            animator.SetInteger("action", 1);
+            animator.SetBool("atacar", false);
+        }
+        if (!detected)
+        {
+            animator.SetInteger("action", 0);
+            animator.SetBool("atacar", false);
+        }
+    }
 }

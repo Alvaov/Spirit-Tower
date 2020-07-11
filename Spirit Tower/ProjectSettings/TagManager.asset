@@ -6,6 +6,9 @@ TagManager:
   tags:
   - player_shield_weak
   - RightHand
+  - LeftHand
+  - Enemy
+  - Spectrum
   layers:
   - Default
   - TransparentFX
