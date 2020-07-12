@@ -13,8 +13,6 @@ public class SpectrumMovement : MonoBehaviour
     public float gravity = -9.8f;
     public float speed = 120;
     public int stepPath = 0;
-    float rotation = 0f;
-    float rotSpeed = 80;
 
     //Rango de visión
     public float visionRadius;
@@ -131,8 +129,7 @@ public class SpectrumMovement : MonoBehaviour
                 
                 if (transform.position != target)
                 {
-                    rotation += Vector3.Angle(target, transform.forward);//(transform.position.z - target.z) * rotSpeed * Time.deltaTime;
-                    transform.eulerAngles = new Vector3(0, rotation, 0);
+                    transform.LookAt(player.transform);
                     transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
 
                 }if(transform.position == target)
@@ -143,7 +140,6 @@ public class SpectrumMovement : MonoBehaviour
             }
             catch
             {
-                Debug.Log(path[stepPath]);
                 Debug.Log("Error convirtiendo string a entero");
             }
         }

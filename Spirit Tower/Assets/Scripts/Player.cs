@@ -161,8 +161,14 @@ public class Player : MonoBehaviour{
             movement = new Vector3(0, 0, 0);
             movement *= speed * Time.deltaTime;
         }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            animator.SetBool("correr", false);
+            animator.SetInteger("action", 0);
+            movement = new Vector3(0, 0, 0);
+            movement *= speed * Time.deltaTime;
+        }
         rotation += Input.GetAxis("Horizontal") * rotSpeed * Time.deltaTime;
-        Debug.Log(rotation);
         transform.eulerAngles = new Vector3(0, rotation, 0);
         if (!player.isGrounded)
         {
