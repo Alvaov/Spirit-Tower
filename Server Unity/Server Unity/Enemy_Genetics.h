@@ -15,5 +15,8 @@ private:
 public:
     Enemy_Genetics();
     void work();
+    lista<Person*> getList();
 };
 
+void quickSortGenetics(lista<Person*>* list, int low, int high);
+int partitionGenetics(lista<Person*>* list, int low, int high);
