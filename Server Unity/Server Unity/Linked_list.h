@@ -230,6 +230,11 @@ public:
             return false;
         }
     };
+    void delete_list() {
+        for (int i = 0; i < object_counter - 1; i++) {
+            delete_by_pos(0);
+        }
+    }
 
 };
 #endif //
