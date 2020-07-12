@@ -9,6 +9,7 @@ TagManager:
   - LeftHand
   - Enemy
   - Spectrum
+  - Sword
   layers:
   - Default
   - TransparentFX

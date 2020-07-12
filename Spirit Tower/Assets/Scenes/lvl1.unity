@@ -2058,6 +2058,20 @@ CapsuleCollider:
   m_Height: 8.29
   m_Direction: 1
   m_Center: {x: 0, y: 4.16, z: 0}
+--- !u!136 &730566093
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730566089}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 8.29
+  m_Direction: 1
+  m_Center: {x: 0, y: 4.16, z: 0}
 --- !u!1 &746117006
 GameObject:
   m_ObjectHideFlags: 0
@@ -3054,7 +3068,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: de6cfac8d25c99440a0ea3e9f795d132,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: de6cfac8d25c99440a0ea3e9f795d132,
         type: 3}
@@ -4100,7 +4114,7 @@ GameObject:
   - component: {fileID: 1843104323}
   m_Layer: 0
   m_Name: Sword
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4145,7 +4159,7 @@ Transform:
   m_Children:
   - {fileID: 2043964626}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1862934219
 PrefabInstance:
@@ -4614,6 +4628,20 @@ MonoBehaviour:
   localDetected: 0
   attack: 0
   addedToList: 0
+--- !u!136 &2126215904
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126215900}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.44
+  m_Height: 7.13
+  m_Direction: 1
+  m_Center: {x: 0.04, y: 3.24, z: -0.64}
 --- !u!95 &2126215905
 Animator:
   serializedVersion: 3
@@ -5187,6 +5215,7 @@ GameObject:
   - component: {fileID: 543450653085255991}
   - component: {fileID: 5866666021433381709}
   - component: {fileID: 919132148561712014}
+  - component: {fileID: 919132148561712017}
   - component: {fileID: 919132148561712016}
   - component: {fileID: 919132148561712015}
   m_Layer: 0
@@ -5254,6 +5283,20 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
+  m_Center: {x: 0.08, y: 4.94, z: 2.48}
+--- !u!136 &919132148561712017
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148561712013}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 2.64
+  m_Height: 9.45
+  m_Direction: 1
   m_Center: {x: 0.08, y: 4.94, z: 2.48}
 --- !u!4 &932732297107955558
 Transform:

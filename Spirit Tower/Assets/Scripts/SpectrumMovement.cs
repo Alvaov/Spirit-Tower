@@ -96,17 +96,31 @@ public class SpectrumMovement : MonoBehaviour
         walk();
     }
 
-    void checkVisualRange()
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Sword"))
+        {
+            if (!checkVisualRange())
+            {
+                Client.instance.tcp.SendData(myId + ":Spectrum:Damage:1:");
+            }
+        }
+    }
+
+
+    bool checkVisualRange()
     {
         Vector3 direction = player.transform.position - transform.position;
 
         float angle = Vector3.Angle(direction, transform.forward);
 
-        if (angle < visionAngle * 0.5f){
-                detected = true;
-                animator.SetInteger("action", 1);
-                animator.SetBool("perseguir", true);
+        if (angle < visionAngle * 0.5f){    
+            detected = true;
+            animator.SetInteger("action", 1);
+            animator.SetBool("perseguir", true);
+            return true;
         }
+        return false;
     }
 
     private void walk()

@@ -20,19 +20,5 @@ public class SwordScript : MonoBehaviour
             transform.parent = rightHand.transform;
             transform.localPosition = new Vector3(0, 0.003f, 0);
         }
-        if (other.gameObject.CompareTag("Spectrum"))
-        {
-            if (Player.atacar)
-            {
-                //Client.instance.tcp.SendData("Enviar id y tipo de enemigo, uno de daño");
-            }
-        }
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            if (Player.atacar)
-            {
-                //Client.instance.tcp.SendData("se elimina ese enemigo, se le envía el server para más pts");
-            }
-        }
     }
 }
