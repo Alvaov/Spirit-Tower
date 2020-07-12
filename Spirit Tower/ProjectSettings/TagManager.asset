@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - player_shield_weak
+  - RightHand
+  - LeftHand
+  - Enemy
+  - Spectrum
+  - Sword
   layers:
   - Default
   - TransparentFX

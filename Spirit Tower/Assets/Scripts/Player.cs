@@ -1,0 +1,240 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Threading;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Player : MonoBehaviour{
+
+    //Movimiento
+    private Vector3 movement;
+    public float horizontal;
+    public float vertical;
+    public float gravity = -9.8f;
+    public float speed = 10;
+    float rotation = 0f;
+    float rotSpeed = 80;
+    int frameInterval = 10;
+    public CharacterController player;
+    public Animator animator;
+
+    //Acciones
+    public bool agacharse = false;
+    public static bool atacar = false;
+    public bool defender = false;
+
+    //Salud
+    public int health;
+    public int numOfHearts;
+    public Image[] hearts;
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
+
+    //Monedas y tesoros
+    public int monedas;
+    public Text monedasText;
+    public int tesoros;
+    public Text tesorosText;
+    public int tesorosMAX; //Numero de cofres que existan en el nivel 
+    public Text Avisos;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        player = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        Movement();
+
+        GetInput();
+
+        if (Time.frameCount % frameInterval == 0)
+        {
+            Client.instance.tcp.SendData("0:Player:Position:" + Grid.instance.GetAxesFromWorldPoint(player.transform.position)+":");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            agacharse = true;
+            animator.SetBool("agacharse", true);
+        }
+
+        if (health > numOfHearts) {
+            health = numOfHearts;
+        }
+
+        //TODO: recibir dano de los wendigos
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            health--;
+            // string msg = "Player:Health:" + health + ":";
+            Client.instance.Send_Data("0:Player:Health:" + health + ":");
+        }
+
+        //TODO: Curarse  
+        if (Input.GetKeyDown(KeyCode.Backspace)) {
+            health++;
+            // string msg = "Player:Health:" + health + ":";
+            Client.instance.Send_Data("0:Player:Health:" + health + ":");
+        }
+
+        for (int i = 0; i < hearts.Length; i++){
+
+            if (i < health){
+                hearts[i].sprite = fullHeart;
+            } else{
+                hearts[i].sprite = emptyHeart;
+            }
+            if (i < numOfHearts){
+                hearts[i].enabled = true;
+            } else {
+                hearts[i].enabled = false;
+            }
+        }
+
+        //MONEDAS Y TESOROS
+        monedasText.text = ":" + monedas;
+
+        if (Input.GetKeyDown(KeyCode.C)){
+            monedas++;
+            Client.instance.Send_Data("0:Player:Coins:" + monedas + ":");
+        }
+        
+        
+        tesorosMAX = 4; //Depende del nivel
+        tesorosText.text = ":" + tesoros + "/" + tesorosMAX;
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            if(tesoros < tesorosMAX)
+            {
+                
+            }
+            Client.instance.Send_Data("0:Player:Treasures:" + tesoros + "/" + tesorosMAX + ":");
+        }
+
+    }
+
+    void Movement()
+    {
+        if (player.isGrounded)
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                if (animator.GetBool("atacar") || animator.GetBool("defender"))
+                {
+                    return;
+                }
+                if (!animator.GetBool("atacar") || !animator.GetBool("defender"))
+                {
+                    animator.SetBool("correr", true);
+                    animator.SetInteger("action", 1);
+                    movement = new Vector3(0, 0, 1);
+                    movement *= speed * Time.deltaTime;
+                    movement = transform.TransformDirection(movement);
+                }
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                if (animator.GetBool("atacar") || animator.GetBool("defender"))
+                {
+                    return;
+                }
+                if (!animator.GetBool("atacar") || !animator.GetBool("defender"))
+                {
+                    animator.SetBool("correr", true);
+                    animator.SetInteger("action", 1);
+                    movement = new Vector3(0, 0, -1);
+                    movement *= speed * Time.deltaTime;
+                    movement = transform.TransformDirection(movement);
+                }
+            }
+
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            animator.SetBool("correr", false);
+            animator.SetInteger("action", 0);
+            movement = new Vector3(0, 0, 0);
+            movement *= speed * Time.deltaTime;
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            animator.SetBool("correr", false);
+            animator.SetInteger("action", 0);
+            movement = new Vector3(0, 0, 0);
+            movement *= speed * Time.deltaTime;
+        }
+        rotation += Input.GetAxis("Horizontal") * rotSpeed * Time.deltaTime;
+        transform.eulerAngles = new Vector3(0, rotation, 0);
+        if (!player.isGrounded)
+        {
+            movement = new Vector3(0, gravity, 0) * Time.deltaTime;
+        }
+
+        player.Move(movement);
+
+    }
+
+    void GetInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (animator.GetBool("correr"))
+            {
+                Debug.Log("Ya no voy a correr");
+                animator.SetBool("correr", false);
+                animator.SetInteger("action", 0);
+            }
+            if (!animator.GetBool("correr"))
+            {
+                Attacking();
+            }
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (animator.GetBool("correr"))
+            {
+                animator.SetBool("correr", false);
+                animator.SetInteger("action", 0);
+            }
+            if (!animator.GetBool("correr"))
+            {
+                animator.SetBool("defender", true);
+                Debug.Log("Escudo!!!");
+                Deffending();
+            }
+        }
+    }
+
+    void Attacking()
+    {
+        StartCoroutine(AttackRoutine());
+    }
+
+    void Deffending()
+    {
+        StartCoroutine(DeffendRoutine());
+    }
+
+    IEnumerator DeffendRoutine()
+    {
+        animator.SetBool("defender", true);
+        animator.SetInteger("action", 3);
+        yield return new WaitForSeconds(1);
+        animator.SetInteger("action", 0);
+        animator.SetBool("defender", false);
+    }
+
+    IEnumerator AttackRoutine()
+    {
+        animator.SetBool("atacar", true);
+        animator.SetInteger("action", 2);
+        yield return new WaitForSeconds(1);
+        animator.SetInteger("action", 0);
+        animator.SetBool("atacar", false);
+    }
+}
