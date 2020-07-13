@@ -75,7 +75,7 @@ public class RatScript : MonoBehaviour
             }
         }
         catch{
-            Debug.Log("Error convirtiendo a entero rat");
+            //Debug.Log("Error convirtiendo a entero rat");
         }
     }
 

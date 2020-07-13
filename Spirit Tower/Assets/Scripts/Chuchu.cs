@@ -11,6 +11,7 @@ public class Chuchu : MonoBehaviour
     public int id;
     public int speed = 1;
     public int stepPath = 0;
+    public bool stop = false;
     private Vector3 target;
     public float frameInterval = 10;
     public bool addedToList = false;
@@ -24,8 +25,25 @@ public class Chuchu : MonoBehaviour
         Client.chuchuId += 1;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Client.instance.tcp.SendData("0:Chuchu:Attack::");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Sword"))
+        {
+            Client.instance.tcp.SendData(id + ":Chuchu:Damage:1:");
+        }
+    }
+
+
+        // Update is called once per frame
+        void Update()
     {
         if (!addedToList)
         {
@@ -53,7 +71,6 @@ public class Chuchu : MonoBehaviour
         Walk();
     }
 
-
     void Walk()
     {
         if (path.Length > 0)
@@ -75,7 +92,16 @@ public class Chuchu : MonoBehaviour
                 if (transform.position != target)
                 {
                     FaceTarget();
-                    transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+                    if (!stop)
+                    {
+                        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+                    }
+                    if (stop)
+                    {
+                        Vector3 movement = new Vector3(0, 0, -1);
+                        movement *= speed * Time.deltaTime;
+                        movement = transform.TransformDirection(movement);
+                    }
 
                 }
                 if (transform.position == target)
@@ -86,7 +112,7 @@ public class Chuchu : MonoBehaviour
             }
             catch
             {
-                Debug.Log("Error convirtiendo string a entero");
+                //Debug.Log("Error convirtiendo string a entero chuchu");
             }
         }
     }

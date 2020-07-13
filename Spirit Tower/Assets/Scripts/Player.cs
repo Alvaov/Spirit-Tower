@@ -15,7 +15,7 @@ public class Player : MonoBehaviour{
     public float speed = 10;
     float rotation = 0f;
     float rotSpeed = 80;
-    int frameInterval = 10;
+    int frameInterval = 15;
     public CharacterController player;
     public Animator animator;
 
@@ -231,10 +231,12 @@ public class Player : MonoBehaviour{
 
     IEnumerator AttackRoutine()
     {
+        atacar = true;
         animator.SetBool("atacar", true);
         animator.SetInteger("action", 2);
         yield return new WaitForSeconds(1);
         animator.SetInteger("action", 0);
         animator.SetBool("atacar", false);
+        atacar = false;
     }
 }
