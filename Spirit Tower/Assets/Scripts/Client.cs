@@ -99,7 +99,7 @@ public class Client : MonoBehaviour
             }
             catch (Exception _ex)
             {
-                Debug.Log($"Error sending data to player via TCP: {_ex}");
+             Debug.Log($"Error sending data to player via TCP: {_ex}");
             }
         }
 
@@ -137,6 +137,8 @@ public class Client : MonoBehaviour
             {
                 if (msg_arr[2] == "Damage")
                 {
+                    
+
                     //Infligir daño
                 }
             }

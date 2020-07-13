@@ -56,7 +56,7 @@ public class SpectrumMovement : MonoBehaviour
         {
             if (Player.atacar)
             {
-                if (!checkVisualRange())
+                if (!checkVisualRange()) //Atacar por la espalda
                 {
                     Client.instance.tcp.SendData(myId + ":Spectrum:Damage:1:");
                 }
