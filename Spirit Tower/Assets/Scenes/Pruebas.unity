@@ -325,7 +325,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e8343e5ade26dfc49b4316527f30e6ce,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -96.18
+      value: -78.95
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e8343e5ade26dfc49b4316527f30e6ce,
         type: 3}
@@ -335,7 +335,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e8343e5ade26dfc49b4316527f30e6ce,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 174.19
+      value: 153.53
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e8343e5ade26dfc49b4316527f30e6ce,
         type: 3}
@@ -376,6 +376,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e8343e5ade26dfc49b4316527f30e6ce,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e8343e5ade26dfc49b4316527f30e6ce,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e8343e5ade26dfc49b4316527f30e6ce,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -1526964690268444965, guid: e8343e5ade26dfc49b4316527f30e6ce,
         type: 3}
@@ -1158,7 +1173,7 @@ GameObject:
   - component: {fileID: 390209145}
   m_Layer: 8
   m_Name: Arch
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2013,8 +2028,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.47, y: 2.71, z: 2.34}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3.15, y: 2.71, z: 3.18}
+  m_Center: {x: 0, y: 1.05, z: 0}
 --- !u!114 &647976331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2029,8 +2044,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chuchu: {fileID: 0}
   id: 0
-  speed: 1
+  speed: 5
   stepPath: 0
+  stop: 0
   frameInterval: 10
   addedToList: 0
   path: []
@@ -2075,6 +2091,7 @@ MonoBehaviour:
   gravity: -9.8
   speed: 20
   stepPath: 0
+  scared: 0
   visionRadius: 0
   visionAngle: 160
   player: {fileID: 0}
@@ -2131,6 +2148,19 @@ CapsuleCollider:
   m_Height: 8.29
   m_Direction: 1
   m_Center: {x: 0, y: 4.16, z: 0}
+--- !u!65 &730566096
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730566089}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6.93, y: 1, z: 11.23}
+  m_Center: {x: 0, y: 0.37, z: 5.55}
 --- !u!1 &746117006
 GameObject:
   m_ObjectHideFlags: 0
@@ -2600,7 +2630,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1016704920}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -4171,7 +4201,7 @@ GameObject:
   - component: {fileID: 1803020235}
   m_Layer: 8
   m_Name: Arch
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4321,7 +4351,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9337af4507f531945b25c57a541d4917,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -94.54
+      value: -38.69
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9337af4507f531945b25c57a541d4917,
         type: 3}
@@ -4331,7 +4361,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9337af4507f531945b25c57a541d4917,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 178.52
+      value: 151.66
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9337af4507f531945b25c57a541d4917,
         type: 3}
@@ -4381,6 +4411,11 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9337af4507f531945b25c57a541d4917,
         type: 3}
       propertyPath: m_Name
+      value: Rat
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9337af4507f531945b25c57a541d4917,
+        type: 3}
+      propertyPath: m_TagString
       value: Rat
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -4876,6 +4911,7 @@ MonoBehaviour:
   gravity: -9.8
   speed: 20
   stepPath: 0
+  scared: 0
   visionRadius: 0
   visionAngle: 160
   player: {fileID: 0}
@@ -4919,6 +4955,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &2126215906
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126215900}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.27, y: 1.16, z: 10.68}
+  m_Center: {x: 0, y: -1.65, z: 3.84}
 --- !u!4 &391892684158042
 Transform:
   m_ObjectHideFlags: 0
@@ -5475,6 +5524,7 @@ GameObject:
   - component: {fileID: 919132148561712014}
   - component: {fileID: 919132148561712017}
   - component: {fileID: 919132148561712016}
+  - component: {fileID: 919132148561712018}
   - component: {fileID: 919132148561712015}
   m_Layer: 0
   m_Name: fireGolem
@@ -5514,6 +5564,7 @@ MonoBehaviour:
   gravity: -9.8
   speed: 20
   stepPath: 0
+  scared: 0
   visionRadius: 0
   visionAngle: 160
   player: {fileID: 0}
@@ -5556,6 +5607,19 @@ CapsuleCollider:
   m_Height: 9.45
   m_Direction: 1
   m_Center: {x: 0.08, y: 4.94, z: 2.48}
+--- !u!65 &919132148561712018
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148561712013}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 18.33, y: 1, z: 23.29}
+  m_Center: {x: 0, y: 0.45, z: 13.8}
 --- !u!4 &932732297107955558
 Transform:
   m_ObjectHideFlags: 0
@@ -6796,7 +6860,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.54
+  m_Radius: 1
   m_Height: 6.13
   m_Direction: 1
   m_Center: {x: 0.12, y: 3.19, z: 0}

@@ -1,7 +1,8 @@
 #pragma once
 #include "Linked_List.h"
 #include <string>
-std::string bresenham(int x1, int y1, int x2, int y2);
+struct node_map;
+std::string bresenham(int x1, int y1, int x2, int y2, node_map* mapaActual);
 struct node_map
 {
 		bool bObstacle = false;			// Is the node an obstruction?

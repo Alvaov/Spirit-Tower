@@ -13,6 +13,7 @@ public class SpectrumMovement : MonoBehaviour
     public float gravity = -9.8f;
     public float speed = 120;
     public int stepPath = 0;
+    public bool scared = false;
 
     //Rango de visión
     public float visionRadius;
@@ -42,6 +43,33 @@ public class SpectrumMovement : MonoBehaviour
         Client.spectrumId += 1;
         frameInterval = 10+(myId*2);
         //movement = Grid.instance.GetWorldPointFromAxes(14, 51);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Rat"))
+        {
+            scared = true;
+        }
+
+        if (other.gameObject.CompareTag("Sword"))
+        {
+            if (Player.atacar)
+            {
+                if (!checkVisualRange()) //Atacar por la espalda
+                {
+                    Client.instance.tcp.SendData(myId + ":Spectrum:Damage:1:");
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Rat"))
+        {
+            scared = false;
+        }
     }
 
     // Update is called once per frame
@@ -96,17 +124,6 @@ public class SpectrumMovement : MonoBehaviour
         walk();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Sword"))
-        {
-            if (!checkVisualRange())
-            {
-                Client.instance.tcp.SendData(myId + ":Spectrum:Damage:1:");
-            }
-        }
-    }
-
 
     bool checkVisualRange()
     {
@@ -144,7 +161,10 @@ public class SpectrumMovement : MonoBehaviour
                 if (transform.position != target)
                 {
                     FaceTarget();
-                    transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+                    if (!scared)
+                    {
+                        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+                    }
 
                 }if(transform.position == target)
                 {

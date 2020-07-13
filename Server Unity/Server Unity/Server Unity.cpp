@@ -124,9 +124,12 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             std::string path = trackback.send_route(id, enemyPos, get_position(espectro->getPath(0)));
             listener->Send(client, msg_arr[0]+":Spectrum:Backtracking:"+path);
             delete enemyPos;
-        }else if (msg_arr[2] == "Attack") {
+        }else if (msg_arr[2] == "Attack") { //Producir dano
             std::cout << "Spectrum hit player. Player is gonna die";
             listener->Send(client, "0:Player:Damage:5");
+        }
+        else if (msg_arr[2] == "Damage") { //Recibir dano
+            //Enviar daño 
         }
     }else if (msg_arr[1] == "Grid") {
         if (msg_arr[2] == "Obstacle") {
@@ -153,8 +156,18 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         }
         else if (msg_arr[2] == "Move") {
             int* enemyPos = get_position(msg_arr[3]);
-            listener->Send(client, bresenham(enemyPos[0], enemyPos[1],playerPos[0], playerPos[1]));
+            listener->Send(client, 
+                msg_arr[0]+
+                ":Chuchu:Move:"+
+                bresenham(enemyPos[0], enemyPos[1],playerPos[0], playerPos[1], mapaActual)+
+                ":");
             delete enemyPos;
+        }
+        else if (msg_arr[2] == "Attack") {
+            listener->Send(client, "0:Player:Damage:1");
+        }
+        else if (msg_arr[2] == "Damage") {
+
         }
     }
     else if (msg_arr[1] == "Safe") {

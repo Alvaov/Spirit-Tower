@@ -93,7 +93,7 @@ public class Grid : MonoBehaviour
 
     public static void getGridWalls()
     {   
-        Thread.Sleep(10);
+        Thread.Sleep(20);
         Client.instance.tcp.SendData("0:Grid:New::");
         Thread.Sleep(1600);
         foreach (Node n in grid)
