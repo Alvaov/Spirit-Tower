@@ -367,53 +367,56 @@ node_map* backtraking::CreateMap(int size)
 
 std::string bresenham(int x1, int y1, int x2, int y2)
 {
-	std::string msg;
-	int dx, dy, p, x, y;
-
-	dx = std::abs(x2 - x1);
-	dy = std::abs(y2 - y1);
-
-	x = x1;
-	y = y1;
-
-	p = 2 * dy - dx;
-	if (y1 < y2) {
-		while (x < x2)
-		{
-			if (p >= 0)
-			{
-				msg += x + "," + y;
-				msg += ";";
-				y = y + 1;
-				p = p + 2 * dy - 2 * dx;
-			}
-			else
-			{
-				msg += x + "," + y;
-				msg += ";";
-				p = p + 2 * dy;
-			}
-			x = x + 1;
-		}
+	int dY = (y2 - y1);
+	int dX = (x2 - x1);
+	int IncYi;
+	int IncXi;
+	if (dY >= 0) {
+		IncYi = 1;
 	}
 	else {
-		while (x < x2)
-		{
-			if (p >= 0)
-			{
-				msg += x + "," + y;
-				msg += ";";
-				y = y - 1;
-				p = p + 2 * dy - 2 * dx;
-			}
-			else
-			{
-				msg += x + "," + y;
-				msg += ";";
-				p = p + 2 * dy;
-			}
-			x = x + 1;
-		}
+		dY = -dY;
+		IncYi = -1;
 	}
-	return msg;
+	if (dX >= 0) {
+		IncXi = 1;
+	}
+	else {
+		dX = -dX;
+		IncXi = -1;
+	}
+	int IncYr;
+	int IncXr;
+	if (dX >= dY) {
+		IncYr = 0;
+		IncXr = IncXi;
+	}
+	else {
+		IncXr = 0;
+		IncYr = IncYi;
+		//posibles cambios
+		int k = dX;
+		dX = dY;
+		dY = k;
+	}
+	int X = x1;
+	int Y = y1;
+	int avR = (2 * dY);
+	int av = (avR - dX);
+	int avI = (av - dX);
+	std::string msg;
+	while ((X != x2) || (Y != y2)) {
+		msg += std::to_string(X) + "," + std::to_string(Y);
+		msg += ";";
+		if (av >= 0) {
+			X = (X + IncXi);     // X aumenta en inclinado.
+			Y = (Y + IncYi);    // Y aumenta en inclinado.
+			av = (av + avI);
+		}
+		else {
+			X = (X + IncXr);     // X aumenta en recto.
+			Y = (Y + IncYr);    // Y aumenta en recto.
+			av = (av + avR);
+		}
+	}return msg;
 }
