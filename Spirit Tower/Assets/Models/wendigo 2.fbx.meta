@@ -1,11 +1,17 @@
 fileFormatVersion: 2
-guid: 907b5add54544ca40b55c551cfb6e9df
+guid: 00ddec74e8abc514f97d51cbba6deb25
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
-      74: -4248549844806029217
-    second: heart|heart
+      74: 1265346154416961434
+    second: Esqueleto|Caminar
+  - first:
+      74: -8301578974218080001
+    second: Esqueleto|Golpear
+  - first:
+      74: 7490663545689362712
+    second: Esqueleto|Perseguir
   externalObjects: {}
   materials:
     materialImportMode: 1
