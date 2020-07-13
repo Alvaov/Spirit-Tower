@@ -92,7 +92,10 @@ public class Grid : MonoBehaviour
     }*/
 
     public static void getGridWalls()
-    {
+    {   
+        Thread.Sleep(10);
+        Client.instance.tcp.SendData("0:Grid:New::");
+        Thread.Sleep(1600);
         foreach (Node n in grid)
         {
             if (n.walkable == false)

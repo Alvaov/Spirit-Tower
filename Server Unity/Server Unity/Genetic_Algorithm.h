@@ -7,7 +7,7 @@
 #include <time.h>
 #include "Linked_List.h"
 
-#define AMOUNT_OF_PEOPLE 10000
+#define AMOUNT_OF_PEOPLE 100
 #define DEBUG 0
 
 /*
@@ -17,21 +17,22 @@ Solo falta separarlo
 class Person {
 private:
     uint8_t bitArray[4];
-    int health;
-    int speed;
-    int vision_range;
-    int follow_speed;
+    int health = 1;
+    int speed = 30;
+    int vision_range = 60;
+    int follow_speed = 45;
     int fitness;
-    bool alive;
+    bool alive = true;
   
 public:
     Person() {
 
         // inicializar memoria
-        for (int i = 0; i < 32; ++i) {
+        for (int i = 0; i < 31; ++i) {
 
             int random_bit = randomBool();
             setBit(i, random_bit);
+            //setBit(this->bitarray, i);
 
         }
 
@@ -54,7 +55,18 @@ public:
     ~Person() {
 
     }
-
+    int get_health() {
+        return health;
+    }
+    int get_speed() {
+        return speed;
+    }
+    int get_vision_range() {
+        return vision_range;
+    }
+    int get_follow_speed() {
+        return follow_speed;
+    }
     int randomBool() {
         return 0 + (rand() % (1 - 0 + 1)) == 1;
     }
@@ -69,6 +81,10 @@ public:
     int getBit(int index) {
         return (this->bitArray[index >> 3] >> (index & 7)) & 1;
     }
+    /*
+    int getBit(int bitarray[4], int k) {
+        return (this->bitarray[(k / 32)] & (1 << (k % 32)));
+    }*/
 
     // establecer valor de un bit en una posicion
     void setBit(int index, int value) {
@@ -80,12 +96,17 @@ public:
         this->bitArray[index >> 3] = celda;
 
     }
+    /*
+    void setBit(int bitarray[4], int k) {
+        (this->bitarray[(k / 32)] |= (1 << (k % 32)));
+    }*/
 
     // Asigna los valores de cada caracteristica del cromosoma
     void map() {
 
         for (int i = 0; i <= 7; ++i) {
             health += getBit(i) * pow(2, i);
+            //health += getBit(this->bitarray[i]) * pow(2, i);
         }
 
         for (int i = 8; i <= 15; ++i) {
@@ -122,6 +143,9 @@ public:
             damage_normalized * damage_weight;
 
     }
+    double getFitness() {
+        return fitness;
+    }
     /*
     void clearMemory() {
         std::cout << "Clear: ";
@@ -133,6 +157,7 @@ public:
 
         for (int i = 0; i <= 31; ++i) {
 
+            //this->setBit(i, false);
             this->setBit(i, 0);
 
         }
@@ -172,65 +197,22 @@ public:
             //std::cout << this->getBit(i) << person->getBit(i) << value_inherited << std::endl;
 
         }
-
-
-        //Pruebas
-
-        // Progenitor 1
-        for (int i = 0; i <= 31; ++i) {
-            std::cout << this->getBit(i);
-        }
-        std::cout << std::endl;
-
-        // Progenitor 2
-        for (int i = 0; i <= 31; ++i) {
-            std::cout << person->getBit(i);
-        }
-        std::cout << std::endl;
-
-        // Hijo
-        for (int i = 0; i <= 31; ++i) {
-            std::cout << child->getBit(i);
-        }
-
-        std::cout << std::endl;
-        std::cout << std::endl;
-        std::cout << std::endl;
-
         int random_mutation = randomNum(0, 100);
-        std::cout << random_mutation;
-        std::cout << std::endl;
-        
+
         // ocurre mutacion
         if (0 <= random_mutation && random_mutation <= 10) {
-            std::cout << "Ocurrio una mutacion: ";
-            std::cout << std::endl;
             child->mutation();
         }
 
         // Hijo mutado
-        for (int i = 0; i <= 31; ++i) {
-            std::cout << child->getBit(i);
-        }
-
-        std::cout << std::endl;
-
-        int random_inversion = randomNum(0, 100);
-        std::cout << random_inversion;
-        std::cout << std::endl;
+       int random_inversion = randomNum(0, 100);
 
         // ocurre inversion
         if (0 <= random_inversion  && random_inversion <= 5) {
-            std::cout << "Ocurrio inversion: ";
-            std::cout << std::endl;
             child->inversion();
         }
 
         // Hijo con inversion
-        for (int i = 0; i <= 31; ++i) {
-            std::cout << child->getBit(i);
-        }
-
         return child;
     }
 

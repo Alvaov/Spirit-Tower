@@ -1,2 +1,1 @@
 #Include "Espectro.h"
-
