@@ -32,6 +32,11 @@ public class Player : MonoBehaviour{
     public int tesorosMAX; //Numero de cofres que existan en el nivel 
     public Text Avisos;
 
+
+    public Text llavesText;
+    public int llaves;
+    public int llavesMAX;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -121,6 +126,10 @@ public class Player : MonoBehaviour{
             }
             Client.instance.Send_Data("0:Player:Treasures:" + tesoros + "/" + tesorosMAX + ":");
         }
+
+        //LLaves
+        llavesMAX = 4;
+        llavesText.text = ":" + llaves + "/" + llavesMAX;
 
     }
 }

@@ -36,6 +36,28 @@ public class ChestController : MonoBehaviour
                 playerScript.health += 1;
             }
 
+            if (Contenidos[j].item.name == "extraHeart")
+            {
+                //**
+            }
+
+            if (Contenidos[j].item.name == "Key")
+            {
+                GameObject player = GameObject.Find("Player1");
+                Player playerScript = player.GetComponent<Player>();
+                playerScript.llaves += 1;
+            }
+
+            if (Contenidos[j].item.name == "SpeedUp")
+            {
+                //**
+            }
+
+            if (Contenidos[j].item.name == "SwPart")
+            {
+                //**
+            }
+
             //Mas comportamiento para objetos aqui
 
         }
