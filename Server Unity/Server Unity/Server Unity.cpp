@@ -159,11 +159,8 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             listener->Send(client, 
                 msg_arr[0]+
                 ":Chuchu:Move:"+
-                bresenham(enemyPos[0], enemyPos[1],playerPos[0], playerPos[1])+
-                std::to_string(playerPos[0])+
-                ","+
-                std::to_string(playerPos[1])+
-                ";:");
+                bresenham(enemyPos[0], enemyPos[1],playerPos[0], playerPos[1], mapaActual)+
+                ":");
             delete enemyPos;
         }
         else if (msg_arr[2] == "Attack") {
