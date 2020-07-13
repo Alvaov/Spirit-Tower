@@ -99,7 +99,7 @@ public class Client : MonoBehaviour
             }
             catch (Exception _ex)
             {
-            //    Debug.Log($"Error sending data to player via TCP: {_ex}");
+             Debug.Log($"Error sending data to player via TCP: {_ex}");
             }
         }
 

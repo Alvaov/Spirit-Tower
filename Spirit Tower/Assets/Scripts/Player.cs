@@ -31,6 +31,9 @@ public class Player : MonoBehaviour{
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
+    //Salud extra
+    public Image[] extraHearts;
+
     //Monedas y tesoros
     public int monedas;
     public Text monedasText;
@@ -44,11 +47,23 @@ public class Player : MonoBehaviour{
     public int llaves;
     public int llavesMAX;
 
+    //Variables para el server
+
+
+    public int tesorosTemp = 0;
+    public int vidaTemp = 5;
+    public int monedasTemp = 0;
+
+
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+
+        tesoros = tesorosTemp;
+        monedas = monedasTemp;
+
     }
 
     // Update is called once per frame
@@ -76,14 +91,18 @@ public class Player : MonoBehaviour{
         //TODO: recibir dano de los wendigos
         if (Input.GetKeyDown(KeyCode.Space)) {
             health--;
-            // string msg = "Player:Health:" + health + ":";
             Client.instance.Send_Data("0:Player:Health:" + health + ":");
+        }
+
+        if (health != vidaTemp)
+        {
+            Client.instance.Send_Data("0:Player:Health:" + health + ":");
+            vidaTemp = health;
         }
 
         //TODO: Curarse  
         if (Input.GetKeyDown(KeyCode.Backspace)) {
             health++;
-            // string msg = "Player:Health:" + health + ":";
             Client.instance.Send_Data("0:Player:Health:" + health + ":");
         }
 
@@ -104,21 +123,18 @@ public class Player : MonoBehaviour{
         //MONEDAS Y TESOROS
         monedasText.text = ":" + monedas;
 
-        if (Input.GetKeyDown(KeyCode.C)){
-            monedas++;
+        if ((monedas != monedasTemp)){
             Client.instance.Send_Data("0:Player:Coins:" + monedas + ":");
+            monedasTemp = monedas;
         }
         
         
         tesorosMAX = 4; //Depende del nivel
         tesorosText.text = ":" + tesoros + "/" + tesorosMAX;
-        if (Input.GetKeyDown(KeyCode.T))
+        if ((tesoros != tesorosTemp))
         {
-            if(tesoros < tesorosMAX)
-            {
-                
-            }
             Client.instance.Send_Data("0:Player:Treasures:" + tesoros + "/" + tesorosMAX + ":");
+            tesorosTemp = tesoros;
         }
 
         //LLaves
@@ -194,7 +210,7 @@ public class Player : MonoBehaviour{
         {
             if (animator.GetBool("correr"))
             {
-                Debug.Log("Ya no voy a correr");
+             //   Debug.Log("Ya no voy a correr");
                 animator.SetBool("correr", false);
                 animator.SetInteger("action", 0);
             }

@@ -17,12 +17,12 @@ public class ChestController : MonoBehaviour
     public GameObject tempObj;
 
     [System.Serializable]
-    public class DropCurrency 
+    public class Tesoros 
     {
         public GameObject item;
     }
 
-    public List<DropCurrency> Contenidos = new List<DropCurrency>();
+    public List<Tesoros> Contenidos = new List<Tesoros>();
     
     public void sacarObjeto()
     {
@@ -31,7 +31,7 @@ public class ChestController : MonoBehaviour
             tempObj = Instantiate(Contenidos[j].item, transform.position, Quaternion.identity);
             if (Contenidos[j].item.name == "Heart")
             {
-                GameObject player = GameObject.Find("Player1");
+                GameObject player = GameObject.Find("Damian2.0");
                 Player playerScript = player.GetComponent<Player>();
                 playerScript.health += 1;
             }
@@ -43,7 +43,7 @@ public class ChestController : MonoBehaviour
 
             if (Contenidos[j].item.name == "Key")
             {
-                GameObject player = GameObject.Find("Player1");
+                GameObject player = GameObject.Find("Damian2.0");
                 Player playerScript = player.GetComponent<Player>();
                 playerScript.llaves += 1;
             }
@@ -73,12 +73,11 @@ public class ChestController : MonoBehaviour
         if (openChest == true & (Input.GetKeyDown(KeyCode.Z) & (ChestOpened == false))){
             Avisos.text = " ";
             animator.SetBool("openChest", true);
-            GameObject player = GameObject.Find("Player1");
+            GameObject player = GameObject.Find("Damian2.0");
             Player playerScript = player.GetComponent<Player>();
             playerScript.tesoros += 1;
             sacarObjeto();
-            ChestOpened = true; 
-
+            ChestOpened = true;
         }
 
         if (ChestOpened == true)

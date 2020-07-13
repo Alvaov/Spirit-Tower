@@ -9,7 +9,7 @@ public class heart : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            GameObject player = GameObject.Find("Player1");
+            GameObject player = GameObject.Find("Damian2.0");
             Player playerScript = player.GetComponent<Player>();         
             playerScript.health += 1;
             Destroy(gameObject);
