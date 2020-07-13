@@ -21,7 +21,7 @@ public class SpectrumMovement : MonoBehaviour
     //Aspectos generales
     public GameObject player;
     public CharacterController spectrum;
-    public string[] path = { "0,0", "0,0" };
+    public string[] path;// = { "0,0", "0,0" };
     private Vector3 target;
     public float frameInterval;
     public int myId;
@@ -29,11 +29,13 @@ public class SpectrumMovement : MonoBehaviour
     public bool localDetected = false;
     public bool attack = false;
     public bool addedToList = false;
+    Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
         spectrum = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         visionRadius = 10;
         myId = Client.spectrumId;
@@ -71,6 +73,10 @@ public class SpectrumMovement : MonoBehaviour
             {
                 checkVisualRange();
             }
+            if(distance < 7 && detected)
+            {
+                attacking();
+            }
             if(detected == true)
             {
                 localDetected = true;
@@ -78,6 +84,8 @@ public class SpectrumMovement : MonoBehaviour
             if(Safe.safe == true && localDetected == true)
             {
                 localDetected = false;
+                animator.SetInteger("action",0);
+                animator.SetBool("perseguir",false);
                 Client.instance.tcp.SendData(myId + ":Spectrum:Backtracking:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
             }
             else if (detected == true)
@@ -88,15 +96,31 @@ public class SpectrumMovement : MonoBehaviour
         walk();
     }
 
-    void checkVisualRange()
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Sword"))
+        {
+            if (!checkVisualRange())
+            {
+                Client.instance.tcp.SendData(myId + ":Spectrum:Damage:1:");
+            }
+        }
+    }
+
+
+    bool checkVisualRange()
     {
         Vector3 direction = player.transform.position - transform.position;
 
         float angle = Vector3.Angle(direction, transform.forward);
 
-        if (angle < visionAngle * 0.5f){
-                detected = true;
+        if (angle < visionAngle * 0.5f){    
+            detected = true;
+            animator.SetInteger("action", 1);
+            animator.SetBool("perseguir", true);
+            return true;
         }
+        return false;
     }
 
     private void walk()
@@ -105,7 +129,6 @@ public class SpectrumMovement : MonoBehaviour
         {
             try
             {
-                //path.Length - 2
                 if (stepPath == path.Length - 1)
                 {
                     stepPath = 0;
@@ -115,10 +138,14 @@ public class SpectrumMovement : MonoBehaviour
                 int z;
                 Int32.TryParse(pos_grid[0], out x);
                 Int32.TryParse(pos_grid[1], out z);
+                
                 target = Grid.instance.GetWorldPointFromAxes(x, z);
+                
                 if (transform.position != target)
                 {
+                    FaceTarget();
                     transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+
                 }if(transform.position == target)
                 {
                     stepPath++;
@@ -127,10 +154,39 @@ public class SpectrumMovement : MonoBehaviour
             }
             catch
             {
-                Debug.Log(path[stepPath]);
                 Debug.Log("Error convirtiendo string a entero");
             }
         }
     }
 
+    void FaceTarget()
+    {
+        Vector3 direction = (target - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2f);
+
+    }
+
+    void attacking()
+    {
+        StartCoroutine(AttackRoutine());
+    }
+
+
+    IEnumerator AttackRoutine()
+    {
+        animator.SetBool("atacar", true);
+        animator.SetInteger("action", 2);
+        yield return new WaitForSeconds(1);
+        if (detected)
+        {
+            animator.SetInteger("action", 1);
+            animator.SetBool("atacar", false);
+        }
+        if (!detected)
+        {
+            animator.SetInteger("action", 0);
+            animator.SetBool("atacar", false);
+        }
+    }
 }

@@ -7,7 +7,7 @@
 #include <time.h>
 #include "Linked_List.h"
 
-#define AMOUNT_OF_PEOPLE 10000
+#define AMOUNT_OF_PEOPLE 100
 #define DEBUG 0
 
 /*
@@ -17,12 +17,12 @@ Solo falta separarlo
 class Person {
 private:
     uint8_t bitArray[4];
-    int health;
-    int speed;
-    int vision_range;
-    int follow_speed;
+    int health = 1;
+    int speed = 30;
+    int vision_range = 60;
+    int follow_speed = 45;
     int fitness;
-    bool alive;
+    bool alive = true;
   
 public:
     Person() {
@@ -55,7 +55,18 @@ public:
     ~Person() {
 
     }
-
+    int get_health() {
+        return health;
+    }
+    int get_speed() {
+        return speed;
+    }
+    int get_vision_range() {
+        return vision_range;
+    }
+    int get_follow_speed() {
+        return follow_speed;
+    }
     int randomBool() {
         return 0 + (rand() % (1 - 0 + 1)) == 1;
     }
@@ -132,6 +143,9 @@ public:
             damage_normalized * damage_weight;
 
     }
+    double getFitness() {
+        return fitness;
+    }
     /*
     void clearMemory() {
         std::cout << "Clear: ";
@@ -183,65 +197,22 @@ public:
             //std::cout << this->getBit(i) << person->getBit(i) << value_inherited << std::endl;
 
         }
-
-
-        //Pruebas
-
-        // Progenitor 1
-        for (int i = 0; i <= 31; ++i) {
-            std::cout << this->getBit(i);
-        }
-        std::cout << std::endl;
-
-        // Progenitor 2
-        for (int i = 0; i <= 31; ++i) {
-            std::cout << person->getBit(i);
-        }
-        std::cout << std::endl;
-
-        // Hijo
-        for (int i = 0; i <= 31; ++i) {
-            std::cout << child->getBit(i);
-        }
-
-        std::cout << std::endl;
-        std::cout << std::endl;
-        std::cout << std::endl;
-
         int random_mutation = randomNum(0, 100);
-        std::cout << random_mutation;
-        std::cout << std::endl;
-        
+
         // ocurre mutacion
         if (0 <= random_mutation && random_mutation <= 10) {
-            std::cout << "Ocurrio una mutacion: ";
-            std::cout << std::endl;
             child->mutation();
         }
 
         // Hijo mutado
-        for (int i = 0; i <= 31; ++i) {
-            std::cout << child->getBit(i);
-        }
-
-        std::cout << std::endl;
-
-        int random_inversion = randomNum(0, 100);
-        std::cout << random_inversion;
-        std::cout << std::endl;
+       int random_inversion = randomNum(0, 100);
 
         // ocurre inversion
         if (0 <= random_inversion  && random_inversion <= 5) {
-            std::cout << "Ocurrio inversion: ";
-            std::cout << std::endl;
             child->inversion();
         }
 
         // Hijo con inversion
-        for (int i = 0; i <= 31; ++i) {
-            std::cout << child->getBit(i);
-        }
-
         return child;
     }
 

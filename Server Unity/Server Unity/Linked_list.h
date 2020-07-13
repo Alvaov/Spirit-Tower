@@ -40,6 +40,8 @@ private:
     void deleteNode(node<generic>* del) {
         if (head == nullptr || del == nullptr) {
             return;
+        }if (end == del) {
+            end = del->before;
         }if (head == del) {
             head = del->next;
         }if (del->next != nullptr) {
@@ -230,6 +232,11 @@ public:
             return false;
         }
     };
+    void delete_list() {
+        for (int i = 0; i < object_counter - 1; i++) {
+            delete_by_pos(0);
+        }
+    }
 
 };
 #endif //

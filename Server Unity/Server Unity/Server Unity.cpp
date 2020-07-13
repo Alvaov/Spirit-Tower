@@ -8,13 +8,15 @@
 #include "Espectro.h"
 #include <random>
 #include "Enemy_Genetics.h"
-
+#include <chrono>
+#include <stdlib.h>
 int playerPos[2];
 lista<Espectro*>* espectros;
 node_map* mapaActual;
 Path_Astar escenario;
 node_map* mapa_backtracking;
-int lvl = 1;
+Enemy_Genetics* enemy_genetics;
+int lvl = 0;
 
 //function pointer is declared
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
@@ -38,13 +40,11 @@ int main(){
     mapaActual = escenario.CreateMap();
     espectros = new lista<Espectro*>();
     mapa_backtracking = backtraking().CreateMap();
-    Enemy_Genetics* enemy_genetics = new Enemy_Genetics();
-    enemy_genetics->work();
+    enemy_genetics = new Enemy_Genetics();
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
     if (server.Init()) {
         server.Run();
     }
-
 }
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     std::cout << msg << std::endl;
@@ -89,7 +89,18 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             try {
                 int* enemyPos = get_position(msg_arr[3]);
                 int enemy_id = std::stoi(msg_arr[0]);
-                Espectro* espectro = new Espectro(enemyPos[0], enemyPos[1], enemy_id, lvl);
+                lista<Person*> list = enemy_genetics->getList();
+                Person* datos_espector = list.get_data_by_pos(enemy_id);
+                Espectro* espectro = new Espectro(
+                    datos_espector->get_health(),
+                    enemyPos[0], 
+                    enemyPos[1], 
+                    datos_espector->get_speed(), 
+                    5, 
+                    datos_espector->get_vision_range(), 
+                    enemy_id, 
+                    lvl
+                );
                 espectros->insert(espectro);
                 listener->Send(client,msg_arr[0]+":Spectrum:Created:");
                 delete enemyPos;
@@ -113,18 +124,34 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             std::string path = trackback.send_route(id, enemyPos, get_position(espectro->getPath(0)));
             listener->Send(client, msg_arr[0]+":Spectrum:Backtracking:"+path);
             delete enemyPos;
+        }else if (msg_arr[2] == "Attack") {
+            std::cout << "Spectrum hit player. Player is gonna die";
+            listener->Send(client, "0:Player:Damage:5");
         }
     }else if (msg_arr[1] == "Grid") {
         if (msg_arr[2] == "Obstacle") {
             int* pos = get_position(msg_arr[3]);
             mapaActual[(pos[1] * escenario.nMapHeight) + (pos[0] + (pos[1] / escenario.nMapHeight))].bObstacle = true;
             delete pos;
+        }else if (msg_arr[2] == "New"){
+            if (!espectros->isEmpty()) {
+                for (int p = 0; p < espectros->get_object_counter(); p++) {
+                    delete espectros->get_data_by_pos(p);
+                }
+                espectros->delete_list();
+            }
+            lvl++;
+            mapaActual = escenario.CreateMap();
+            for (int p = 0; p < 50; p++) {
+                enemy_genetics->work();
+            }
+            std::cout << "se crea el mapa nuevamente" << "\n";
         }
     }else if (msg_arr[1] == "Chuchu") {
         if (msg_arr[2] == "New") {
-
+            listener->Send(client, msg_arr[0] + ":Chuchu:Created:");
         }
-        else if (msg_arr[2] == "path") {
+        else if (msg_arr[2] == "Move") {
             int* enemyPos = get_position(msg_arr[3]);
             listener->Send(client, bresenham(enemyPos[0], enemyPos[1],playerPos[0], playerPos[1]));
             delete enemyPos;
@@ -136,10 +163,10 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     else if (msg_arr[1] == "Rat") {
         if (msg_arr[2] == "Move") {
             int* rat = get_position(msg_arr[3]);
-            std::default_random_engine generator;
-            std::uniform_int_distribution<int> distribution(-1, 1);
-            int movement[2] = {distribution(generator), distribution(generator)};
-            
+            int rand_num();
+            int rat_x = rand_num();
+            int rat_y = rand_num();
+            int movement[2] = {rat_x, rat_y};
             node_map rat_to_move_pos = 
                 mapaActual[
                     ((rat[1] + movement[1]) * escenario.nMapHeight) + 
@@ -148,12 +175,15 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 ];
             if (!rat_to_move_pos.bObstacle) {
                 std::string msg_to_send = msg_arr[0] + ":Rat:Move:";
-                msg_to_send += (rat[0] + movement[0]);
+                msg_to_send += std::to_string(rat[0] + movement[0]);
                 msg_to_send += ",";
-                msg_to_send += (rat[1] + movement[1]);
+                msg_to_send += std::to_string(rat[1] + movement[1]);
                 msg_to_send += ":";
+                listener->Send(client, msg_to_send);
             }
             delete rat;
+        }if (msg_arr[2] == "New") {
+            listener->Send(client,msg_arr[0]+":Rat:Created:");
         }
     }
     else if (msg_arr[1] == "Health") {
@@ -182,6 +212,18 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
 
     listener->Send(client, msg);
 };
+
+int rand_num() {
+    srand(time(nullptr));
+    int num = rand() % (3);
+    if (num == 0) {
+        return 0;
+    }else if (num == 1) {
+        return 1;
+    }else if (num == 2) {
+        return -1;
+    }
+}
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 

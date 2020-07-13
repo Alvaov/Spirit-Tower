@@ -13,9 +13,16 @@ public class Player : MonoBehaviour{
     public float vertical;
     public float gravity = -9.8f;
     public float speed = 10;
+    float rotation = 0f;
+    float rotSpeed = 80;
     int frameInterval = 10;
     public CharacterController player;
     public Animator animator;
+
+    //Acciones
+    public bool agacharse = false;
+    public static bool atacar = false;
+    public bool defender = false;
 
     //Salud
     public int health;
@@ -47,33 +54,19 @@ public class Player : MonoBehaviour{
     // Update is called once per frame
     void Update()
     {
+        Movement();
 
-        //MOVIMIENTO
-        if (player.isGrounded)
-        {
-            horizontal = Input.GetAxis("Horizontal");
-            vertical = Input.GetAxis("Vertical");
-            animator.SetFloat("vertical", Input.GetAxis("Vertical"));
-            animator.SetFloat("horizontal", Input.GetAxis("Horizontal"));
-            movement = new Vector3(horizontal, 0f, vertical) * speed * Time.deltaTime;
-            movement = Vector3.ClampMagnitude(movement, 1);
-            player.Move(movement);
-        }
-        else
-        {
-            movement = new Vector3(0, gravity, 0) * Time.deltaTime;
-            player.Move(movement);
-        }
+        GetInput();
 
         if (Time.frameCount % frameInterval == 0)
         {
             Client.instance.tcp.SendData("0:Player:Position:" + Grid.instance.GetAxesFromWorldPoint(player.transform.position)+":");
         }
 
-        //SALUD
-        if (health <= 0) {
-            health = 0;
-            //Morir :c
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            agacharse = true;
+            animator.SetBool("agacharse", true);
         }
 
         if (health > numOfHearts) {
@@ -115,7 +108,8 @@ public class Player : MonoBehaviour{
             monedas++;
             Client.instance.Send_Data("0:Player:Coins:" + monedas + ":");
         }
-
+        
+        
         tesorosMAX = 4; //Depende del nivel
         tesorosText.text = ":" + tesoros + "/" + tesorosMAX;
         if (Input.GetKeyDown(KeyCode.T))
@@ -131,5 +125,125 @@ public class Player : MonoBehaviour{
         llavesMAX = 4;
         llavesText.text = ":" + llaves + "/" + llavesMAX;
 
+    }
+
+    void Movement()
+    {
+        if (player.isGrounded)
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                if (animator.GetBool("atacar") || animator.GetBool("defender"))
+                {
+                    return;
+                }
+                if (!animator.GetBool("atacar") || !animator.GetBool("defender"))
+                {
+                    animator.SetBool("correr", true);
+                    animator.SetInteger("action", 1);
+                    movement = new Vector3(0, 0, 1);
+                    movement *= speed * Time.deltaTime;
+                    movement = transform.TransformDirection(movement);
+                }
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                if (animator.GetBool("atacar") || animator.GetBool("defender"))
+                {
+                    return;
+                }
+                if (!animator.GetBool("atacar") || !animator.GetBool("defender"))
+                {
+                    animator.SetBool("correr", true);
+                    animator.SetInteger("action", 1);
+                    movement = new Vector3(0, 0, -1);
+                    movement *= speed * Time.deltaTime;
+                    movement = transform.TransformDirection(movement);
+                }
+            }
+
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            animator.SetBool("correr", false);
+            animator.SetInteger("action", 0);
+            movement = new Vector3(0, 0, 0);
+            movement *= speed * Time.deltaTime;
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            animator.SetBool("correr", false);
+            animator.SetInteger("action", 0);
+            movement = new Vector3(0, 0, 0);
+            movement *= speed * Time.deltaTime;
+        }
+        rotation += Input.GetAxis("Horizontal") * rotSpeed * Time.deltaTime;
+        transform.eulerAngles = new Vector3(0, rotation, 0);
+        if (!player.isGrounded)
+        {
+            movement = new Vector3(0, gravity, 0) * Time.deltaTime;
+        }
+
+        player.Move(movement);
+
+    }
+
+    void GetInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (animator.GetBool("correr"))
+            {
+                Debug.Log("Ya no voy a correr");
+                animator.SetBool("correr", false);
+                animator.SetInteger("action", 0);
+            }
+            if (!animator.GetBool("correr"))
+            {
+                Attacking();
+            }
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (animator.GetBool("correr"))
+            {
+                animator.SetBool("correr", false);
+                animator.SetInteger("action", 0);
+            }
+            if (!animator.GetBool("correr"))
+            {
+                animator.SetBool("defender", true);
+                Debug.Log("Escudo!!!");
+                Deffending();
+            }
+        }
+    }
+
+    void Attacking()
+    {
+        StartCoroutine(AttackRoutine());
+    }
+
+    void Deffending()
+    {
+        StartCoroutine(DeffendRoutine());
+    }
+
+    IEnumerator DeffendRoutine()
+    {
+        animator.SetBool("defender", true);
+        animator.SetInteger("action", 3);
+        yield return new WaitForSeconds(1);
+        animator.SetInteger("action", 0);
+        animator.SetBool("defender", false);
+    }
+
+    IEnumerator AttackRoutine()
+    {
+        animator.SetBool("atacar", true);
+        animator.SetInteger("action", 2);
+        yield return new WaitForSeconds(1);
+        animator.SetInteger("action", 0);
+        animator.SetBool("atacar", false);
     }
 }
