@@ -14,12 +14,12 @@ void Enemy_Genetics::work() {
         // Calcular el fitness del enemigo
     }
 
-    for (int i = 0; i < AMOUNT_OF_PEOPLE; ++i) {
+    for (int i = 0; i < Enemies.get_object_counter(); ++i) {
         // Decidir si un enemigo es apto o no
         Enemies.get_data_by_pos(i)->selection();
     }
-
-    for (int i = 0; i < AMOUNT_OF_PEOPLE; i = i + 2) {
+	int init_size = Enemies.get_object_counter();
+    for (int i = 0; i < init_size; i = i + 2) {
         // Reproduccion: cruce, mutacion e inversion
         Person* child = Enemies.get_data_by_pos(i)->crossover(Enemies.get_data_by_pos(i + 1));
         // Insertar el hijo en la poblacion
@@ -31,7 +31,6 @@ void Enemy_Genetics::work() {
 		delete Enemies.get_data_by_pos(i);
 		Enemies.delete_by_pos(i);
 	}
-	std::cout << "prueba";
 }
 int partitionGenetics(lista<Person*>* list, int low, int high)
 {

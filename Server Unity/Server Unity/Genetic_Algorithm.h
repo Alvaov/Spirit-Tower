@@ -64,7 +64,7 @@ public:
     int get_vision_range() {
         return vision_range;
     }
-    int follow_speed() {
+    int get_follow_speed() {
         return follow_speed;
     }
     int randomBool() {
@@ -201,8 +201,6 @@ public:
 
         // ocurre mutacion
         if (0 <= random_mutation && random_mutation <= 10) {
-            std::cout << "Ocurrio una mutacion: ";
-            std::cout << std::endl;
             child->mutation();
         }
 
@@ -211,7 +209,6 @@ public:
 
         // ocurre inversion
         if (0 <= random_inversion  && random_inversion <= 5) {
-            std::cout << "Ocurrio inversion: "<< std::endl;
             child->inversion();
         }
 

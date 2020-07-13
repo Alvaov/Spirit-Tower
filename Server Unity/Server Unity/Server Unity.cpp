@@ -90,7 +90,6 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 int enemy_id = std::stoi(msg_arr[0]);
                 lista<Person*> list = enemy_genetics->getList();
                 Person* datos_espector = list.get_data_by_pos(enemy_id);
-                int _health, int x, int y, int _speed, int _dmg, int vision;
                 Espectro* espectro = new Espectro(
                     datos_espector->get_health(),
                     enemyPos[0], 
@@ -134,15 +133,18 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             mapaActual[(pos[1] * escenario.nMapHeight) + (pos[0] + (pos[1] / escenario.nMapHeight))].bObstacle = true;
             delete pos;
         }else if (msg_arr[2] == "New"){
-            for (int p = 0; p < espectros->get_object_counter(); p++) {
-                delete espectros->get_data_by_pos(p);
+            if (!espectros->isEmpty()) {
+                for (int p = 0; p < espectros->get_object_counter(); p++) {
+                    delete espectros->get_data_by_pos(p);
+                }
+                espectros->delete_list();
             }
-            espectros->delete_list();
             lvl++;
             mapaActual = escenario.CreateMap();
             for (int p = 0; p < 50; p++) {
                 enemy_genetics->work();
             }
+            std::cout << "se crea el mapa nuevamente" << "\n";
         }
     }else if (msg_arr[1] == "Chuchu") {
         if (msg_arr[2] == "New") {
@@ -172,12 +174,15 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 ];
             if (!rat_to_move_pos.bObstacle) {
                 std::string msg_to_send = msg_arr[0] + ":Rat:Move:";
-                msg_to_send += (rat[0] + movement[0]);
+                msg_to_send += std::to_string(rat[0] + movement[0]);
                 msg_to_send += ",";
-                msg_to_send += (rat[1] + movement[1]);
+                msg_to_send += std::to_string(rat[1] + movement[1]);
                 msg_to_send += ":";
+                listener->Send(client, msg_to_send);
             }
             delete rat;
+        }if (msg_arr[2] == "New") {
+            listener->Send(client,msg_arr[0]+":Rat:Created:");
         }
     }
     else if (msg_arr[1] == "Health") {

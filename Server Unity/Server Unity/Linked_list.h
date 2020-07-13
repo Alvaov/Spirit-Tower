@@ -40,6 +40,8 @@ private:
     void deleteNode(node<generic>* del) {
         if (head == nullptr || del == nullptr) {
             return;
+        }if (end == del) {
+            end = del->before;
         }if (head == del) {
             head = del->next;
         }if (del->next != nullptr) {
