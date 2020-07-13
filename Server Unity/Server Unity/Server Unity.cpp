@@ -9,6 +9,7 @@
 #include <random>
 #include "Enemy_Genetics.h"
 #include <chrono>
+#include <stdlib.h>
 int playerPos[2];
 lista<Espectro*>* espectros;
 node_map* mapaActual;
@@ -148,9 +149,9 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         }
     }else if (msg_arr[1] == "Chuchu") {
         if (msg_arr[2] == "New") {
-
+            listener->Send(client, msg_arr[0] + ":Chuchu:Created:");
         }
-        else if (msg_arr[2] == "path") {
+        else if (msg_arr[2] == "Move") {
             int* enemyPos = get_position(msg_arr[3]);
             listener->Send(client, bresenham(enemyPos[0], enemyPos[1],playerPos[0], playerPos[1]));
             delete enemyPos;
@@ -162,10 +163,10 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
     else if (msg_arr[1] == "Rat") {
         if (msg_arr[2] == "Move") {
             int* rat = get_position(msg_arr[3]);
-            std::default_random_engine generator;
-            std::uniform_int_distribution<int> distribution(-1, 1);
-            int movement[2] = {distribution(generator), distribution(generator)};
-            
+            int rand_num();
+            int rat_x = rand_num();
+            int rat_y = rand_num();
+            int movement[2] = {rat_x, rat_y};
             node_map rat_to_move_pos = 
                 mapaActual[
                     ((rat[1] + movement[1]) * escenario.nMapHeight) + 
@@ -211,6 +212,18 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
 
     listener->Send(client, msg);
 };
+
+int rand_num() {
+    srand(time(nullptr));
+    int num = rand() % (3);
+    if (num == 0) {
+        return 0;
+    }else if (num == 1) {
+        return 1;
+    }else if (num == 2) {
+        return -1;
+    }
+}
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 

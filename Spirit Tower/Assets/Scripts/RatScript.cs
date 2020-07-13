@@ -10,9 +10,9 @@ public class RatScript : MonoBehaviour
 
     public CharacterController rat;
     public int id;
-    public int speed = 10;
+    public int speed = 1;
     private Vector3 target;
-    public float frameInterval = 20;
+    public float frameInterval = 30;
     public bool addedToList = false;
     public string[] path;
 
@@ -57,18 +57,33 @@ public class RatScript : MonoBehaviour
 
     void Walk()
     {
-        string[] pos_grid = path[0].Split(',');
-        int x;
-        int z;
-        Int32.TryParse(pos_grid[0], out x);
-        Int32.TryParse(pos_grid[1], out z);
-
-        target = Grid.instance.GetWorldPointFromAxes(x, z);
-
-        if (transform.position != target)
+        try
         {
-            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            string[] pos_grid = path[0].Split(',');
+            int x;
+            int z;
+            Int32.TryParse(pos_grid[0], out x);
+            Int32.TryParse(pos_grid[1], out z);
 
+            target = Grid.instance.GetWorldPointFromAxes(x, z);
+
+            if (transform.position != target)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+                FaceTarget();
+
+            }
         }
+        catch{
+            //Debug.Log("Error convirtiendo a entero rat");
+        }
+    }
+
+    void FaceTarget()
+    {
+        Vector3 direction = (transform.position - target).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2f);
+
     }
 }

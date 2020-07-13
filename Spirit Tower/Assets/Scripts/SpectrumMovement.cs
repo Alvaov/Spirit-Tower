@@ -143,7 +143,7 @@ public class SpectrumMovement : MonoBehaviour
                 
                 if (transform.position != target)
                 {
-                    transform.LookAt(player.transform);
+                    FaceTarget();
                     transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
 
                 }if(transform.position == target)
@@ -159,6 +159,13 @@ public class SpectrumMovement : MonoBehaviour
         }
     }
 
+    void FaceTarget()
+    {
+        Vector3 direction = (target - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2f);
+
+    }
 
     void attacking()
     {
