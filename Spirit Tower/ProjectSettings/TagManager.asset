@@ -4,12 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - player_shield_weak
   - RightHand
   - LeftHand
   - Enemy
   - Spectrum
   - Sword
+  - Rat
+  - Wall
   layers:
   - Default
   - TransparentFX

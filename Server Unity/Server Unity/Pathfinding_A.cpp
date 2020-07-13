@@ -365,7 +365,7 @@ node_map* backtraking::CreateMap(int size)
 	return nodes;
 }
 
-std::string bresenham(int x1, int y1, int x2, int y2)
+std::string bresenham(int x1, int y1, int x2, int y2, node_map* mapaActual)
 {
 	int dY = (y2 - y1);
 	int dX = (x2 - x1);
@@ -406,6 +406,9 @@ std::string bresenham(int x1, int y1, int x2, int y2)
 	int avI = (av - dX);
 	std::string msg;
 	while ((X != x2) || (Y != y2)) {
+		if (mapaActual[(Y * 120) + (X + ((Y) / 120))].bObstacle) {
+			return msg;
+		}
 		msg += std::to_string(X) + "," + std::to_string(Y);
 		msg += ";";
 		if (av >= 0) {
@@ -418,5 +421,10 @@ std::string bresenham(int x1, int y1, int x2, int y2)
 			Y = (Y + IncYr);    // Y aumenta en recto.
 			av = (av + avR);
 		}
-	}return msg;
+	}
+	msg += std::to_string(x2) +
+	"," +
+	std::to_string(y2) +
+	";";
+	return msg;
 }
