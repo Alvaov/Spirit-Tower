@@ -137,6 +137,8 @@ public class Client : MonoBehaviour
             {
                 if (msg_arr[2] == "Damage")
                 {
+                    
+
                     //Infligir daño
                 }
             }

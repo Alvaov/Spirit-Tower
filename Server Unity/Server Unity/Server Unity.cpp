@@ -124,12 +124,12 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             std::string path = trackback.send_route(id, enemyPos, get_position(espectro->getPath(0)));
             listener->Send(client, msg_arr[0]+":Spectrum:Backtracking:"+path);
             delete enemyPos;
-        }else if (msg_arr[2] == "Attack") {
+        }else if (msg_arr[2] == "Attack") { //Producir dano
             std::cout << "Spectrum hit player. Player is gonna die";
             listener->Send(client, "0:Player:Damage:5");
         }
-        else if (msg_arr[2] == "Damage") {
-            //Enviar daño
+        else if (msg_arr[2] == "Damage") { //Recibir dano
+            //Enviar daño 
         }
     }else if (msg_arr[1] == "Grid") {
         if (msg_arr[2] == "Obstacle") {

@@ -15,10 +15,14 @@ public class vaseBreak : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Sword"))
         {
-            item = Instantiate(contenido, transform.position, Quaternion.identity);
-            item.transform.Translate(transform.up * 3);
-            AudioSource.PlayClipAtPoint(clip, transform.position);
-            Destroy(gameObject);
+            if (Player.atacar)
+            {
+                item = Instantiate(contenido, transform.position, Quaternion.identity);
+                item.transform.Translate(transform.up * 3);
+                AudioSource.PlayClipAtPoint(clip, transform.position);
+                Destroy(gameObject);
+            }
+          
         }
     }
 }
