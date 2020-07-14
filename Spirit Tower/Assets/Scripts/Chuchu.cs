@@ -13,7 +13,7 @@ public class Chuchu : MonoBehaviour
     public int stepPath = 0;
     public bool stop = false;
     private Vector3 target;
-    public float frameInterval = 10;
+    public float frameInterval;
     public bool addedToList = false;
     public string[] path;
 
@@ -21,6 +21,7 @@ public class Chuchu : MonoBehaviour
     void Start()
     {
         chuchu = GetComponent<CharacterController>();
+        frameInterval = 15 + ((id + 1) * 15);
         id = Client.chuchuId;
         Client.chuchuId += 1;
     }

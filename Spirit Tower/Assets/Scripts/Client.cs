@@ -13,12 +13,14 @@ public class Client : MonoBehaviour
     public Lista<SpectrumMovement> spectrums;
     public Lista<RatScript> rats;
     public Lista<Chuchu> chuchus;
+    public Lista<EyeScript> spectralEyes;
     public string ip = "127.0.0.1";
     public int port = 54100;
     public int myId = 0;
     public static int spectrumId = 0;
     public static int ratId = 0;
     public static int chuchuId = 0;
+    public static int eyeId = 0;
     public TCP tcp;
 
     GameObject player;
@@ -45,6 +47,7 @@ public class Client : MonoBehaviour
         player = GameObject.Find("Damian2.0");
         playerScript = player.GetComponent<Player>();
         chuchus = new Lista<Chuchu>();
+        spectralEyes = new Lista<EyeScript>();
     }
 
     public void ConnectToServer()
@@ -175,6 +178,7 @@ public class Client : MonoBehaviour
                         {
                             //Debug.Log(msg);
                             espectroActual.path = actualPath;
+                            espectroActual.localDetected = false;
                         }
                     }
                 }
@@ -262,6 +266,20 @@ public class Client : MonoBehaviour
                                     Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                                 }
                             }
+                        }
+                    }
+                }
+            }
+            if (msg_arr[1] == "Eye")
+            {
+                if (msg_arr[2] == "Created")
+                {
+                    for (int i = 0; i < Client.instance.spectralEyes.getTamaño(); i++)
+                    {
+                        if (Client.instance.spectralEyes.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                        {
+                            Client.instance.spectralEyes.getValorEnIndice(i).addedToList = true;
+
                         }
                     }
                 }
