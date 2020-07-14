@@ -86,7 +86,8 @@ public class ChestController : MonoBehaviour
         }
 
         if(tempObj != null) { 
-             tempObj.transform.Translate(transform.up * Time.deltaTime);
+            tempObj.transform.Translate(transform.up * Time.deltaTime);
+            tempObj.transform.Rotate(new Vector3(0, Time.deltaTime * 100, 0));
             if (tempObj.transform.position.y > 6.0f)
             {
                 Destroy(tempObj);
