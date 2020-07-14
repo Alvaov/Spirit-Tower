@@ -51,7 +51,7 @@ public class Player : MonoBehaviour{
 
     public Text llavesText;
     public int llaves;
-    public int llavesMAX;
+    public int hasMasterKey;
 
     //Variables para el server
 
@@ -184,8 +184,7 @@ public class Player : MonoBehaviour{
         }
 
         //LLaves
-        llavesMAX = 4;
-        llavesText.text = ":" + llaves + "/" + llavesMAX;
+        llavesText.text = ":" + llaves;
 
     }
 
