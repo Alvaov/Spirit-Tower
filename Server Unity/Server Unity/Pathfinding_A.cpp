@@ -200,7 +200,11 @@ std::string Path_Astar::send_route(std::string spectrumId,int posPlayer[2], int 
 			msg += ";";
 			temp_node = temp_node->parent; //:x,y:
 		}
-	}return msg;
+	}
+	msg += std::to_string(posPlayer[0]);
+	msg += "," + std::to_string(posPlayer[1]);
+	//msg += ";";
+	return msg;
 }
 
 bool backtraking::is_safe(int posXY) {

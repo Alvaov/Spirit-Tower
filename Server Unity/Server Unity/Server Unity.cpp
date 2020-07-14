@@ -6,12 +6,14 @@
 #include "Pathfinding_A.h"
 #include "Linked_list.h"
 #include "Espectro.h"
+#include "SpectralEye.h"
 #include <random>
 #include "Enemy_Genetics.h"
 #include <chrono>
 #include <stdlib.h>
 int playerPos[2];
 lista<Espectro*>* espectros;
+lista<SpectralEye*>* spectralEyes;
 node_map* mapaActual;
 Path_Astar escenario;
 node_map* mapa_backtracking;
@@ -39,6 +41,7 @@ int main(){
     escenario = Path_Astar();
     mapaActual = escenario.CreateMap();
     espectros = new lista<Espectro*>();
+    spectralEyes = new lista<SpectralEye*>();
     mapa_backtracking = backtraking().CreateMap();
     enemy_genetics = new Enemy_Genetics();
     Tcplistener server(54100, "127.0.0.1", Listener_MesssageRec);
@@ -73,6 +76,13 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 std::cerr << "jaja se cayo\n";
             }
         }
+        if (msg_arr[2] == "Health") {
+            if (msg_arr[3] == "0") {
+                std::cout << "Player has died, game over :c";
+                listener->Send(client, "0:Player:Dead:");
+                exit(0);
+            }
+        }
     }
     else if (msg_arr[1] == "Spectrum") {
         if (msg_arr[2] == "Detected") {
@@ -87,8 +97,18 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             }
         }else if (msg_arr[2] == "New") {
             try {
-                int* enemyPos = get_position(msg_arr[3]);
+
+                std::string pos;
+                std::string type;
+                int i = 0;
+                for (; msg_arr[3][i] != ';'; i++) {
+                    pos += msg_arr[3][i];
+                }type = msg_arr[3].substr(i + 1, msg_arr[3].size());
+                std::string* result = new std::string[2];
+
+                int* enemyPos = get_position(pos);
                 int enemy_id = std::stoi(msg_arr[0]);
+
                 lista<Person*> list = enemy_genetics->getList();
                 Person* datos_espector = list.get_data_by_pos(enemy_id);
                 Espectro* espectro = new Espectro(
@@ -99,10 +119,14 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                     5, 
                     datos_espector->get_vision_range(), 
                     enemy_id, 
-                    lvl
+                    lvl, 
+                    type
                 );
                 espectros->insert(espectro);
-                listener->Send(client,msg_arr[0]+":Spectrum:Created:");
+                std::string DNA = std::to_string(datos_espector->get_health()) +
+                    std::to_string(datos_espector->get_speed()) +
+                    std::to_string(datos_espector->get_vision_range());
+                listener->Send(client,msg_arr[0]+":Spectrum:Created:"+DNA);
                 delete enemyPos;
             }
             catch (...) {
@@ -129,9 +153,11 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             listener->Send(client, "0:Player:Damage:5");
         }
         else if (msg_arr[2] == "Damage") { //Recibir dano
-            //Enviar daño 
+            listener->Send(client, msg_arr[0] + ":Spectrum:Dead:");
+            std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         }
-    }else if (msg_arr[1] == "Grid") {
+    }
+    else if (msg_arr[1] == "Grid") {
         if (msg_arr[2] == "Obstacle") {
             int* pos = get_position(msg_arr[3]);
             mapaActual[(pos[1] * escenario.nMapHeight) + (pos[0] + (pos[1] / escenario.nMapHeight))].bObstacle = true;
@@ -150,7 +176,8 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             }
             std::cout << "se crea el mapa nuevamente" << "\n";
         }
-    }else if (msg_arr[1] == "Chuchu") {
+    }
+    else if (msg_arr[1] == "Chuchu") {
         if (msg_arr[2] == "New") {
             listener->Send(client, msg_arr[0] + ":Chuchu:Created:");
         }
@@ -167,6 +194,19 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             listener->Send(client, "0:Player:Damage:1");
         }
         else if (msg_arr[2] == "Damage") {
+            listener->Send(client, msg_arr[0] + ":Chuchu:Dead:");
+            std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+        }
+    }
+    else if (msg_arr[1] == "Eye") {
+        if (msg_arr[2] == "New") {
+
+            int* enemyPos = get_position(msg_arr[3]);
+            int id = std::stoi(msg_arr[0]);
+            SpectralEye* ojoEspectral = new SpectralEye(id, enemyPos[0],enemyPos[1]);
+            spectralEyes->insert(ojoEspectral);
+            listener->Send(client, msg_arr[0] + ":Eye:Created:");
+            delete enemyPos;
 
         }
     }
@@ -199,10 +239,6 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             listener->Send(client,msg_arr[0]+":Rat:Created:");
         }
     }
-    else if (msg_arr[1] == "Health") {
-
-    }
-
     else if (msg_arr[1] == "Coins") {
         try {
             if (msg_arr[1][2] == 0) {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
@@ -26,13 +27,18 @@ public class Player : MonoBehaviour{
 
     //Salud
     public int health;
-    public int numOfHearts;
+    int numOfHearts = 5;
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
-    //Salud extra
     public Image[] extraHearts;
+    public int extraHealth;
+    public Sprite extraHeart;
+    int numOfextraHearts = 5;
+
+    public int DamageTaken;
+    public bool ImDead;
 
     //Monedas y tesoros
     public int monedas;
@@ -45,7 +51,7 @@ public class Player : MonoBehaviour{
 
     public Text llavesText;
     public int llaves;
-    public int llavesMAX;
+    public int hasMasterKey;
 
     //Variables para el server
 
@@ -69,8 +75,12 @@ public class Player : MonoBehaviour{
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        if (ImDead)
+        {
+            Time.timeScale = 0;
+        }
 
+        Movement();
         GetInput();
 
         if (Time.frameCount % frameInterval == 0)
@@ -84,39 +94,75 @@ public class Player : MonoBehaviour{
             animator.SetBool("agacharse", true);
         }
 
-        if (health > numOfHearts) {
+        //LIMITES
+        if (extraHealth > numOfextraHearts){ 
+            extraHealth = numOfextraHearts;
+        }
+        if (health > numOfHearts) { 
             health = numOfHearts;
         }
-
-        //TODO: recibir dano de los wendigos
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            health--;
+       
+        //Manejo de la vida
+        if (DamageTaken != 0) 
+        {     
+            if (extraHealth != 0)
+            {
+                extraHealth -= DamageTaken;
+                DamageTaken = -1 * extraHealth;
+            } 
+            if (extraHealth < 0)
+            {
+                extraHealth = 0;
+            }
+            health -= DamageTaken;
+            DamageTaken = 0;
+        }
+        if (health <= 0)
+        {
+            health = 0;
             Client.instance.Send_Data("0:Player:Health:" + health + ":");
         }
-
+        //Enviar datos al server
         if (health != vidaTemp)
         {
             Client.instance.Send_Data("0:Player:Health:" + health + ":");
             vidaTemp = health;
         }
 
-        //TODO: Curarse  
+        //Testeo
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            DamageTaken += 1;
+        }
+
         if (Input.GetKeyDown(KeyCode.Backspace)) {
-            health++;
+
+            if (health >= 5)    //Esto funciona
+            {
+                extraHealth++;
+            }
+            else {  
+                health++; 
+            }
             Client.instance.Send_Data("0:Player:Health:" + health + ":");
         }
 
+        //Corazones en la interfaz
+        for (int i = 0; i < extraHearts.Length; i++)
+        {
+            if (i < extraHealth) {
+                extraHearts[i].enabled = true;
+            }
+            else {
+                extraHearts[i].enabled = false;
+            }
+        }
         for (int i = 0; i < hearts.Length; i++){
 
             if (i < health){
                 hearts[i].sprite = fullHeart;
             } else{
                 hearts[i].sprite = emptyHeart;
-            }
-            if (i < numOfHearts){
-                hearts[i].enabled = true;
-            } else {
-                hearts[i].enabled = false;
             }
         }
 
@@ -138,8 +184,7 @@ public class Player : MonoBehaviour{
         }
 
         //LLaves
-        llavesMAX = 4;
-        llavesText.text = ":" + llaves + "/" + llavesMAX;
+        llavesText.text = ":" + llaves;
 
     }
 
