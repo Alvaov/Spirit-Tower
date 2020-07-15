@@ -106,7 +106,7 @@ public class Client : MonoBehaviour
             }
             catch (Exception _ex)
             {
-                Debug.Log($"Error sending data to player via TCP: {_ex}");
+                //Debug.Log($"Error sending data to player via TCP: {_ex}");
             }
         }
 
@@ -137,8 +137,10 @@ public class Client : MonoBehaviour
 
         private void handleData(string msg)
         {
-
             string[] msg_arr = msg.Split(':');
+           // Debug.Log(msg_arr[1]);
+
+            /* *** JUGADOR *** */ 
             if (msg_arr[1] == "Player")
             {
                 if (msg_arr[2] == "Damage")
@@ -153,6 +155,7 @@ public class Client : MonoBehaviour
 
             }
 
+            /* *** ESPECTRO *** */ 
             if (msg_arr[1] == "Spectrum")
             {
                 if (msg_arr[2] == "Pathfinding")
@@ -201,75 +204,84 @@ public class Client : MonoBehaviour
                         if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
                         {
                             Client.instance.spectrums.Eliminar(i);
-                            Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH M");
-                        }
-                    }
-                    if (msg_arr[1] == "Rat")
-                    {
-                        if (msg_arr[2] == "Created")
-                        {
-                            for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
-                            {
-                                if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
-                                {
-                                    Client.instance.rats.getValorEnIndice(i).addedToList = true;
-
-                                }
-                            }
-                        }
-                        if (msg_arr[2] == "Move")
-                        {
-                            for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
-                            {
-                                if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
-                                {
-                                    string[] actualPath = { msg_arr[3] };
-                                    Client.instance.rats.getValorEnIndice(i).path = actualPath;
-
-                                }
-                            }
-                        }
-                    }
-                    if (msg_arr[1] == "Chuchu")
-                    {
-                        if (msg_arr[2] == "Created")
-                        {
-                            for (int i = 0; i < Client.instance.chuchus.getTamaño(); i++)
-                            {
-                                if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
-                                {
-                                    Client.instance.chuchus.getValorEnIndice(i).addedToList = true;
-
-                                }
-                            }
-                        }
-                        if (msg_arr[2] == "Move")
-                        {
-                            for (int i = 0; i < Client.instance.chuchus.getTamaño(); i++)
-                            {
-                                if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
-                                {
-                                    string[] actualPath = msg_arr[3].Split(';');
-                                    Client.instance.chuchus.getValorEnIndice(i).path = actualPath;
-
-                                }
-                            }
-                        }
-
-                        if (msg_arr[2] == "Dead")
-                        {
-                            for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
-                            {
-                                if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
-                                {
-                                    Client.instance.chuchus.Eliminar(i);
-                                    Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                                }
-                            }
+                            Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                         }
                     }
                 }
             }
+
+            /* *** RATA *** */
+            if (msg_arr[1] == "Rat")
+            {
+                // Debug.Log("a");
+                if (msg_arr[2] == "Created")
+                {
+                    Debug.Log("Rata creada");
+                    for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
+                    {
+                        if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                        {
+                            Debug.Log("rata encontrada");
+                            Client.instance.rats.getValorEnIndice(i).addedToList = true;
+
+                        }
+                    }
+                }
+                if (msg_arr[2] == "Move")
+                {
+                    for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
+                    {
+                        if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                        {
+                        string[] actualPath = { msg_arr[3] };
+                        Client.instance.rats.getValorEnIndice(i).path = actualPath;
+                        }
+                    }
+                }
+                
+            }
+
+            /* *** CHUCHU *** */ 
+            if (msg_arr[1] == "Chuchu")
+            {
+                if (msg_arr[2] == "Created")
+                {
+                    for (int i = 0; i < Client.instance.chuchus.getTamaño(); i++)
+                    {
+                        if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                        {
+                            Client.instance.chuchus.getValorEnIndice(i).addedToList = true;
+
+                        }
+                    }
+                }
+                if (msg_arr[2] == "Move")
+                {
+                    for (int i = 0; i < Client.instance.chuchus.getTamaño(); i++)
+                    {
+                        if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                        {
+                            string[] actualPath = msg_arr[3].Split(';');
+                            Client.instance.chuchus.getValorEnIndice(i).path = actualPath;
+
+                        }
+                    }
+                }
+
+                if (msg_arr[2] == "Dead")
+                {
+                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                    {
+                        if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                        {
+                            Client.instance.chuchus.Eliminar(i);
+                            Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                        }
+                    }
+                }
+            }
+
+            /* *** OJO ESPECTRAL *** */ 
             if (msg_arr[1] == "Eye")
             {
                 if (msg_arr[2] == "Created")

@@ -2815,7 +2815,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1016704920}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -4459,17 +4459,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1e42425a4e45b754d933caf435a455bf,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9834373
+      value: -0.9695951
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1e42425a4e45b754d933caf435a455bf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1e42425a4e45b754d933caf435a455bf,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.18124917
+      value: -0.24471502
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1e42425a4e45b754d933caf435a455bf,
         type: 3}
@@ -4484,7 +4484,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1e42425a4e45b754d933caf435a455bf,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -200.885
+      value: -208.33
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1e42425a4e45b754d933caf435a455bf,
         type: 3}
