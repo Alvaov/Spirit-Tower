@@ -64,6 +64,7 @@ public class SpectrumMovement : MonoBehaviour
                 if (!checkVisualRange()) //Atacar por la espalda
                 {
                     Client.instance.tcp.SendData(myId + ":Spectrum:Damage:1:");
+                    Destroy(gameObject);
                 }
             }
         }
@@ -88,7 +89,6 @@ public class SpectrumMovement : MonoBehaviour
                 if(Client.instance.spectrums.getValorEnIndice(i).myId == this.myId)
                 {
                     exist = true;
-
                 }
             }
             if (!exist)
@@ -148,8 +148,6 @@ public class SpectrumMovement : MonoBehaviour
         }
         walk();
     }
-
-
     bool checkVisualRange()
     {
         Vector3 direction = player.transform.position - transform.position;
@@ -205,7 +203,6 @@ public class SpectrumMovement : MonoBehaviour
                 {
                     stepPath++;
                 }
-
             }
             catch
             {

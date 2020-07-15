@@ -16,6 +16,10 @@ public class ChestController : MonoBehaviour
 
     public GameObject tempObj;
 
+    GameObject player;
+    Player playerScript;
+
+
     [System.Serializable]
     public class Tesoros 
     {
@@ -31,20 +35,21 @@ public class ChestController : MonoBehaviour
             tempObj = Instantiate(Contenidos[j].item, transform.position, Quaternion.identity);
             if (Contenidos[j].item.name == "Heart")
             {
-                GameObject player = GameObject.Find("Damian2.0");
-                Player playerScript = player.GetComponent<Player>();
                 playerScript.health += 1;
+            }
+
+            if (Contenidos[j].item.name == "masterKey")
+            {
+                playerScript.hasMasterKey = 1;
             }
 
             if (Contenidos[j].item.name == "extraHeart")
             {
-                //**
+                playerScript.extraHealth += 1;
             }
 
             if (Contenidos[j].item.name == "Key")
             {
-                GameObject player = GameObject.Find("Damian2.0");
-                Player playerScript = player.GetComponent<Player>();
                 playerScript.llaves += 1;
             }
 
@@ -53,11 +58,7 @@ public class ChestController : MonoBehaviour
                 //**
             }
 
-            if (Contenidos[j].item.name == "SwPart")
-            {
-                //**
-            }
-
+            
             //Mas comportamiento para objetos aqui
 
         }
@@ -67,6 +68,8 @@ public class ChestController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         mark.SetActive(false);
+        player = GameObject.Find("Damian2.0");
+        playerScript = player.GetComponent<Player>();
     }
    private void Update()
     {
@@ -86,7 +89,8 @@ public class ChestController : MonoBehaviour
         }
 
         if(tempObj != null) { 
-             tempObj.transform.Translate(transform.up * Time.deltaTime);
+            tempObj.transform.Translate(transform.up * Time.deltaTime);
+            tempObj.transform.Rotate(new Vector3(0, Time.deltaTime * 100, 0));
             if (tempObj.transform.position.y > 6.0f)
             {
                 Destroy(tempObj);
@@ -107,7 +111,6 @@ public class ChestController : MonoBehaviour
 
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         Avisos.text = " ";

@@ -76,6 +76,13 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 std::cerr << "jaja se cayo\n";
             }
         }
+        if (msg_arr[2] == "Health") {
+            if (msg_arr[3] == "0") {
+                std::cout << "Player has died, game over :c";
+                listener->Send(client, "0:Player:Dead:");
+                exit(0);
+            }
+        }
     }
     else if (msg_arr[1] == "Spectrum") {
         if (msg_arr[2] == "Detected") {
@@ -155,7 +162,8 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             listener->Send(client, "0:Player:Damage:5");
         }
         else if (msg_arr[2] == "Damage") { //Recibir dano
-            //Enviar daño 
+            listener->Send(client, msg_arr[0] + ":Spectrum:Dead:");
+            std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         }
         else if (msg_arr[2] == "Teleport") {
             int closestPos[2] = {0,0};
@@ -223,7 +231,8 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             listener->Send(client, "0:Player:Damage:1");
         }
         else if (msg_arr[2] == "Damage") {
-
+            listener->Send(client, msg_arr[0] + ":Chuchu:Dead:");
+            std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         }
     }
     else if (msg_arr[1] == "Eye") {
@@ -267,10 +276,6 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             listener->Send(client,msg_arr[0]+":Rat:Created:");
         }
     }
-    else if (msg_arr[1] == "Health") {
-
-    }
-
     else if (msg_arr[1] == "Coins") {
         try {
             if (msg_arr[1][2] == 0) {
