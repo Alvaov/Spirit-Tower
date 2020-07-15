@@ -8,7 +8,6 @@ private:
 	lista<std::string>* path;
 	int follow_speed;
 	int id;
-	std::string tipo;
 	void runaway();
 	void give_path(int lvl, int x, int y, int _id) {
 		id = _id;
@@ -60,6 +59,7 @@ private:
 		}
 	}
 public:
+	std::string tipo;
 	Espectro(){
 	};
 	Espectro(int x, int y, int _id, int lvl) : Enemy(x, y) {
@@ -90,5 +90,17 @@ public:
 			std::string ruta = path->get_data_by_pos(contador);
 			return ruta;
 		}
+	}
+	void set_position(int x, int y) {
+		pos_x = x;
+		pos_y = y;
+	}
+
+	int get_x() {
+		return pos_x;
+	}
+
+	int get_y() {
+		return pos_y;
 	}
 };
