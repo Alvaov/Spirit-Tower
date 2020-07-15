@@ -171,6 +171,7 @@ public class Client : MonoBehaviour
                             //Debug.Log(msg);
                             espectroActual.path = actualPath;
                             espectroActual.localDetected = false;
+                            espectroActual.teleported = false;
                         }
                     }
                 }
@@ -185,7 +186,29 @@ public class Client : MonoBehaviour
                         }
                     }
                 }
-                
+                else if (msg_arr[2] == "Teleport")
+                {
+                    Debug.Log(msg);
+                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                    {
+                        if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
+                        {
+                            SpectrumMovement espectro = Client.instance.spectrums.getValorEnIndice(i);
+                            espectro.teleported = true;
+                            string[] target = msg_arr[3].Split(',');
+                            string x = target[0];
+                            string y = target[1];
+                            int posX = Int32.Parse(x);
+                            int posY = Int32.Parse(y);
+                            Vector3 position = Grid.instance.GetWorldPointFromAxes(posX,posY);
+                            espectro.teleportPoint = position;
+                            espectro.teleport = true;
+
+                        }
+                    }
+                }
+
+
             }
             if (msg_arr[1] == "Rat")
             {

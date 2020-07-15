@@ -81,6 +81,15 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         if (msg_arr[2] == "Detected") {
             try {
                 int* enemyPos = get_position(msg_arr[3]);
+                int id = std::stoi(msg_arr[0]);
+                Espectro* espectro = nullptr;
+                for (int j = 0; j < espectros->get_object_counter(); j++) {
+                    if (espectros->get_data_by_pos(j)->getId() == id) {
+                        espectro = espectros->get_data_by_pos(j);
+                        break;
+                    }
+                }
+                espectro->set_position(enemyPos[0], enemyPos[1]);
                 std::string path = escenario.send_route(msg_arr[0], playerPos, enemyPos);
                 listener->Send(client, path);
                 delete enemyPos;
@@ -147,6 +156,34 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         }
         else if (msg_arr[2] == "Damage") { //Recibir dano
             //Enviar daño 
+        }
+        else if (msg_arr[2] == "Teleport") {
+            int closestPos[2] = {0,0};
+            int actualDistance = INT_MAX;
+            for (int i = 0; i < espectros->get_object_counter(); i++) {
+                Espectro* espectro = espectros->get_data_by_pos(i);
+                int startX = espectro->get_x();
+                int startY = espectro->get_y();
+                int distance = sqrtf((startX - playerPos[0])* (startX - playerPos[0]) + (startY - playerPos[1]) * (startY - playerPos[1]));
+                if (distance < actualDistance) {
+                    actualDistance = distance;
+                    closestPos[0] = startX;
+                    closestPos[1] = startY;
+                }
+            }
+            for (int j = 0; j < spectralEyes->get_object_counter(); j++) {
+                SpectralEye* ojoEspectral = spectralEyes->get_data_by_pos(j);
+                int startX = ojoEspectral->pos_x;
+                int startY = ojoEspectral->pos_y;
+                int distance = sqrtf((startX - playerPos[0]) * (startX - playerPos[0]) + (startY - playerPos[1]) * (startY - playerPos[1]));
+                if (distance < actualDistance) {
+                    actualDistance = distance;
+                    closestPos[0] = startX;
+                    closestPos[1] = startY;
+                }
+            }
+
+            listener->Send(client, msg_arr[0] + ":Spectrum:Teleport:" + std::to_string(closestPos[0]) + "," + std::to_string(closestPos[1]) + ":");
         }
     }
     else if (msg_arr[1] == "Grid") {
@@ -253,8 +290,6 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             std::cerr << "Se trato de hacer un numero de un string no valido o array values ot of bounds\n";
         }
     }
-
-    listener->Send(client, msg);
 };
 
 int rand_num() {

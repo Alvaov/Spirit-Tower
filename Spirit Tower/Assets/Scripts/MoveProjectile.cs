@@ -14,7 +14,6 @@ public class MoveProjectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Choqué");
         if (other.gameObject.CompareTag("Player"))
         {
             Client.instance.tcp.SendData("0:Player:Damage:1");
@@ -26,7 +25,6 @@ public class MoveProjectile : MonoBehaviour
         }
         else
         {
-            Debug.Log("Pito");
             Destroy(gameObject);
         }
     }
