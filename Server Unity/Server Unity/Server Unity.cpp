@@ -79,8 +79,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         if (msg_arr[2] == "Health") {
             if (msg_arr[3] == "0") {
                 std::cout << "Player has died, game over :c";
-                listener->Send(client, "0:Player:Dead:");
-                exit(0);
+                //listener->Send(client, "0:Player:Dead:");
             }
         }
     }
@@ -132,10 +131,15 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                     type
                 );
                 espectros->insert(espectro);
+                std::string patrolPath = "";
+                for (int j = 0; j < espectro->get_path()->get_object_counter(); j++) {
+                    patrolPath += espectro->get_path()->get_data_by_pos(j);
+                    patrolPath += ";";
+                }
                 std::string DNA = std::to_string(datos_espector->get_health()) +
                     std::to_string(datos_espector->get_speed()) +
                     std::to_string(datos_espector->get_vision_range());
-                listener->Send(client,msg_arr[0]+":Spectrum:Created:"+DNA);
+                listener->Send(client,msg_arr[0]+":Spectrum:Created:"+patrolPath);
                 delete enemyPos;
             }
             catch (...) {
@@ -155,7 +159,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             std::string target = espectro->getPath(0);
             int* intTarget = get_position(target);
             std::string path = trackback.send_route(id, enemyPos, get_position(espectro->getPath(0)));
-            listener->Send(client, msg_arr[0]+":Spectrum:Backtracking:"+path);
+            listener->Send(client, msg_arr[0]+":Spectrum:Backtracking:"+path+target);
             delete enemyPos;
         }else if (msg_arr[2] == "Attack") { //Producir dano
             std::cout << "Spectrum hit player. Player is gonna die";
@@ -163,7 +167,6 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         }
         else if (msg_arr[2] == "Damage") { //Recibir dano
             listener->Send(client, msg_arr[0] + ":Spectrum:Dead:");
-            std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         }
         else if (msg_arr[2] == "Teleport") {
             int closestPos[2] = {0,0};
