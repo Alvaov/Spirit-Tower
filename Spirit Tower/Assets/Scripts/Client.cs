@@ -208,13 +208,14 @@ public class Client : MonoBehaviour
                             string y = target[1];
                             int posX = Int32.Parse(x);
                             int posY = Int32.Parse(y);
-                            Vector3 position = Grid.instance.GetWorldPointFromAxes(posX,posY);
+                            Vector3 position = Grid.instance.GetWorldPointFromAxes(posX, posY);
                             espectro.teleportPoint = position;
                             espectro.teleport = true;
 
                         }
                     }
-                }else if (msg_arr[2] == "Dead")
+                }
+                else if (msg_arr[2] == "Dead")
                 {
                     for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
                     {
@@ -226,70 +227,68 @@ public class Client : MonoBehaviour
                     }
 
 
-            }
+                }
 
-                
-                    if (msg_arr[1] == "Rat")
+
+                if (msg_arr[1] == "Rat")
+                {
+                    if (msg_arr[2] == "Created")
                     {
-                        if (msg_arr[2] == "Created")
+                        for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
                         {
-                            for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
+                            if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
                             {
-                                if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
-                                {
-                                    Client.instance.rats.getValorEnIndice(i).addedToList = true;
+                                Client.instance.rats.getValorEnIndice(i).addedToList = true;
 
-                                }
-                            }
-                        }
-                        if (msg_arr[2] == "Move")
-                        {
-                            for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
-                            {
-                                if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
-                                {
-                                    string[] actualPath = { msg_arr[3] };
-                                    Client.instance.rats.getValorEnIndice(i).path = actualPath;
-
-                                }
                             }
                         }
                     }
-                    if (msg_arr[1] == "Chuchu")
+                    if (msg_arr[2] == "Move")
                     {
-                        if (msg_arr[2] == "Created")
+                        for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
                         {
-                            for (int i = 0; i < Client.instance.chuchus.getTamaño(); i++)
+                            if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
                             {
-                                if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
-                                {
-                                    Client.instance.chuchus.getValorEnIndice(i).addedToList = true;
+                                string[] actualPath = { msg_arr[3] };
+                                Client.instance.rats.getValorEnIndice(i).path = actualPath;
 
-                                }
                             }
                         }
-                        if (msg_arr[2] == "Move")
+                    }
+                }
+                if (msg_arr[1] == "Chuchu")
+                {
+                    if (msg_arr[2] == "Created")
+                    {
+                        for (int i = 0; i < Client.instance.chuchus.getTamaño(); i++)
                         {
-                            for (int i = 0; i < Client.instance.chuchus.getTamaño(); i++)
+                            if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
                             {
-                                if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
-                                {
-                                    string[] actualPath = msg_arr[3].Split(';');
-                                    Client.instance.chuchus.getValorEnIndice(i).path = actualPath;
+                                Client.instance.chuchus.getValorEnIndice(i).addedToList = true;
 
-                                }
                             }
                         }
-
-                        if (msg_arr[2] == "Dead")
+                    }
+                    if (msg_arr[2] == "Move")
+                    {
+                        for (int i = 0; i < Client.instance.chuchus.getTamaño(); i++)
                         {
-                            for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                            if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
                             {
-                                if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
-                                {
-                                    Client.instance.chuchus.Eliminar(i);
-                                    Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                                }
+                                string[] actualPath = msg_arr[3].Split(';');
+                                Client.instance.chuchus.getValorEnIndice(i).path = actualPath;
+
+                            }
+                        }
+                    }
+
+                    if (msg_arr[2] == "Dead")
+                    {
+                        for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                        {
+                            if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                            {
+                                Client.instance.chuchus.Eliminar(i);
                             }
                         }
                     }
