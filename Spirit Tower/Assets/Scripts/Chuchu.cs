@@ -21,8 +21,8 @@ public class Chuchu : MonoBehaviour
     void Start()
     {
         chuchu = GetComponent<CharacterController>();
-        frameInterval = 160+(id*5)+id;
         id = Client.chuchuId;
+        frameInterval = 160 + (id * 10) + id;
         Client.chuchuId += 1;
     }
 
