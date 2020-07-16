@@ -230,8 +230,6 @@ public class Client : MonoBehaviour
                         }
                     }
                 }
-
-
             }
 
             /* *** RATA *** */
