@@ -20,7 +20,7 @@ public class EyeScript : MonoBehaviour
     {
         spectralEye = GetComponent<CharacterController>();
         player = GameObject.FindGameObjectWithTag("Player");
-        frameInterval = 10;
+        frameInterval = 60+(id*12)+id;
         visionRadius = 20;
         id = Client.eyeId;
         Client.eyeId += 1;

@@ -12,7 +12,7 @@ public class RatScript : MonoBehaviour
     public int id;
     public int speed = 1;
     private Vector3 target;
-    public float frameInterval = 30;
+    public float frameInterval;
     public bool addedToList = false;
     public string[] path;
 
@@ -22,6 +22,7 @@ public class RatScript : MonoBehaviour
     {
         rat = GetComponent<CharacterController>();
         id = Client.ratId;
+        frameInterval = 500 + (id * 5) + id;
         Client.ratId += 1;
     }
 

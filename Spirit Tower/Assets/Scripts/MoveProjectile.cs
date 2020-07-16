@@ -6,6 +6,7 @@ public class MoveProjectile : MonoBehaviour
 {
 
     public int speed = 10;
+    public int rotationSpeed = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +17,7 @@ public class MoveProjectile : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Client.instance.tcp.SendData("0:Player:Damage:1");
+            Client.instance.tcp.SendData("0:Player:Damage:1:");
             Destroy(gameObject);
         }
         else if (other.gameObject.CompareTag("Shield"))
@@ -33,5 +34,6 @@ public class MoveProjectile : MonoBehaviour
     void Update()
     {
         transform.position += transform.forward * speed * Time.deltaTime;
+        transform.Rotate(0,0,2);
     }
 }

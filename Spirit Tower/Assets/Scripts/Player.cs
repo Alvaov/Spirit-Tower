@@ -119,8 +119,11 @@ public class Player : MonoBehaviour{
         }
         if (health <= 0)
         {
-            health = 0;
-            Client.instance.Send_Data("0:Player:Health:" + health + ":");
+            if (!ImDead)
+            {
+                health = 0;
+                Client.instance.Send_Data("0:Player:Health:" + health + ":");
+            }
         }
         //Enviar datos al server
         if (health != vidaTemp)
@@ -148,7 +151,7 @@ public class Player : MonoBehaviour{
         }
 
         //Corazones en la interfaz
-        for (int i = 0; i < extraHearts.Length; i++)
+        /*for (int i = 0; i < extraHearts.Length; i++)
         {
             if (i < extraHealth) {
                 extraHearts[i].enabled = true;
@@ -164,7 +167,7 @@ public class Player : MonoBehaviour{
             } else{
                 hearts[i].sprite = emptyHeart;
             }
-        }
+        }*/
 
         //MONEDAS Y TESOROS
         monedasText.text = ":" + monedas;

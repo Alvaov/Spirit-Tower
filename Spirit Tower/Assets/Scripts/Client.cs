@@ -183,6 +183,8 @@ public class Client : MonoBehaviour
                             espectroActual.path = actualPath;
                             espectroActual.localDetected = false;
                             espectroActual.teleported = false;
+                            espectroActual.goingBack = true;
+                            espectroActual.speed = espectroActual.startSpeed;
                         }
                     }
                 }
@@ -192,20 +194,19 @@ public class Client : MonoBehaviour
                     {
                         if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
                         {
-                            Client.instance.spectrums.getValorEnIndice(i).addedToList = true;
+                            SpectrumMovement espectro = Client.instance.spectrums.getValorEnIndice(i);
+                            string[] spectrumInfo = msg_arr[3].Split('*');
+                            espectro.addedToList = true;
+                            espectro.patrolPath = spectrumInfo[0].Split(';');
+                            espectro.path = spectrumInfo[0].Split(';');
 
-                        }
-                    }
-                }
+                            //Asignar genéticos
+                            string[] DNA = spectrumInfo[1].Split(',');
+                            espectro.followSpeed = float.Parse(DNA[0])/10;
+                            espectro.startSpeed = float.Parse(DNA[1])/10;
+                            espectro.speed = float.Parse(DNA[1])/10;
+                            espectro.visionRadius = float.Parse(DNA[2])/10;
 
-                if (msg_arr[2] == "Dead")
-                {
-                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
-                    {
-                        if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
-                        {
-                            Client.instance.spectrums.Eliminar(i);
-                            Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                         }
                     }
                 }
@@ -223,20 +224,14 @@ public class Client : MonoBehaviour
                             string y = target[1];
                             int posX = Int32.Parse(x);
                             int posY = Int32.Parse(y);
-                            Vector3 position = Grid.instance.GetWorldPointFromAxes(posX,posY);
+                            Vector3 position = Grid.instance.GetWorldPointFromAxes(posX, posY);
                             espectro.teleportPoint = position;
                             espectro.teleport = true;
 
                         }
                     }
                 }
-            }
-
-            /* *** RATA *** */
-            if (msg_arr[1] == "Rat")
-            {
-                // Debug.Log("a");
-                if (msg_arr[2] == "Created")
+                else if (msg_arr[2] == "Dead")
                 {
                     Debug.Log("Rata creada");
                     for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
@@ -248,6 +243,23 @@ public class Client : MonoBehaviour
 
                         }
                     }
+
+
+                }
+            }
+
+            if (msg_arr[1] == "Rat")
+            {
+                if (msg_arr[2] == "Created")
+                {
+                    for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
+                    {
+                        if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                        {
+                            Client.instance.rats.getValorEnIndice(i).addedToList = true;
+
+                            }
+                    }
                 }
                 if (msg_arr[2] == "Move")
                 {
@@ -255,15 +267,13 @@ public class Client : MonoBehaviour
                     {
                         if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
                         {
-                        string[] actualPath = { msg_arr[3] };
-                        Client.instance.rats.getValorEnIndice(i).path = actualPath;
-                        }
+                            string[] actualPath = { msg_arr[3] };
+                            Client.instance.rats.getValorEnIndice(i).path = actualPath;
+
+                            }
                     }
                 }
-                
             }
-
-            /* *** CHUCHU *** */ 
             if (msg_arr[1] == "Chuchu")
             {
                 if (msg_arr[2] == "Created")
@@ -274,7 +284,7 @@ public class Client : MonoBehaviour
                         {
                             Client.instance.chuchus.getValorEnIndice(i).addedToList = true;
 
-                        }
+                            }
                     }
                 }
                 if (msg_arr[2] == "Move")
@@ -286,27 +296,24 @@ public class Client : MonoBehaviour
                             string[] actualPath = msg_arr[3].Split(';');
                             Client.instance.chuchus.getValorEnIndice(i).path = actualPath;
 
-                        }
+                            }
                     }
                 }
 
-                if (msg_arr[2] == "Dead")
+                    if (msg_arr[2] == "Dead")
                 {
                     for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
                     {
                         if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
                         {
                             Client.instance.chuchus.Eliminar(i);
-                            Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                         }
                     }
                 }
             }
-
-            /* *** OJO ESPECTRAL *** */ 
+            
             if (msg_arr[1] == "Eye")
-            {
-                if (msg_arr[2] == "Created")
+            {                if (msg_arr[2] == "Created")
                 {
                     for (int i = 0; i < Client.instance.spectralEyes.getTamaño(); i++)
                     {
