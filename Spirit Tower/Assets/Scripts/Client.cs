@@ -181,6 +181,7 @@ public class Client : MonoBehaviour
                             espectroActual.localDetected = false;
                             espectroActual.teleported = false;
                             espectroActual.goingBack = true;
+                            espectroActual.speed = espectroActual.startSpeed;
                         }
                     }
                 }
@@ -190,12 +191,18 @@ public class Client : MonoBehaviour
                     {
                         if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
                         {
-
-                            Client.instance.spectrums.getValorEnIndice(i).addedToList = true;
-                            Client.instance.spectrums.getValorEnIndice(i).patrolPath = msg_arr[3].Split(';');
-                            Client.instance.spectrums.getValorEnIndice(i).path = msg_arr[3].Split(';');
+                            SpectrumMovement espectro = Client.instance.spectrums.getValorEnIndice(i);
+                            string[] spectrumInfo = msg_arr[3].Split('*');
+                            espectro.addedToList = true;
+                            espectro.patrolPath = spectrumInfo[0].Split(';');
+                            espectro.path = spectrumInfo[0].Split(';');
 
                             //Asignar genéticos
+                            string[] DNA = spectrumInfo[1].Split(',');
+                            espectro.followSpeed = float.Parse(DNA[0])/10;
+                            espectro.startSpeed = float.Parse(DNA[1])/10;
+                            espectro.speed = float.Parse(DNA[1])/10;
+                            espectro.visionRadius = float.Parse(DNA[2])/10;
 
                         }
                     }

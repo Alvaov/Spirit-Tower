@@ -17,7 +17,7 @@ public class MoveProjectile : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Client.instance.tcp.SendData("0:Player:Damage:1");
+            Client.instance.tcp.SendData("0:Player:Damage:1:");
             Destroy(gameObject);
         }
         else if (other.gameObject.CompareTag("Shield"))

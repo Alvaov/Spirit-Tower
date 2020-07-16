@@ -136,10 +136,12 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                     patrolPath += espectro->get_path()->get_data_by_pos(j);
                     patrolPath += ";";
                 }
-                std::string DNA = std::to_string(datos_espector->get_health()) +
-                    std::to_string(datos_espector->get_speed()) +
+                std::string DNA = std::to_string(datos_espector->get_follow_speed()) + 
+                    ","+
+                    std::to_string(datos_espector->get_speed()) + 
+                    "," +
                     std::to_string(datos_espector->get_vision_range());
-                listener->Send(client,msg_arr[0]+":Spectrum:Created:"+patrolPath);
+                listener->Send(client,msg_arr[0]+":Spectrum:Created:"+patrolPath+"*"+DNA);
                 delete enemyPos;
             }
             catch (...) {

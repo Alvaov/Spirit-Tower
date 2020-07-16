@@ -1971,7 +1971,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535369000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.53, y: 4.99, z: 144.85}
+  m_LocalPosition: {x: 156.7, y: 4.99, z: 144.85}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 1911346526}
@@ -2412,7 +2412,9 @@ MonoBehaviour:
   horizontal: 0
   vertical: 0
   gravity: -9.8
+  startSpeed: 50
   speed: 20
+  followSpeed: 0
   stepPath: 0
   scared: 0
   perseguir: 0
@@ -3735,7 +3737,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e66983f868ffaee4183023032ae60569,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 113
+      value: 47
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e66983f868ffaee4183023032ae60569,
         type: 3}
@@ -5914,7 +5916,9 @@ MonoBehaviour:
   horizontal: 0
   vertical: 0
   gravity: -9.8
+  startSpeed: 50
   speed: 20
+  followSpeed: 0
   stepPath: 0
   scared: 0
   perseguir: 0
@@ -6577,7 +6581,9 @@ MonoBehaviour:
   horizontal: 0
   vertical: 0
   gravity: -9.8
+  startSpeed: 50
   speed: 20
+  followSpeed: 0
   stepPath: 0
   scared: 0
   perseguir: 0

@@ -12,7 +12,9 @@ public class SpectrumMovement : MonoBehaviour
     public float horizontal;
     public float vertical;
     public float gravity = -9.8f;
+    public float startSpeed = 50;
     public float speed = 50;
+    public float followSpeed = 0;
     public int stepPath = 0;
     public bool scared = false;
     public bool perseguir = false;
@@ -48,7 +50,7 @@ public class SpectrumMovement : MonoBehaviour
         visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
-        frameInterval = 10+(myId*7);
+        frameInterval = 25+(myId*12)+myId;
         //movement = Grid.instance.GetWorldPointFromAxes(14, 51);
     }
 
@@ -78,6 +80,12 @@ public class SpectrumMovement : MonoBehaviour
         {
             scared = false;
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(transform.position,visionRadius);
     }
 
     // Update is called once per frame
@@ -146,6 +154,7 @@ public class SpectrumMovement : MonoBehaviour
                 {
                     Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
                 }
+                speed = followSpeed;
             }  
         }
         walk();
@@ -156,11 +165,14 @@ public class SpectrumMovement : MonoBehaviour
 
         float angle = Vector3.Angle(direction, transform.forward);
 
-        if (angle < visionAngle * 0.5f){    
-            detected = true;
-            animator.SetInteger("action", 1);
-            animator.SetBool("perseguir", true);
-            return true;
+        if (angle < visionAngle * 0.5f){
+            if (!Safe.safe)
+            {
+                detected = true;
+                animator.SetInteger("action", 1);
+                animator.SetBool("perseguir", true);
+                return true;
+            }
         }
         return false;
     }
