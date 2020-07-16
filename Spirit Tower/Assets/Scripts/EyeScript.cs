@@ -6,6 +6,7 @@ public class EyeScript : MonoBehaviour
 {
     //Aspectos generales
     public GameObject player;
+    public AudioSource alert;
     public CharacterController spectralEye;
     public float frameInterval;
     public bool addedToList = false;
@@ -20,6 +21,7 @@ public class EyeScript : MonoBehaviour
     {
         spectralEye = GetComponent<CharacterController>();
         player = GameObject.FindGameObjectWithTag("Player");
+        alert = GetComponent<AudioSource>();
         frameInterval = 60+(id*12)+id;
         visionRadius = 20;
         id = Client.eyeId;
@@ -35,6 +37,11 @@ public class EyeScript : MonoBehaviour
             {
                     Client.instance.tcp.SendData(id + ":Eye:Damage:1:");
             }
+        }
+        if (other.gameObject.CompareTag("Player"))
+        {
+            alert.Play();
+            SpectrumMovement.detected = true;
         }
     }
 
@@ -59,29 +66,6 @@ public class EyeScript : MonoBehaviour
             Client.instance.tcp.SendData(id + ":Eye:New:" + Grid.instance.GetAxesFromWorldPoint(spectralEye.transform.position) + ":");
         }
 
-        float distance = Vector3.Distance(player.transform.position, transform.position); // faster than Vector3.Distance
 
-        if (Time.frameCount % frameInterval == 0)
-        {
-            if (distance < visionRadius)
-            {
-                checkVisualRange();
-            }
-        }
-    }
-
-
-    bool checkVisualRange()
-    {
-        Vector3 direction = player.transform.position - transform.position;
-
-        float angle = Vector3.Angle(direction, transform.forward);
-
-        if (angle < visionAngle * 0.5f)
-        {
-            SpectrumMovement.detected = true;
-            return true;
-        }
-        return false;
     }
 }

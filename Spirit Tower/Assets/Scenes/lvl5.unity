@@ -4456,6 +4456,11 @@ PrefabInstance:
       propertyPath: m_AABB.m_Center.z
       value: -2.5023499
       objectReference: {fileID: 0}
+    - target: {fileID: 137680699994268602, guid: 28fce92923d67c2449f9c3d295c70aef,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c613367bf5c03aa4d8b861af9faba658, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28fce92923d67c2449f9c3d295c70aef, type: 3}
 --- !u!1 &173387616
@@ -10253,7 +10258,6 @@ MonoBehaviour:
   agacharse: 0
   defender: 0
   health: 5
-  numOfHearts: 5
   hearts:
   - {fileID: 0}
   - {fileID: 0}
@@ -10263,6 +10267,10 @@ MonoBehaviour:
   fullHeart: {fileID: 21300000, guid: d8f6a8b6c72f3e34b9f97d57a96b9831, type: 3}
   emptyHeart: {fileID: 21300000, guid: 727ffbf9458e46f4aafa77c1467a1d0c, type: 3}
   extraHearts: []
+  extraHealth: 0
+  extraHeart: {fileID: 0}
+  DamageTaken: 0
+  ImDead: 0
   monedas: 0
   monedasText: {fileID: 0}
   tesoros: 0
@@ -10271,7 +10279,7 @@ MonoBehaviour:
   Avisos: {fileID: 0}
   llavesText: {fileID: 0}
   llaves: 0
-  llavesMAX: 0
+  hasMasterKey: 0
   tesorosTemp: 0
   vidaTemp: 0
   monedasTemp: 0
