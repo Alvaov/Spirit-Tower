@@ -202,10 +202,10 @@ public class Client : MonoBehaviour
 
                             //Asignar genéticos
                             string[] DNA = spectrumInfo[1].Split(',');
-                            espectro.followSpeed = float.Parse(DNA[0])/10;
-                            espectro.startSpeed = float.Parse(DNA[1])/10;
-                            espectro.speed = float.Parse(DNA[1])/10;
-                            espectro.visionRadius = float.Parse(DNA[2])/10;
+                            espectro.followSpeed = float.Parse(DNA[0]) / 10;
+                            espectro.startSpeed = float.Parse(DNA[1]) / 10;
+                            espectro.speed = float.Parse(DNA[1]) / 10;
+                            espectro.visionRadius = float.Parse(DNA[2]) / 10;
 
                         }
                     }
@@ -233,18 +233,14 @@ public class Client : MonoBehaviour
                 }
                 else if (msg_arr[2] == "Dead")
                 {
-                    Debug.Log("Rata creada");
-                    for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
+                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
                     {
-                        if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                        if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
                         {
-                            Debug.Log("rata encontrada");
-                            Client.instance.rats.getValorEnIndice(i).addedToList = true;
-
+                            Client.instance.spectrums.Eliminar(i);
+                            Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH M");
                         }
                     }
-
-
                 }
             }
 
