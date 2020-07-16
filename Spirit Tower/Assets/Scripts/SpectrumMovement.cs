@@ -8,6 +8,7 @@ public class SpectrumMovement : MonoBehaviour
 {
     //Movimiento
     private Vector3 movement;
+    public Vector3 teleportPoint;
     public float horizontal;
     public float vertical;
     public float gravity = -9.8f;
@@ -22,6 +23,8 @@ public class SpectrumMovement : MonoBehaviour
 
     //Aspectos generales
     public string tipo;
+    public bool teleport = false;
+    public bool teleported = false;
     public GameObject player;
     public CharacterController spectrum;
     public string[] path;
@@ -99,6 +102,11 @@ public class SpectrumMovement : MonoBehaviour
 
         if (Time.frameCount % frameInterval == 0)
         {
+            if (teleport)
+            {
+                teleport = false;
+                transform.position = transform.position = Vector3.MoveTowards(transform.position, teleportPoint, 200000 * Time.deltaTime);
+            }
             if (distance < visionRadius)
             {
                 checkVisualRange();
@@ -124,7 +132,18 @@ public class SpectrumMovement : MonoBehaviour
             }
             else if (detected == true)
             {
-                Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
+                if (tipo != "blue")
+                {
+                    Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
+                }
+                if (tipo == "blue" && !teleported)
+                {
+                    Client.instance.tcp.SendData(myId+":Spectrum:Teleport:"+ Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
+                }
+                if (tipo == "blue" && teleported)
+                {
+                    Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
+                }
             }  
         }
         walk();
@@ -155,12 +174,16 @@ public class SpectrumMovement : MonoBehaviour
                     stepPath = 0;
                 }
                 string[] pos_grid = path[stepPath].Split(',');
-                int x;
+                string x = pos_grid[0];
+                string y = pos_grid[1];
+                int posX = Int32.Parse(x);
+                int posZ = Int32.Parse(y);
+                /*int x;
                 int z;
                 Int32.TryParse(pos_grid[0], out x);
-                Int32.TryParse(pos_grid[1], out z);
+                Int32.TryParse(pos_grid[1], out z);*/
                 
-                target = Grid.instance.GetWorldPointFromAxes(x, z);
+                target = Grid.instance.GetWorldPointFromAxes(posX, posZ);
                 
                 if (transform.position != target)
                 {
