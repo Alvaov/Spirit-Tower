@@ -19,6 +19,8 @@ Path_Astar escenario;
 node_map* mapa_backtracking;
 Enemy_Genetics* enemy_genetics;
 int lvl = 0;
+int coins;
+int health;
 
 //function pointer is declared
 void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg);
@@ -77,6 +79,8 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             }
         }
         if (msg_arr[2] == "Health") {
+            health = std::stoi(msg_arr[3]);
+
             if (msg_arr[3] == "0") {
                 std::cout << "Player has died, game over :c";
                 listener->Send(client, "0:Player:Dead:");
@@ -275,13 +279,8 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         }
     }
     else if (msg_arr[1] == "Coins") {
-        try {
-            if (msg_arr[1][2] == 0) {
-            }
-        }
-        catch (...) {
-            std::cerr << "Se trato de hacer un numero de un string no valido o array values ot of bounds\n";
-        }
+        coins = std::stoi(msg_arr[2]);
+        std::cout << "PLAYER COINS: " + coins;
     }
 
     else if (msg_arr[1] == "Treasures") {

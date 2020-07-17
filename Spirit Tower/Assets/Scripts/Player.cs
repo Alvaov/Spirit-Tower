@@ -52,6 +52,7 @@ public class Player : MonoBehaviour{
     public Text llavesText;
     public int llaves;
     public int hasMasterKey;
+    public Image masterKey;
 
     //Variables para el server
 
@@ -185,7 +186,13 @@ public class Player : MonoBehaviour{
 
         //LLaves
         llavesText.text = ":" + llaves;
-
+        if (hasMasterKey == 1)
+        {
+            masterKey.enabled = true;
+        } else
+        {
+            masterKey.enabled = false;
+        }
     }
 
     void Movement()
