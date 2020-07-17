@@ -123,6 +123,9 @@ public class Player : MonoBehaviour{
             {
                 health = 0;
                 Client.instance.Send_Data("0:Player:Health:" + health + ":");
+                GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
+                transform.position = spawn.transform.position;
+                health = 5;
             }
         }
         //Enviar datos al server
@@ -151,7 +154,7 @@ public class Player : MonoBehaviour{
         }
 
         //Corazones en la interfaz
-        /*for (int i = 0; i < extraHearts.Length; i++)
+        for (int i = 0; i < extraHearts.Length; i++)
         {
             if (i < extraHealth) {
                 extraHearts[i].enabled = true;
@@ -167,7 +170,7 @@ public class Player : MonoBehaviour{
             } else{
                 hearts[i].sprite = emptyHeart;
             }
-        }*/
+        }
 
         //MONEDAS Y TESOROS
         monedasText.text = ":" + monedas;

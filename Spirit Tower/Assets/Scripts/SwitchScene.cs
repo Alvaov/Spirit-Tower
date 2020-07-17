@@ -5,8 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class SwitchScene : MonoBehaviour
 {
+    bool done = false;
     void OnTriggerEnter(Collider other){
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if (other.gameObject.CompareTag("Player") && done == false){
+            done = true;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            Grid.instance.CreateGrid();
+            Grid.getGridWalls();
+        }
     }
 }
 

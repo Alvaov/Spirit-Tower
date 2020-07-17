@@ -12,6 +12,9 @@ TagManager:
   - Rat
   - Wall
   - Shield
+  - PlayerInfo
+  - Keep
+  - Destroy
   layers:
   - Default
   - TransparentFX

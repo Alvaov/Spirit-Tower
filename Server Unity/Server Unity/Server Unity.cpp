@@ -209,7 +209,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             mapaActual[(pos[1] * escenario.nMapHeight) + (pos[0] + (pos[1] / escenario.nMapHeight))].bObstacle = true;
             delete pos;
         }else if (msg_arr[2] == "New"){
-            if (!espectros->isEmpty()) {
+            if (espectros->get_object_counter() == 0) {
                 for (int p = 0; p < espectros->get_object_counter(); p++) {
                     delete espectros->get_data_by_pos(p);
                 }

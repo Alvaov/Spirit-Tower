@@ -233,7 +233,7 @@ public:
         }
     };
     void delete_list() {
-        for (int i = 0; i < object_counter - 1; i++) {
+        for (int i = 0; i < object_counter; i++) {
             delete_by_pos(0);
         }
     }
