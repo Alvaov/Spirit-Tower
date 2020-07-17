@@ -14,6 +14,11 @@
 Solo falta separarlo
 */
 
+
+/**
+ * @brief clase que representa a los individuos del algoritmo genetico
+ * 
+ */
 class Person {
 private:
     uint8_t bitArray[4];
@@ -25,6 +30,10 @@ private:
     bool alive = true;
   
 public:
+/**
+ * @brief Construct a new Person object
+ * 
+ */
     Person() {
 
         // inicializar memoria
@@ -52,32 +61,74 @@ public:
         }
 
     }
+    /**
+     * @brief Destroy the Person object
+     * 
+     */
     ~Person() {
 
     }
+    /**
+     * @brief Get the health object
+     * 
+     * @return vida
+     */
     int get_health() {
         return health;
     }
+    /**
+     * @brief Get the speed object
+     * 
+     * @return velocidad
+     */
     int get_speed() {
         return speed;
     }
+    /**
+     * @brief Get the vision range object
+     * 
+     * @return rango de vision
+     */
     int get_vision_range() {
         return vision_range;
     }
+    /**
+     * @brief Get the follow speed object
+     * 
+     * @return velocidad de persecusion
+     */
     int get_follow_speed() {
         return follow_speed;
     }
+    /**
+     * @brief generar un booleano al azar
+     * 
+     * @return booleano al azar
+     */
     int randomBool() {
         return 0 + (rand() % (1 - 0 + 1)) == 1;
     }
 
     // Genera un numero random entre 0 y 100
+    /**
+     * @brief generar un numero al azar entre max y min
+     * 
+     * @param min minimo 
+     * @param max maximo
+     * @return numero generado
+     */
     int randomNum(int min, int max) {
         int random_num = rand() % (max - min + 1) + min;
         return random_num;
     }
 
     // Obtener valor de un bit en una posicion
+    /**
+     * @brief Get the Bit object
+     * 
+     * @param index indice del bit
+     * @return bit del array
+     */
     int getBit(int index) {
         return (this->bitArray[index >> 3] >> (index & 7)) & 1;
     }
@@ -87,6 +138,12 @@ public:
     }*/
 
     // establecer valor de un bit en una posicion
+    /**
+     * @brief Set the Bit object
+     * 
+     * @param index indice del bit a setear
+     * @param value valor nuevo del bit
+     */
     void setBit(int index, int value) {
         uint8_t celda = this->bitArray[index >> 3];
         celda &= ~(1 << (index & 7));
@@ -102,6 +159,10 @@ public:
     }*/
 
     // Asigna los valores de cada caracteristica del cromosoma
+    /**
+     * @brief asigna las caracteristicas a los cromosomas
+     * 
+     */
     void map() {
 
         for (int i = 0; i <= 7; ++i) {
@@ -124,6 +185,10 @@ public:
     }
 
     // Funcion Fitness
+    /**
+     * @brief calcula el fitness
+     * 
+     */
     void calculateFitness() {
         double max_value = 255;
 
@@ -143,6 +208,11 @@ public:
             damage_normalized * damage_weight;
 
     }
+    /**
+     * @brief Get the Fitness
+     * 
+     * @return fitness del individuo
+     */
     double getFitness() {
         return fitness;
     }
@@ -172,6 +242,10 @@ public:
     }*/
 
     // Seleccion natural
+    /**
+     * @brief decide si deberian vivir o morir
+     * 
+     */
     void selection() {
         // si el fitness es mayor a 70 lo selecciona
         if (fitness >= 70) {
@@ -183,6 +257,12 @@ public:
     }
 
     // Reproduccion: Cruce, mutacion, inversion
+    /**
+     * @brief cruce entre individuos
+     * 
+     * @param person persona a cruzar con
+     * @return Person* nueva persona
+     */
     Person* crossover(Person* person) {
         // Crea el hijo
         Person* child = new Person();
@@ -217,6 +297,10 @@ public:
     }
 
     // Mutacion
+    /**
+     * @brief muta bits del cromosoma
+     * 
+     */
     void mutation() {
         //bit random donde se aplicara la mutacion
         int random_bit = randomNum(0, 31);
@@ -224,6 +308,10 @@ public:
     }
 
     //Inversion
+    /**
+     * @brief invierte cierta cantidad de bits
+     * 
+     */
     void inversion() {
 
         int random_bit_inicial = randomNum(0, 31);

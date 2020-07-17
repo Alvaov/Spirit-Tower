@@ -75,6 +75,10 @@ private:
         }
     };
 public:
+/**
+ * @brief Construct a new lista object
+ * 
+ */
     lista() {};
 
     /**
@@ -232,6 +236,10 @@ public:
             return false;
         }
     };
+    /**
+     * @brief borra todos los elementos de la lista
+     * 
+     */
     void delete_list() {
         for (int i = 0; i < object_counter - 1; i++) {
             delete_by_pos(0);
