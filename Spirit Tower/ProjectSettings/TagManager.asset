@@ -12,6 +12,7 @@ TagManager:
   - Rat
   - Wall
   - Shield
+  - Boss
   layers:
   - Default
   - TransparentFX

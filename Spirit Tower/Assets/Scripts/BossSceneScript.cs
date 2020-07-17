@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossPunch : MonoBehaviour
+public class BossSceneScript : MonoBehaviour
 {
-    BossScript boss;
 
+    BossScript boss;
 
     // Start is called before the first frame update
     void Start()
@@ -13,14 +13,21 @@ public class BossPunch : MonoBehaviour
         boss = GameObject.FindGameObjectWithTag("Boss").GetComponent<BossScript>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Entra");
+        if (other.gameObject.CompareTag("Player"))
+        {
+            boss.active = true;
+        }
+    }
+
+
+    void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (!Player.defender && boss.attack)
-            {
-                Client.instance.tcp.SendData("0:Boss:Attack::");
-            }
+            boss.active = false;
         }
     }
 

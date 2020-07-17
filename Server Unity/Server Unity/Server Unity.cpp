@@ -7,11 +7,13 @@
 #include "Linked_list.h"
 #include "Espectro.h"
 #include "SpectralEye.h"
+#include "FinalBoss.h"
 #include <random>
 #include "Enemy_Genetics.h"
 #include <chrono>
 #include <stdlib.h>
 int playerPos[2];
+FinalBoss* boss;
 lista<Espectro*>* espectros;
 lista<SpectralEye*>* spectralEyes;
 node_map* mapaActual;
@@ -237,7 +239,19 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         }
         else if (msg_arr[2] == "Damage") {
             listener->Send(client, msg_arr[0] + ":Chuchu:Dead:");
-            std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+        }
+    }
+    else if (msg_arr[1] == "Boss") {
+        if (msg_arr[2] == "New") {
+
+            boss = new FinalBoss();
+            boss->setRoute();
+            std::string startPath = "";
+            for (int j = 0; j < boss->get_path()->get_object_counter(); j++) {
+                startPath += boss->get_path()->get_data_by_pos(j);
+                startPath += ";";
+            }
+            listener->Send(client, "0:Boss:Created:"+startPath+"*"+"9");
         }
     }
     else if (msg_arr[1] == "Eye") {

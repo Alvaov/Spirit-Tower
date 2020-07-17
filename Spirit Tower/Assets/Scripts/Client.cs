@@ -25,6 +25,7 @@ public class Client : MonoBehaviour
 
     GameObject player;
     static Player playerScript;
+    static BossScript boss;
 
     private void Awake()
     {
@@ -308,7 +309,8 @@ public class Client : MonoBehaviour
             }
             
             if (msg_arr[1] == "Eye")
-            {                if (msg_arr[2] == "Created")
+            {                
+                if (msg_arr[2] == "Created")
                 {
                     for (int i = 0; i < Client.instance.spectralEyes.getTamaño(); i++)
                     {
@@ -318,6 +320,22 @@ public class Client : MonoBehaviour
 
                         }
                     }
+                }
+            }
+            if(msg_arr[1] == "Boss")
+            {
+                Debug.Log("Jefe");
+                if (msg_arr[2] == "Created")
+                {
+                    Debug.Log("Jefe creado");
+                    GameObject objectBoss = GameObject.Find("DemonGirlMesh");
+                    Debug.Log("Jefe creado2");
+                    boss = objectBoss.GetComponent<BossScript>();
+                    Debug.Log("Jefe creado3");
+                    boss.created = true;
+                    string[] bossInfo = msg_arr[3].Split('*');
+                    boss.life = Int32.Parse(bossInfo[1]);
+                    boss.movementPath = bossInfo[1].Split(';');
                 }
             }
         }
