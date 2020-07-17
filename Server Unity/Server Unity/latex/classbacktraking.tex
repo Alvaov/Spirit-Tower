@@ -1,0 +1,208 @@
+\hypertarget{classbacktraking}{}\doxysection{backtraking Class Reference}
+\label{classbacktraking}\index{backtraking@{backtraking}}
+
+
+clase para realizar el backtracking  
+
+
+
+
+{\ttfamily \#include $<$Pathfinding\+\_\+\+A.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$ \mbox{\hyperlink{classbacktraking_a2ee906f38863b152b28f58a0aef0037e}{Create\+Map}} (int size=120)
+\begin{DoxyCompactList}\small\item\em Create a Map object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classbacktraking_aaf4aba56c7234db426c69f050f7d29c5}{backtraking}} (\mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$mapita)
+\begin{DoxyCompactList}\small\item\em Construct a new backtraking object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classbacktraking_ab3734b31a4952022f8ce6d45b8d854ea}{backtraking}} ()
+\begin{DoxyCompactList}\small\item\em Construct a new backtraking object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classbacktraking_a755fbad39f01792bf8f4e05fddc7bc5d}{find\+\_\+shortest\+\_\+path}} (int pos\+XY, int end\+\_\+pos, int dist)
+\begin{DoxyCompactList}\small\item\em encuentra la ruta entre ambos puntos \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$ \mbox{\hyperlink{classbacktraking_acd22f5f0c242d40955c22e44c3d010fa}{backtrack}} (int pos\+Enemy\mbox{[}2\mbox{]}, int destination\mbox{[}2\mbox{]})
+\begin{DoxyCompactList}\small\item\em funcion recursiva del backtracking \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classbacktraking_afed9be425486784e284cfb8e00c41ba2}{send\+\_\+route}} (int spectrum\+Id, int pos\+Player\mbox{[}2\mbox{]}, int pos\+Enemy\mbox{[}2\mbox{]})
+\begin{DoxyCompactList}\small\item\em da la ruta de la posicion \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classbacktraking_a8b387ed1ffdab9f321a2b563410699cd}{partition}} (\mbox{\hyperlink{classlista}{lista}}$<$ \mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$ $>$ $\ast$list, int low, int high, \mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$target)
+\begin{DoxyCompactList}\small\item\em funcion recursiva del quicksort \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classbacktraking_a2470580169d8714da040d62ebfbc3458}{quick\+Sort}} (\mbox{\hyperlink{classlista}{lista}}$<$ \mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$ $>$ $\ast$list, int low, int high, \mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$target)
+\begin{DoxyCompactList}\small\item\em quicksort, ordena segun la distancia entre nodos \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classbacktraking_aea230525aa94370be955d3ac948f6a46}\label{classbacktraking_aea230525aa94370be955d3ac948f6a46}} 
+int {\bfseries n\+Map\+Width} = 120
+\item 
+\mbox{\Hypertarget{classbacktraking_ab41f37b44fb8bb872f3ac588fbe134f5}\label{classbacktraking_ab41f37b44fb8bb872f3ac588fbe134f5}} 
+int {\bfseries n\+Map\+Height} = 120
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+clase para realizar el backtracking 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classbacktraking_aaf4aba56c7234db426c69f050f7d29c5}\label{classbacktraking_aaf4aba56c7234db426c69f050f7d29c5}} 
+\index{backtraking@{backtraking}!backtraking@{backtraking}}
+\index{backtraking@{backtraking}!backtraking@{backtraking}}
+\doxysubsubsection{\texorpdfstring{backtraking()}{backtraking()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily backtraking\+::backtraking (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$}]{mapita }\end{DoxyParamCaption})}
+
+
+
+Construct a new backtraking object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mapita} & mapa a utilizar \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classbacktraking_ab3734b31a4952022f8ce6d45b8d854ea}\label{classbacktraking_ab3734b31a4952022f8ce6d45b8d854ea}} 
+\index{backtraking@{backtraking}!backtraking@{backtraking}}
+\index{backtraking@{backtraking}!backtraking@{backtraking}}
+\doxysubsubsection{\texorpdfstring{backtraking()}{backtraking()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily backtraking\+::backtraking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Construct a new backtraking object. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classbacktraking_acd22f5f0c242d40955c22e44c3d010fa}\label{classbacktraking_acd22f5f0c242d40955c22e44c3d010fa}} 
+\index{backtraking@{backtraking}!backtrack@{backtrack}}
+\index{backtrack@{backtrack}!backtraking@{backtraking}}
+\doxysubsubsection{\texorpdfstring{backtrack()}{backtrack()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$ backtraking\+::backtrack (\begin{DoxyParamCaption}\item[{int}]{pos\+Enemy\mbox{[}2\mbox{]},  }\item[{int}]{destination\mbox{[}2\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+funcion recursiva del backtracking 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos\+Enemy} & posicion del enemigo \\
+\hline
+{\em destination} & destino \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+node\+\_\+map$\ast$ mapa por el que se trasversa 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbacktraking_a2ee906f38863b152b28f58a0aef0037e}\label{classbacktraking_a2ee906f38863b152b28f58a0aef0037e}} 
+\index{backtraking@{backtraking}!CreateMap@{CreateMap}}
+\index{CreateMap@{CreateMap}!backtraking@{backtraking}}
+\doxysubsubsection{\texorpdfstring{CreateMap()}{CreateMap()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$ backtraking\+::\+Create\+Map (\begin{DoxyParamCaption}\item[{int}]{size = {\ttfamily 120} }\end{DoxyParamCaption})}
+
+
+
+Create a Map object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & map size \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+node\+\_\+map$\ast$ array del mapa 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbacktraking_a755fbad39f01792bf8f4e05fddc7bc5d}\label{classbacktraking_a755fbad39f01792bf8f4e05fddc7bc5d}} 
+\index{backtraking@{backtraking}!find\_shortest\_path@{find\_shortest\_path}}
+\index{find\_shortest\_path@{find\_shortest\_path}!backtraking@{backtraking}}
+\doxysubsubsection{\texorpdfstring{find\_shortest\_path()}{find\_shortest\_path()}}
+{\footnotesize\ttfamily bool backtraking\+::find\+\_\+shortest\+\_\+path (\begin{DoxyParamCaption}\item[{int}]{pos\+XY,  }\item[{int}]{end\+\_\+pos,  }\item[{int}]{dist }\end{DoxyParamCaption})}
+
+
+
+encuentra la ruta entre ambos puntos 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos\+XY} & posicion inicial \\
+\hline
+{\em end\+\_\+pos} & posiciopn final \\
+\hline
+{\em dist} & distancia \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true si existe ruta 
+
+false si no existe la ruta 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbacktraking_a8b387ed1ffdab9f321a2b563410699cd}\label{classbacktraking_a8b387ed1ffdab9f321a2b563410699cd}} 
+\index{backtraking@{backtraking}!partition@{partition}}
+\index{partition@{partition}!backtraking@{backtraking}}
+\doxysubsubsection{\texorpdfstring{partition()}{partition()}}
+{\footnotesize\ttfamily int backtraking\+::partition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlista}{lista}}$<$ \mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$ $>$ $\ast$}]{list,  }\item[{int}]{low,  }\item[{int}]{high,  }\item[{\mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$}]{target }\end{DoxyParamCaption})}
+
+
+
+funcion recursiva del quicksort 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & lista a ordenar \\
+\hline
+{\em low} & indice mas bajo \\
+\hline
+{\em high} & indice mas alto \\
+\hline
+{\em target} & posicion a buscar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ruta al punto 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbacktraking_a2470580169d8714da040d62ebfbc3458}\label{classbacktraking_a2470580169d8714da040d62ebfbc3458}} 
+\index{backtraking@{backtraking}!quickSort@{quickSort}}
+\index{quickSort@{quickSort}!backtraking@{backtraking}}
+\doxysubsubsection{\texorpdfstring{quickSort()}{quickSort()}}
+{\footnotesize\ttfamily void backtraking\+::quick\+Sort (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlista}{lista}}$<$ \mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$ $>$ $\ast$}]{list,  }\item[{int}]{low,  }\item[{int}]{high,  }\item[{\mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$}]{target }\end{DoxyParamCaption})}
+
+
+
+quicksort, ordena segun la distancia entre nodos 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & lista a ordenar \\
+\hline
+{\em low} & posicion mas baja \\
+\hline
+{\em high} & posicion mas alta \\
+\hline
+{\em target} & nodo a llegar \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classbacktraking_afed9be425486784e284cfb8e00c41ba2}\label{classbacktraking_afed9be425486784e284cfb8e00c41ba2}} 
+\index{backtraking@{backtraking}!send\_route@{send\_route}}
+\index{send\_route@{send\_route}!backtraking@{backtraking}}
+\doxysubsubsection{\texorpdfstring{send\_route()}{send\_route()}}
+{\footnotesize\ttfamily std\+::string backtraking\+::send\+\_\+route (\begin{DoxyParamCaption}\item[{int}]{spectrum\+Id,  }\item[{int}]{pos\+Player\mbox{[}2\mbox{]},  }\item[{int}]{pos\+Enemy\mbox{[}2\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+da la ruta de la posicion 
+
+
+\begin{DoxyParams}{Parameters}
+{\em spectrum\+Id} & id del espectro \\
+\hline
+{\em pos\+Player} & posicion del jugador \\
+\hline
+{\em pos\+Enemy} & posicion del enemigo \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::string ruta a enviar 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Pathfinding\+\_\+\+A.\+h\item 
+Pathfinding\+\_\+\+A.\+cpp\end{DoxyCompactItemize}
