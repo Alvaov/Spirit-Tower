@@ -11955,7 +11955,6 @@ MonoBehaviour:
   tipo: blue
   teleport: 0
   teleported: 0
-  player: {fileID: 0}
   spectrum: {fileID: 0}
   path: []
   frameInterval: 0
@@ -12455,7 +12454,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1016704921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14946,6 +14945,12 @@ PrefabInstance:
       propertyPath: Avisos
       value: 
       objectReference: {fileID: 1129339778}
+    - target: {fileID: 6915540807808311187, guid: c3248c1e5acbc324a81cd2d98420a89e,
+        type: 3}
+      propertyPath: Contenidos.Array.data[0].item
+      value: 
+      objectReference: {fileID: 919132149155446097, guid: affdb9e8b0dc6ee439f435021fdfb305,
+        type: 3}
     - target: {fileID: 6915540807808311190, guid: c3248c1e5acbc324a81cd2d98420a89e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15249,7 +15254,6 @@ MonoBehaviour:
   tipo: gray
   teleport: 0
   teleported: 0
-  player: {fileID: 0}
   spectrum: {fileID: 0}
   path: []
   frameInterval: 0
@@ -15910,7 +15914,6 @@ MonoBehaviour:
   tipo: red
   teleport: 0
   teleported: 0
-  player: {fileID: 0}
   spectrum: {fileID: 0}
   path: []
   frameInterval: 0

@@ -163,7 +163,6 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         }
         else if (msg_arr[2] == "Damage") { //Recibir dano
             listener->Send(client, msg_arr[0] + ":Spectrum:Dead:");
-            std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         }
         else if (msg_arr[2] == "Teleport") {
             int closestPos[2] = {0,0};
@@ -232,7 +231,6 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         }
         else if (msg_arr[2] == "Damage") {
             listener->Send(client, msg_arr[0] + ":Chuchu:Dead:");
-            std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         }
     }
     else if (msg_arr[1] == "Eye") {

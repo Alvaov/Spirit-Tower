@@ -25,7 +25,6 @@ public class SpectrumMovement : MonoBehaviour
     public string tipo;
     public bool teleport = false;
     public bool teleported = false;
-    public GameObject player;
     public CharacterController spectrum;
     public string[] path;
     private Vector3 target;
@@ -36,17 +35,20 @@ public class SpectrumMovement : MonoBehaviour
     public bool attack = false;
     public bool addedToList = false;
     Animator animator;
+    GameObject player;
+    Player playerScript;
 
     // Start is called before the first frame update
     void Start()
     {
         spectrum = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player");
         visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
         frameInterval = 10+(myId*7);
+        player = GameObject.Find("Damian2.0");
+        playerScript = player.GetComponent<Player>();
         //movement = Grid.instance.GetWorldPointFromAxes(14, 51);
     }
 
@@ -63,6 +65,7 @@ public class SpectrumMovement : MonoBehaviour
             {
                 if (!checkVisualRange()) //Atacar por la espalda
                 {
+                    playerScript.monedas += 100;
                     Client.instance.tcp.SendData(myId + ":Spectrum:Damage:1:");
                     Destroy(gameObject);
                 }

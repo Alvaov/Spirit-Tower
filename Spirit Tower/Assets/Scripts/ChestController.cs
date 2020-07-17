@@ -52,15 +52,6 @@ public class ChestController : MonoBehaviour
             {
                 playerScript.llaves += 1;
             }
-
-            if (Contenidos[j].item.name == "SpeedUp")
-            {
-                //**
-            }
-
-            
-            //Mas comportamiento para objetos aqui
-
         }
     }
         
@@ -76,9 +67,8 @@ public class ChestController : MonoBehaviour
         if (openChest == true & (Input.GetKeyDown(KeyCode.Z) & (ChestOpened == false))){
             Avisos.text = " ";
             animator.SetBool("openChest", true);
-            GameObject player = GameObject.Find("Damian2.0");
-            Player playerScript = player.GetComponent<Player>();
             playerScript.tesoros += 1;
+            playerScript.monedas += 500;
             sacarObjeto();
             ChestOpened = true;
         }
@@ -118,8 +108,3 @@ public class ChestController : MonoBehaviour
         animator.SetBool("openChest", false);
     }
 }
-
-
-
-
-

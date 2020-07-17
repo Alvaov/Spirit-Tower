@@ -117,14 +117,12 @@ public class Client : MonoBehaviour
                 int _byteLength = stream.EndRead(_result);
                 if (_byteLength <= 0)
                 {
-                    // TODO: disconnect
                     return;
                 }
 
                 byte[] _data = new byte[_byteLength];
                 Array.Copy(receiveBuffer, _data, _byteLength);
 
-                // TODO: handle data
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
                 string msg = Encoding.UTF8.GetString(_data, 0, _data.Length);
                 handleData(msg);
@@ -138,7 +136,6 @@ public class Client : MonoBehaviour
         private void handleData(string msg)
         {
             string[] msg_arr = msg.Split(':');
-           // Debug.Log(msg_arr[1]);
 
             /* *** JUGADOR *** */ 
             if (msg_arr[1] == "Player")
@@ -179,7 +176,6 @@ public class Client : MonoBehaviour
                         SpectrumMovement espectroActual = Client.instance.spectrums.getValorEnIndice(i);
                         if (espectroActual.myId == int.Parse(msg_arr[0]))
                         {
-                            //Debug.Log(msg);
                             espectroActual.path = actualPath;
                             espectroActual.localDetected = false;
                             espectroActual.teleported = false;
@@ -205,7 +201,6 @@ public class Client : MonoBehaviour
                         if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
                         {
                             Client.instance.spectrums.Eliminar(i);
-                            Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                         }
                     }
                 }
@@ -297,7 +292,6 @@ public class Client : MonoBehaviour
                         if (Client.instance.chuchus.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
                         {
                             Client.instance.chuchus.Eliminar(i);
-                            Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH MI PICHULAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                         }
                     }
                 }

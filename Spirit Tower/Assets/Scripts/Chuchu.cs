@@ -17,6 +17,11 @@ public class Chuchu : MonoBehaviour
     public bool addedToList = false;
     public string[] path;
 
+
+    GameObject player;
+    Player playerScript;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +29,8 @@ public class Chuchu : MonoBehaviour
         frameInterval = 15 + ((id + 1) * 15);
         id = Client.chuchuId;
         Client.chuchuId += 1;
+        player = GameObject.Find("Damian2.0");
+        playerScript = player.GetComponent<Player>();
     }
 
     private void OnTriggerStay(Collider other)
@@ -40,6 +47,7 @@ public class Chuchu : MonoBehaviour
         {
             if (Player.atacar) 
             {
+                playerScript.monedas += 200;
                 Client.instance.tcp.SendData(id + ":Chuchu:Damage:1:");
                 Destroy(gameObject);
             }
