@@ -23,7 +23,7 @@ public class Player : MonoBehaviour{
     //Acciones
     public bool agacharse = false;
     public static bool atacar = false;
-    public bool defender = false;
+    public static bool defender = false;
 
     //Salud
     public int health;
@@ -295,11 +295,13 @@ public class Player : MonoBehaviour{
 
     IEnumerator DeffendRoutine()
     {
+        defender = true;
         animator.SetBool("defender", true);
         animator.SetInteger("action", 3);
         yield return new WaitForSeconds(1);
         animator.SetInteger("action", 0);
         animator.SetBool("defender", false);
+        defender = false;
     }
 
     IEnumerator AttackRoutine()
