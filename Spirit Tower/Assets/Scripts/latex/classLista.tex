@@ -1,0 +1,132 @@
+\hypertarget{classLista}{}\doxysection{Lista$<$ Object $>$ Class Template Reference}
+\label{classLista}\index{Lista$<$ Object $>$@{Lista$<$ Object $>$}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classLista_a6d7cae407f96a2aa2014e76eaaebc5e1}{Lista}} ()
+\item 
+bool \mbox{\hyperlink{classLista_a5d7fbb96e80e16a4ab8410c0e051b546}{esta\+Vacia}} ()
+\item 
+int \mbox{\hyperlink{classLista_a7e15082454212375dd444e999415ffb8}{get\+Tamaño}} ()
+\item 
+void \mbox{\hyperlink{classLista_a02dd91c4a8b00f9c3242e9a98409e0bc}{añadir\+Elementos}} (Object valor)
+\item 
+Object \mbox{\hyperlink{classLista_adeaa6a91ad920fa17e58559e52c8ba40}{get\+Valor\+En\+Indice}} (int indice)
+\item 
+void \mbox{\hyperlink{classLista_ada5e071ff6320c5ad02f1e3977e2a53d}{sobre\+Escribir\+Nodo}} (int indice, Object valor)
+\item 
+Object \mbox{\hyperlink{classLista_ac1f50d95ff422be6e24d47b4adda8ed2}{get\+Ultimo\+Elemento}} ()
+\item 
+Object \mbox{\hyperlink{classLista_a8a9357ff9983a0ede5e32ddce86aa520}{get\+Primer\+Elemento}} ()
+\item 
+void \mbox{\hyperlink{classLista_a042a806c6b9bc0bdfd0f516b27393563}{Eliminar}} (int indice)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Brian Wagemans Alvarado Como referencia se utiliza el video de Youtube \char`\"{}\+Listas enlazadas pt 2-\/ Clase lista enlazada
+métodos básicos(añadir,obtener,tamaño,vacia)\char`\"{} por latincoder. 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classLista_a6d7cae407f96a2aa2014e76eaaebc5e1}\label{classLista_a6d7cae407f96a2aa2014e76eaaebc5e1}} 
+\index{Lista$<$ Object $>$@{Lista$<$ Object $>$}!Lista@{Lista}}
+\index{Lista@{Lista}!Lista$<$ Object $>$@{Lista$<$ Object $>$}}
+\doxysubsubsection{\texorpdfstring{Lista()}{Lista()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classLista}{Lista}}$<$ Object $>$.\mbox{\hyperlink{classLista}{Lista}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+se inicializa la \mbox{\hyperlink{classLista}{Lista}} sin Nodos. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classLista_a02dd91c4a8b00f9c3242e9a98409e0bc}\label{classLista_a02dd91c4a8b00f9c3242e9a98409e0bc}} 
+\index{Lista$<$ Object $>$@{Lista$<$ Object $>$}!añadirElementos@{añadirElementos}}
+\index{añadirElementos@{añadirElementos}!Lista$<$ Object $>$@{Lista$<$ Object $>$}}
+\doxysubsubsection{\texorpdfstring{añadirElementos()}{añadirElementos()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{classLista}{Lista}}$<$ Object $>$.añadir\+Elementos (\begin{DoxyParamCaption}\item[{Object}]{valor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Crea un \mbox{\hyperlink{classNodo}{Nodo}} con Cualquier valor y lo anida a la cola de la lista 
+\begin{DoxyParams}{Parameters}
+{\em valor} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classLista_a042a806c6b9bc0bdfd0f516b27393563}\label{classLista_a042a806c6b9bc0bdfd0f516b27393563}} 
+\index{Lista$<$ Object $>$@{Lista$<$ Object $>$}!Eliminar@{Eliminar}}
+\index{Eliminar@{Eliminar}!Lista$<$ Object $>$@{Lista$<$ Object $>$}}
+\doxysubsubsection{\texorpdfstring{Eliminar()}{Eliminar()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{classLista}{Lista}}$<$ Object $>$.Eliminar (\begin{DoxyParamCaption}\item[{int}]{indice }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Elimina el elemento en el indice que se espera. El indice marca el elemento a eliminar. 
+\begin{DoxyParams}{Parameters}
+{\em indice} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classLista_a5d7fbb96e80e16a4ab8410c0e051b546}\label{classLista_a5d7fbb96e80e16a4ab8410c0e051b546}} 
+\index{Lista$<$ Object $>$@{Lista$<$ Object $>$}!estaVacia@{estaVacia}}
+\index{estaVacia@{estaVacia}!Lista$<$ Object $>$@{Lista$<$ Object $>$}}
+\doxysubsubsection{\texorpdfstring{estaVacia()}{estaVacia()}}
+{\footnotesize\ttfamily bool \mbox{\hyperlink{classLista}{Lista}}$<$ Object $>$.esta\+Vacia (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+retorna un true si esta vacia, false caso contrario \begin{DoxyReturn}{Returns}
+true True si esta vacia, False si tiene elementos 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classLista_a8a9357ff9983a0ede5e32ddce86aa520}\label{classLista_a8a9357ff9983a0ede5e32ddce86aa520}} 
+\index{Lista$<$ Object $>$@{Lista$<$ Object $>$}!getPrimerElemento@{getPrimerElemento}}
+\index{getPrimerElemento@{getPrimerElemento}!Lista$<$ Object $>$@{Lista$<$ Object $>$}}
+\doxysubsubsection{\texorpdfstring{getPrimerElemento()}{getPrimerElemento()}}
+{\footnotesize\ttfamily Object \mbox{\hyperlink{classLista}{Lista}}$<$ Object $>$.get\+Primer\+Elemento (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+retorna el valor del primer \mbox{\hyperlink{classNodo}{Nodo}}. \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classLista_a7e15082454212375dd444e999415ffb8}\label{classLista_a7e15082454212375dd444e999415ffb8}} 
+\index{Lista$<$ Object $>$@{Lista$<$ Object $>$}!getTamaño@{getTamaño}}
+\index{getTamaño@{getTamaño}!Lista$<$ Object $>$@{Lista$<$ Object $>$}}
+\doxysubsubsection{\texorpdfstring{getTamaño()}{getTamaño()}}
+{\footnotesize\ttfamily int \mbox{\hyperlink{classLista}{Lista}}$<$ Object $>$.get\+Tamaño (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+retorna la cantidad de elementos, es 1+ de la cantidad de indices. \begin{DoxyReturn}{Returns}
+El tamaño de la lista 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classLista_ac1f50d95ff422be6e24d47b4adda8ed2}\label{classLista_ac1f50d95ff422be6e24d47b4adda8ed2}} 
+\index{Lista$<$ Object $>$@{Lista$<$ Object $>$}!getUltimoElemento@{getUltimoElemento}}
+\index{getUltimoElemento@{getUltimoElemento}!Lista$<$ Object $>$@{Lista$<$ Object $>$}}
+\doxysubsubsection{\texorpdfstring{getUltimoElemento()}{getUltimoElemento()}}
+{\footnotesize\ttfamily Object \mbox{\hyperlink{classLista}{Lista}}$<$ Object $>$.get\+Ultimo\+Elemento (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+retorna el valor del ultimo \mbox{\hyperlink{classNodo}{Nodo}} \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classLista_adeaa6a91ad920fa17e58559e52c8ba40}\label{classLista_adeaa6a91ad920fa17e58559e52c8ba40}} 
+\index{Lista$<$ Object $>$@{Lista$<$ Object $>$}!getValorEnIndice@{getValorEnIndice}}
+\index{getValorEnIndice@{getValorEnIndice}!Lista$<$ Object $>$@{Lista$<$ Object $>$}}
+\doxysubsubsection{\texorpdfstring{getValorEnIndice()}{getValorEnIndice()}}
+{\footnotesize\ttfamily Object \mbox{\hyperlink{classLista}{Lista}}$<$ Object $>$.get\+Valor\+En\+Indice (\begin{DoxyParamCaption}\item[{int}]{indice }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+metodo que retorna el valor del nodo en el indice especificado como el parametro indice(\+N\+O R\+E\+T\+O\+R\+N\+A E\+L N\+O\+D\+O). 
+\begin{DoxyParams}{Parameters}
+{\em indice} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classLista_ada5e071ff6320c5ad02f1e3977e2a53d}\label{classLista_ada5e071ff6320c5ad02f1e3977e2a53d}} 
+\index{Lista$<$ Object $>$@{Lista$<$ Object $>$}!sobreEscribirNodo@{sobreEscribirNodo}}
+\index{sobreEscribirNodo@{sobreEscribirNodo}!Lista$<$ Object $>$@{Lista$<$ Object $>$}}
+\doxysubsubsection{\texorpdfstring{sobreEscribirNodo()}{sobreEscribirNodo()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{classLista}{Lista}}$<$ Object $>$.sobre\+Escribir\+Nodo (\begin{DoxyParamCaption}\item[{int}]{indice,  }\item[{Object}]{valor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Función que deja sobre\+Escribir el valor en el nodo Especificado nuevo valor del nodo es el parametro valor indice es el indice del nodo en la lista 
+\begin{DoxyParams}{Parameters}
+{\em indice} & \\
+\hline
+{\em valor} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Linked\+List.\+cs\end{DoxyCompactItemize}
