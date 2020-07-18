@@ -6,6 +6,11 @@ using System.Net.Sockets;
 using System;
 using System.Text;
 
+/***
+ * Clase encargada de ser el cliente, comunicación con el server,
+ * interpretación de mensajes así como de ejecutar las acciones
+ * que indique el servidor por medio de estos mensajes
+ */
 public class Client : MonoBehaviour
 {
     public static Client instance;
@@ -27,6 +32,10 @@ public class Client : MonoBehaviour
     static Player playerScript;
     static BossScript boss;
 
+    /***
+     * Método que se ejecuta apenas se crea el objeto, asigna una instancia
+     * en una variable.
+     */
     private void Awake()
     {
         if (instance == null)
@@ -39,7 +48,11 @@ public class Client : MonoBehaviour
             Destroy(this);
         }
     }
-
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     public void Start()
     {
         tcp = new TCP();
@@ -51,11 +64,20 @@ public class Client : MonoBehaviour
         spectralEyes = new Lista<EyeScript>();
     }
 
+    /***
+     * Método que se conecta al servidor de igual forma que envía 
+     * el estado de las paredes al servidor para el reflejo del mapa.
+     */
     public void ConnectToServer()
     {
         tcp.Connect();
         Grid.getGridWalls();
     }
+
+    /***
+     * Método que envía datos al servidor
+     * @parameter string msg
+     */
     public void Send_Data(string msg)
     {
         if (instance.tcp != null)
@@ -63,12 +85,20 @@ public class Client : MonoBehaviour
             tcp.SendData(msg);
         }
     }
+    /***
+     * Clase que comprende el socket TCP que se conecta al servidor.
+     */
     public class TCP
     {
         public TcpClient socket;
 
         private NetworkStream stream;
         private byte[] receiveBuffer;
+
+        /***
+         * Método que conecta el socket al servidor según el ip
+         * y el puerto establecidos.
+        */
         public void Connect()
         {
             socket = new TcpClient
@@ -81,6 +111,9 @@ public class Client : MonoBehaviour
             socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
         }
 
+        /***
+         * Método que realiza una conexión tipo callback.
+         */
         private void ConnectCallback(IAsyncResult _result)
         {
             socket.EndConnect(_result);
@@ -95,6 +128,10 @@ public class Client : MonoBehaviour
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
         }
 
+        /***
+         * Método que envía la información codificada en byte[] al servidor directamente
+         * del socket.
+         */
         public void SendData(String dataToSend)
         {
             try
@@ -111,6 +148,10 @@ public class Client : MonoBehaviour
             }
         }
 
+        /***
+         * Método encargado de recibir la información del servidor
+         * de manera asicnrónica.
+         */
         private void ReceiveCallback(IAsyncResult _result)
         {
             try
@@ -136,6 +177,10 @@ public class Client : MonoBehaviour
             }
         }
 
+        /***
+         * Método encargado de parsear, interpretar y ejecutar los mensaje
+         * que recibe del servidor.
+         */
         private void handleData(string msg)
         {
 

@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/***
+ * Clase que maneja la creación de los proyectiles
+ * que disparan los espectros rojos. Los instancia de manera que
+ * conserven la rotación del espectro y con intervalo de 5000 frames de diferencia.
+ */
 public class SpawnProjectiles : MonoBehaviour
 {
     public int frameInterval = 5000;
@@ -12,6 +17,11 @@ public class SpawnProjectiles : MonoBehaviour
     private GameObject effectToSpawn;
 
     // Start is called before the first frame update
+    /***
+     * Método que se ejecuta únicamente en el primer frame. 
+     * Reproduce el sonido de creación del proyectil e 
+     * instancia el array de efectos que posee la clase.
+     */
     void Start()
     {
         fireballCreation = GetComponent<AudioSource>();
@@ -19,6 +29,10 @@ public class SpawnProjectiles : MonoBehaviour
     }
 
     // Update is called once per frame
+    /***
+     * Método que se ejecuta una vez por frame,
+     * instancia los proyectiles según el frameInterval establecido
+     */
     void Update()
     {
         if (SpectrumMovement.detected)
@@ -31,7 +45,11 @@ public class SpawnProjectiles : MonoBehaviour
 
     }
 
-
+    /***
+     * Método encargado de la creación de proyectiles y 
+     * de su respectivo punto de instanciación para 
+     * asegurar que continúe el camino esperado.
+     */
     void SpawnVFX()
     {
         GameObject vfx;

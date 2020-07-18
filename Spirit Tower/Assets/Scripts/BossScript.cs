@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
-
+/***
+ * Clase que representa y controla el comportamiento del
+ * jefe final escogido para el último piso de la torre.
+ */
 public class BossScript : MonoBehaviour
 {
     public string[] movementPath;
@@ -23,6 +26,11 @@ public class BossScript : MonoBehaviour
     public bool attack = false;
 
     // Start is called before the first frame update
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     void Start()
     {
         speed = 10;
@@ -35,6 +43,9 @@ public class BossScript : MonoBehaviour
     }
 
     // Update is called once per frame
+    /***
+     * Método que se ejecuta cada frame
+     */
     void Update()
     {
         if (!created)
@@ -49,7 +60,12 @@ public class BossScript : MonoBehaviour
         walk();
     }
 
-
+    /***
+     * Método encargado de procesar los elementos que tenga en el array
+     * de strings que contiene el camino indicado por el servidor
+     * se encarga de recorrer esta lista y en caso de llegar al final recorre nuevamente la lista
+     * debido a que esta se actualiza constantemente por parte del servidor.
+     */
     private void walk()
     {
         if (movementPath.Length > 0)
@@ -96,7 +112,11 @@ public class BossScript : MonoBehaviour
             }
         }
     }
-
+    /***
+     * Método que calcula la rotación necesaria 
+     * para el objeto con el propósito de que mire 
+     * al objetivo actual de su ruta.
+     */
     void FaceTarget()
     {
         Vector3 direction = (target - transform.position).normalized;
@@ -105,17 +125,30 @@ public class BossScript : MonoBehaviour
 
     }
 
+    /***
+     * Método que es llamado cuando el jefe deberá 
+     * quedarse quieto dando oportunidad 
+     * al jugador de que lo ataque.
+     */
     vois stopMoving()
     {
         StartCoroutine(StopRoutine());
     }
 
+    /***
+     * Método que es llamado cuando el jefe deberá 
+     * moverse en acciones de atacar al jugador.
+     */
     void attacking()
     {
         StartCoroutine(AttackRoutine());
     }
 
-
+    /***
+     * Método donde se ejecuta la rutina
+     * que corresponde a la acción de 
+     * atacar del jefe final
+     */
     IEnumerator AttackRoutine()
     {
         Vector3 target = player.transform.position;
@@ -131,7 +164,11 @@ public class BossScript : MonoBehaviour
          animator.SetBool("atacar", false);
     }
 
-
+    /***
+     * Método donde se ejecuta la rutina
+     * que corresponde a la acción de 
+     * detenerse del jefe final
+     */
     IEnumerator StopRoutine()
     {
 

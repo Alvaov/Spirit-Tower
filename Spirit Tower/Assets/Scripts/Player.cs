@@ -5,7 +5,11 @@ using System.Collections.Specialized;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
-
+/***
+ * Clase encargada de administrar todos los
+ * aspectos requeridos por el jugador
+ * de los diferentes niveles
+ */
 public class Player : MonoBehaviour{
 
     //Movimiento
@@ -62,6 +66,11 @@ public class Player : MonoBehaviour{
 
 
     // Start is called before the first frame update
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     void Start()
     {
         player = GetComponent<CharacterController>();
@@ -73,6 +82,12 @@ public class Player : MonoBehaviour{
     }
 
     // Update is called once per frame
+    /***
+     * Método que se ejecuta una vez por frame
+     * evaluando constantemente la información 
+     * y el estado actual del jugador
+     * para su correcto funcionamiento.
+     */
     void Update()
     {
         if (ImDead)
@@ -190,7 +205,10 @@ public class Player : MonoBehaviour{
         llavesText.text = ":" + llaves;
 
     }
-
+    /***
+     * Función encargada de tomar los inputs del jugador
+     * para definir su movimiento, así como sus animaciones.
+     */
     void Movement()
     {
         if (player.isGrounded)
@@ -251,7 +269,11 @@ public class Player : MonoBehaviour{
         player.Move(movement);
 
     }
-
+    /***
+     * Método encargado de obtener los inputs 
+     * del mouse para así realizar las acciones
+     * correspondientes.
+     */
     void GetInput()
     {
         if (Input.GetMouseButtonDown(0))
@@ -282,17 +304,27 @@ public class Player : MonoBehaviour{
             }
         }
     }
-
+    /***
+     * Método que es llamado cuando el jugador ataca.
+     */
     void Attacking()
     {
         StartCoroutine(AttackRoutine());
     }
 
+    /***
+     * Método que es llamado cuando el jugador defiende.
+     */
     void Deffending()
     {
         StartCoroutine(DeffendRoutine());
     }
 
+    /***
+    * Método donde se ejecuta la rutina
+    * que corresponde a la acción de 
+    * defender del jugador
+    */
     IEnumerator DeffendRoutine()
     {
         defender = true;
@@ -304,6 +336,11 @@ public class Player : MonoBehaviour{
         defender = false;
     }
 
+    /***
+    * Método donde se ejecuta la rutina
+    * que corresponde a la acción de 
+    * atacar del jugador
+    */
     IEnumerator AttackRoutine()
     {
         atacar = true;

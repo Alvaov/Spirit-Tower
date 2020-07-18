@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/***
+ * Clase encargada de la administración
+ * del comportamiento completo del ojo espectral.
+ */
 public class EyeScript : MonoBehaviour
 {
     //Aspectos generales
@@ -17,6 +21,12 @@ public class EyeScript : MonoBehaviour
     public float visionAngle = 160f;
 
     // Start is called before the first frame update
+
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     void Start()
     {
         spectralEye = GetComponent<CharacterController>();
@@ -28,7 +38,12 @@ public class EyeScript : MonoBehaviour
         Client.eyeId += 1;
     }
 
-
+    /***
+     * Método que detecta si entra otro collider, 
+     * si entra la espada notifica al server,
+     * si entra el jugador alerta al resto de espectros
+     * para iniciar la persecusión;
+     */
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Sword"))
@@ -46,6 +61,13 @@ public class EyeScript : MonoBehaviour
     }
 
     // Update is called once per frame
+
+    /***
+     * Método que se ejecuta una vez por frame
+     * evaluando constantemente la información 
+     * y el estado actual del ojo espectral
+     * para su correcto funcionamiento.
+     */
     void Update()
     {
         if (!addedToList)
