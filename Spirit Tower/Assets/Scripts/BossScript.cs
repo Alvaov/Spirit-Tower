@@ -21,7 +21,10 @@ public class BossScript : MonoBehaviour
     public int actualPhase = 0;
     public CharacterController boss;
     public float frameInterval;
+    public bool atacar = false;
+    public bool cubrir = false;
     Animator animator;
+    private bool changed = false;
 
     public bool attack = false;
 
@@ -33,13 +36,21 @@ public class BossScript : MonoBehaviour
      */
     void Start()
     {
-        speed = 10;
+        speed = 25;
         stepPath = 0;
         player = GameObject.FindGameObjectWithTag("Player");
         boss = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         frameInterval = 60;
         
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Sword"))
+        {
+            Client.instance.tcp.SendData("0:Boss:Damage:1");
+        }
     }
 
     // Update is called once per frame
@@ -50,14 +61,68 @@ public class BossScript : MonoBehaviour
     {
         if (!created)
         {
-            //Client.instance.tcp.SendData("0:Boss:New::");
+            Client.instance.tcp.SendData("0:Boss:New::");
         }
 
         if (active)
         {
+            animator.SetBool("active", true);
             transform.LookAt(player.transform.position);
+            if(life == 3 && !changed)
+            {
+                changed = true;
+                Client.instance.tcp.SendData("0:Boss:Phase:1:");
+                animator.SetInteger("action", 3);
+                stepPath = 0;
+            }
+            if (life == 0)
+            {
+                animator.SetInteger("action", 6);
+            }
+            if (!cubrir && !atacar)
+            {
+                walk();
+            }
+            if (atacar)
+            {
+                if(actualPhase == 1)
+                {
+                    //transform.LookAt(player.transform.position);
+                    Vector3 target = player.transform.position;
+                    transform.position = Vector3.MoveTowards(transform.position, target, (speed - 5) * 4 * Time.deltaTime);
+                    if (transform.position == target)
+                    {
+                        //StartCoroutine(AttackRoutine());
+                        animator.SetInteger("action", 4);
+                        cubrir = true;
+                        atacar = false;
+                    }
+                }
+                if (actualPhase == 0)
+                {
+                    Vector3 target = player.transform.position;
+                    transform.position = Vector3.MoveTowards(transform.position, target, (speed - 5) * 4 * Time.deltaTime);
+                    if (transform.position == target)
+                    {
+                        //StartCoroutine(AttackRoutine());
+                        animator.SetInteger("action", 2);
+                        cubrir = true;
+                        atacar = false;
+                    }
+                }
+            }
+            if (cubrir) {
+                string[] pos_grid = movementPath[movementPath.Length-2].Split(',');
+                string x = pos_grid[0];
+                string y = pos_grid[1];
+                int posX = Int32.Parse(x);
+                int posZ = Int32.Parse(y);
+
+                Vector3 target = Grid.instance.GetWorldPointFromAxes(posX, posZ);
+                target.y = 10;
+                transform.position = Vector3.MoveTowards(transform.position, target, speed * 2 * Time.deltaTime);
+            }
         }
-        walk();
     }
 
     /***
@@ -75,8 +140,8 @@ public class BossScript : MonoBehaviour
                 if (stepPath == movementPath.Length - 1)
                 {
                     attacking();
-                    stepPath = 0;
                     stopMoving();
+                    stepPath = 0;
                 }
                 string[] pos_grid = movementPath[stepPath].Split(',');
                 string x = pos_grid[0];
@@ -85,18 +150,20 @@ public class BossScript : MonoBehaviour
                 int posZ = Int32.Parse(y);
 
                 target = Grid.instance.GetWorldPointFromAxes(posX, posZ);
-                target.y = 16.44f;
+                
 
                 if (transform.position != target)
                 {
                     if (actualPhase == 0)
                     {
+                        target.y = 16.44f;
                         transform.LookAt(player.transform.position);
                         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
                     }else if(actualPhase == 1)
                     {
+                        target.y = 10f;
                         FaceTarget();
-                        transform.position = Vector3.MoveTowards(transform.position, target, speed*3 * Time.deltaTime);
+                        transform.position = Vector3.MoveTowards(transform.position, target, (speed-10) * Time.deltaTime);
                     }
 
                 }
@@ -130,9 +197,11 @@ public class BossScript : MonoBehaviour
      * quedarse quieto dando oportunidad 
      * al jugador de que lo ataque.
      */
-    vois stopMoving()
+    void stopMoving()
     {
+        cubrir = true;
         StartCoroutine(StopRoutine());
+        cubrir = false;
     }
 
     /***
@@ -141,7 +210,8 @@ public class BossScript : MonoBehaviour
      */
     void attacking()
     {
-        StartCoroutine(AttackRoutine());
+        atacar = true;
+        //StartCoroutine(AttackRoutine());
     }
 
     /***
@@ -151,18 +221,11 @@ public class BossScript : MonoBehaviour
      */
     IEnumerator AttackRoutine()
     {
-        Vector3 target = player.transform.position;
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * 2 * Time.deltaTime);
-        
-        yield return new WaitForSeconds(1);
-        animator.SetBool("atacar", true);
+        yield return new WaitForSeconds(0);
         animator.SetInteger("action", 2);
-        animator.SetInteger("action", 1);
-        animator.SetBool("atacar", false);
-        
-         animator.SetInteger("action", 0);
-         animator.SetBool("atacar", false);
     }
+
+
 
     /***
      * Método donde se ejecuta la rutina
@@ -171,6 +234,24 @@ public class BossScript : MonoBehaviour
      */
     IEnumerator StopRoutine()
     {
+        if(actualPhase == 0)
+        {
+            animator.SetInteger("action", 1);
+            yield return new WaitForSeconds(3);
+            animator.SetInteger("action", 7);
+            yield return new WaitForSeconds(3);
+            animator.SetInteger("action", 0);
+            cubrir = false;
+        }
+        else if(actualPhase == 1)
+        {
+            animator.SetInteger("action", 3);
+            yield return new WaitForSeconds(1);
+            animator.SetInteger("action", 7);
+            yield return new WaitForSeconds(3);
+            animator.SetInteger("action", 3);
+            cubrir = false;
+        }
 
     }
 }

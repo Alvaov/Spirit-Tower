@@ -2,29 +2,32 @@
 
 
 FinalBoss::FinalBoss() {
-	life = 9;
+	life = 6;
 	actualPhase = 0;
 	path = new lista<std::string>();
 }
 
 void FinalBoss::setRoute() {
 	switch (actualPhase) {
+	case 0:
+		path->insert("61,70");
+		path->insert("70,60");
+		path->insert("61,50");
+		path->insert("70,60");
+		path->insert("61,70");
+		path->insert("70,60");
+		break;
+
 	case 1:
 		path->insert("61,70");
 		path->insert("70,60");
 		path->insert("61,50");
-		path->insert("70,60");
-		path->insert("61,70");
-		path->insert("70,60");
+		path->insert("51,54");
+		path->insert("51,54");
+		break;
+	default:
 		break;
 	}
-	case 2:
-		path->insert("61,70");
-		path->insert("70,60");
-		path->insert("61,50");
-		path->insert("51,54");
-		path->insert("51,54");
-		break;
 }
 
 lista<std::string>* FinalBoss::get_path() {

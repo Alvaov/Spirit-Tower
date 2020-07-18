@@ -5293,7 +5293,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 8
+  m_Radius: 7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &335669753
 MonoBehaviour:
@@ -6438,7 +6438,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18254
+  m_Name: pb_Mesh18248
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6754,7 +6754,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18666
+  m_Name: pb_Mesh18660
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7587,7 +7587,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18168
+  m_Name: pb_Mesh18158
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8385,7 +8385,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18736
+  m_Name: pb_Mesh18726
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8730,7 +8730,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18642
+  m_Name: pb_Mesh18636
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -9062,7 +9062,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18114
+  m_Name: pb_Mesh18106
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -9364,7 +9364,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18330
+  m_Name: pb_Mesh18324
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -18416,10 +18416,10 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5969942272374291566}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.03
-  m_Height: 0.43
+  m_Radius: 0.07
+  m_Height: 0.5
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5969942272374291570
@@ -19127,6 +19127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementPath: []
+  created: 0
   stepPath: 0
   target: {x: 0, y: 0, z: 0}
   speed: 0
@@ -19137,6 +19138,8 @@ MonoBehaviour:
   actualPhase: 0
   boss: {fileID: 0}
   frameInterval: 0
+  atacar: 0
+  cubrir: 0
   attack: 0
 --- !u!1 &5969942272374291908
 GameObject:

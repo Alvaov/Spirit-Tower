@@ -251,7 +251,23 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                 startPath += boss->get_path()->get_data_by_pos(j);
                 startPath += ";";
             }
-            listener->Send(client, "0:Boss:Created:"+startPath+"*"+"9");
+            listener->Send(client, "0:Boss:Created:"+startPath+"*"+"6");
+        }if (msg_arr[2] == "Attack"){
+            listener->Send(client, "0:Player:Damage:1");
+        }if (msg_arr[2] == "Damage") {
+            boss->life = boss->life - std::stoi(msg_arr[3]);
+            listener->Send(client, "0:Boss:Damage:1");
+        }if (msg_arr[2] == "Phase"){
+            boss->actualPhase += 1;
+            boss->path->delete_list();
+            boss->path = new lista<std::string>();
+            boss->setRoute();
+            std::string startPath = "";
+            for (int j = 0; j < boss->get_path()->get_object_counter(); j++) {
+                startPath += boss->get_path()->get_data_by_pos(j);
+                startPath += ";";
+            }
+            listener->Send(client, "0:Boss:Phase:" + startPath);
         }
     }
     else if (msg_arr[1] == "Eye") {

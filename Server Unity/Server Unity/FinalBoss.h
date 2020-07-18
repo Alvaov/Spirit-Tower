@@ -9,10 +9,11 @@
 class FinalBoss
 {
 private:
+	
+public:
 	lista<std::string>* path;
 	int life = 9;
 	int actualPhase = 0;
-public:
 /**
  * @brief Construct a new Final Boss object
  * 

@@ -59,6 +59,15 @@ public class Client : MonoBehaviour
         spectrums = new Lista<SpectrumMovement>();
         rats = new Lista<RatScript>();
         player = GameObject.Find("Damian2.0");
+        try
+        {
+            boss = GameObject.Find("DemonGirlMesh").GetComponent<BossScript>();
+        }
+        catch(Exception e)
+        {
+            Debug.Log("No se asignó el jefe");
+            Debug.Log(e);
+        }
         playerScript = player.GetComponent<Player>();
         chuchus = new Lista<Chuchu>();
         spectralEyes = new Lista<EyeScript>();
@@ -369,18 +378,28 @@ public class Client : MonoBehaviour
             }
             if(msg_arr[1] == "Boss")
             {
-                Debug.Log("Jefe");
                 if (msg_arr[2] == "Created")
                 {
-                    Debug.Log("Jefe creado");
-                    GameObject objectBoss = GameObject.Find("DemonGirlMesh");
-                    Debug.Log("Jefe creado2");
-                    boss = objectBoss.GetComponent<BossScript>();
-                    Debug.Log("Jefe creado3");
-                    boss.created = true;
-                    string[] bossInfo = msg_arr[3].Split('*');
-                    boss.life = Int32.Parse(bossInfo[1]);
-                    boss.movementPath = bossInfo[1].Split(';');
+                    try
+                    {
+                        boss.created = true;
+                        string[] bossInfo = msg_arr[3].Split('*');
+                        boss.life = Int32.Parse(bossInfo[1]);
+                        boss.movementPath = bossInfo[0].Split(';');
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.Log(e);
+                    }
+                }
+                if (msg_arr[2] == "Damage")
+                {
+                    boss.life -= 1;
+                }
+                if (msg_arr[2] == "Phase")
+                {
+                    boss.movementPath = msg_arr[3].Split(';');
+                    boss.actualPhase += 1;
                 }
             }
         }

@@ -28,7 +28,7 @@ public class BossPunch : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (!Player.defender && boss.attack)
+            if (!Player.defender)
             {
                 Client.instance.tcp.SendData("0:Boss:Attack::");
             }
