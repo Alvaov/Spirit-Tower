@@ -20,7 +20,10 @@ public class SpectrumPunch : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Client.instance.tcp.SendData("0:Spectrum:Attack::");
+            if (!Player.defender)
+            {
+                Client.instance.tcp.SendData("0:Spectrum:Attack::");
+            }
         }
     }
 }

@@ -44,7 +44,10 @@ public class Chuchu : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Client.instance.tcp.SendData("0:Chuchu:Attack::");
+            if (!Player.defender)
+            {
+                Client.instance.tcp.SendData("0:Chuchu:Attack::");
+            }
         }
     }
 
