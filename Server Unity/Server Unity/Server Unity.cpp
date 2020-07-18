@@ -201,13 +201,17 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             listener->Send(client, msg_arr[0] + ":Spectrum:Teleport:" + std::to_string(closestPos[0]) + "," + std::to_string(closestPos[1]) + ":");
         }
     }
+    else if (msg_arr[1] == "Trap") {
+        listener->Send(client, "0:Player:Damage:1");
+    }
+
     else if (msg_arr[1] == "Grid") {
         if (msg_arr[2] == "Obstacle") {
             int* pos = get_position(msg_arr[3]);
             mapaActual[(pos[1] * escenario.nMapHeight) + (pos[0] + (pos[1] / escenario.nMapHeight))].bObstacle = true;
             delete pos;
         }else if (msg_arr[2] == "New"){
-            if (!espectros->isEmpty()) {
+            if (espectros->get_object_counter() == 0) {
                 for (int p = 0; p < espectros->get_object_counter(); p++) {
                     delete espectros->get_data_by_pos(p);
                 }

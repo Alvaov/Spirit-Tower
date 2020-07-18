@@ -153,7 +153,7 @@ public class Client : MonoBehaviour
             }
             catch (Exception _ex)
             {
-                Debug.Log($"Error sending data to player via TCP: {_ex}");
+                //Debug.Log($"Error sending data to player via TCP: {_ex}");
             }
         }
 
@@ -192,8 +192,10 @@ public class Client : MonoBehaviour
          */
         private void handleData(string msg)
         {
-
             string[] msg_arr = msg.Split(':');
+           // Debug.Log(msg_arr[1]);
+
+            /* *** JUGADOR *** */ 
             if (msg_arr[1] == "Player")
             {
                 if (msg_arr[2] == "Damage")
@@ -208,6 +210,7 @@ public class Client : MonoBehaviour
 
             }
 
+            /* *** ESPECTRO *** */ 
             if (msg_arr[1] == "Spectrum")
             {
                 if (msg_arr[2] == "Pathfinding")
@@ -254,10 +257,10 @@ public class Client : MonoBehaviour
 
                             //Asignar genéticos
                             string[] DNA = spectrumInfo[1].Split(',');
-                            espectro.followSpeed = float.Parse(DNA[0])/10;
-                            espectro.startSpeed = float.Parse(DNA[1])/10;
-                            espectro.speed = float.Parse(DNA[1])/10;
-                            espectro.visionRadius = float.Parse(DNA[2])/10;
+                            espectro.followSpeed = float.Parse(DNA[0]) / 10;
+                            espectro.startSpeed = float.Parse(DNA[1]) / 10;
+                            espectro.speed = float.Parse(DNA[1]) / 10;
+                            espectro.visionRadius = float.Parse(DNA[2]) / 10;
 
                         }
                     }
@@ -293,8 +296,6 @@ public class Client : MonoBehaviour
                             Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH M");
                         }
                     }
-
-
                 }
             }
 

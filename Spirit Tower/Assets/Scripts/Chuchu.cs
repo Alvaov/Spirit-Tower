@@ -63,6 +63,7 @@ public class Chuchu : MonoBehaviour
             if (Player.atacar) 
             {
                 Client.instance.tcp.SendData(id + ":Chuchu:Damage:1:");
+                Destroy(gameObject);
             }
         }
     }
