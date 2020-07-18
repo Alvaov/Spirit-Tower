@@ -25,7 +25,8 @@ public class BossScript : MonoBehaviour
     public bool cubrir = false;
     Animator animator;
     private bool changed = false;
-
+    private bool alive = true;
+    public AudioSource fase2sound;
     public bool attack = false;
 
     // Start is called before the first frame update
@@ -67,37 +68,25 @@ public class BossScript : MonoBehaviour
         if (active)
         {
             animator.SetBool("active", true);
-            transform.LookAt(player.transform.position);
             if(life == 3 && !changed)
             {
                 changed = true;
                 Client.instance.tcp.SendData("0:Boss:Phase:1:");
                 animator.SetInteger("action", 3);
-                stepPath = 0;
+                stepPath = 1;
+                fase2sound.Play();
             }
             if (life == 0)
             {
+                alive = false;
                 animator.SetInteger("action", 6);
             }
-            if (!cubrir && !atacar)
+            if (!cubrir && !atacar && alive)
             {
                 walk();
             }
             if (atacar)
             {
-                if(actualPhase == 1)
-                {
-                    //transform.LookAt(player.transform.position);
-                    Vector3 target = player.transform.position;
-                    transform.position = Vector3.MoveTowards(transform.position, target, (speed - 5) * 4 * Time.deltaTime);
-                    if (transform.position == target)
-                    {
-                        //StartCoroutine(AttackRoutine());
-                        animator.SetInteger("action", 4);
-                        cubrir = true;
-                        atacar = false;
-                    }
-                }
                 if (actualPhase == 0)
                 {
                     Vector3 target = player.transform.position;
@@ -106,6 +95,19 @@ public class BossScript : MonoBehaviour
                     {
                         //StartCoroutine(AttackRoutine());
                         animator.SetInteger("action", 2);
+                        cubrir = true;
+                        atacar = false;
+                    }
+                }
+                else if (actualPhase == 1)
+                {
+                    transform.LookAt(player.transform.position);
+                    Vector3 target = player.transform.position;
+                    transform.position = Vector3.MoveTowards(transform.position, target, (speed - 5) * 4 * Time.deltaTime);
+                    if (transform.position == target)
+                    {
+                        //StartCoroutine(AttackRoutine());
+                        animator.SetInteger("action", 4);
                         cubrir = true;
                         atacar = false;
                     }
@@ -159,11 +161,12 @@ public class BossScript : MonoBehaviour
                         target.y = 16.44f;
                         transform.LookAt(player.transform.position);
                         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-                    }else if(actualPhase == 1)
+                    }
+                    else if(actualPhase == 1)
                     {
                         target.y = 10f;
                         FaceTarget();
-                        transform.position = Vector3.MoveTowards(transform.position, target, (speed-10) * Time.deltaTime);
+                        transform.position = Vector3.MoveTowards(transform.position, target, speed*2 * Time.deltaTime);
                     }
 
                 }
@@ -239,7 +242,7 @@ public class BossScript : MonoBehaviour
             animator.SetInteger("action", 1);
             yield return new WaitForSeconds(3);
             animator.SetInteger("action", 7);
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(4);
             animator.SetInteger("action", 0);
             cubrir = false;
         }
@@ -248,7 +251,7 @@ public class BossScript : MonoBehaviour
             animator.SetInteger("action", 3);
             yield return new WaitForSeconds(1);
             animator.SetInteger("action", 7);
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(4);
             animator.SetInteger("action", 3);
             cubrir = false;
         }

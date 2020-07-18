@@ -23,7 +23,12 @@ void FinalBoss::setRoute() {
 		path->insert("70,60");
 		path->insert("61,50");
 		path->insert("51,54");
+		path->insert("50,66");
+		path->insert("61,70");
+		path->insert("70,60");
+		path->insert("61,50");
 		path->insert("51,54");
+		path->insert("50,66");
 		break;
 	default:
 		break;

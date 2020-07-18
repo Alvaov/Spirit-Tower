@@ -11,6 +11,8 @@ public class BossSceneScript : MonoBehaviour
 {
 
     BossScript boss;
+    public AudioSource[] soundtrack;
+    public AudioSource actualMusic;
 
     // Start is called before the first frame update
     /***
@@ -33,6 +35,8 @@ public class BossSceneScript : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             boss.active = true;
+            actualMusic = soundtrack[0];
+            actualMusic.Play();
         }
     }
 
@@ -54,6 +58,9 @@ public class BossSceneScript : MonoBehaviour
      */
     void Update()
     {
-        
+        if(boss.life == 3)
+        {
+            actualMusic.Stop();
+        }
     }
 }
