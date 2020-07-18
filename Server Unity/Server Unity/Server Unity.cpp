@@ -7,11 +7,13 @@
 #include "Linked_list.h"
 #include "Espectro.h"
 #include "SpectralEye.h"
+#include "FinalBoss.h"
 #include <random>
 #include "Enemy_Genetics.h"
 #include <chrono>
 #include <stdlib.h>
 int playerPos[2];
+FinalBoss* boss;
 lista<Espectro*>* espectros;
 lista<SpectralEye*>* spectralEyes;
 node_map* mapaActual;
@@ -83,8 +85,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
 
             if (msg_arr[3] == "0") {
                 std::cout << "Player has died, game over :c";
-                listener->Send(client, "0:Player:Dead:");
-                exit(0);
+                //listener->Send(client, "0:Player:Dead:");
             }
         }
     }
@@ -136,10 +137,17 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
                     type
                 );
                 espectros->insert(espectro);
-                std::string DNA = std::to_string(datos_espector->get_health()) +
-                    std::to_string(datos_espector->get_speed()) +
+                std::string patrolPath = "";
+                for (int j = 0; j < espectro->get_path()->get_object_counter(); j++) {
+                    patrolPath += espectro->get_path()->get_data_by_pos(j);
+                    patrolPath += ";";
+                }
+                std::string DNA = std::to_string(datos_espector->get_follow_speed()) + 
+                    ","+
+                    std::to_string(datos_espector->get_speed()) + 
+                    "," +
                     std::to_string(datos_espector->get_vision_range());
-                listener->Send(client,msg_arr[0]+":Spectrum:Created:"+DNA);
+                listener->Send(client,msg_arr[0]+":Spectrum:Created:"+patrolPath+"*"+DNA);
                 delete enemyPos;
             }
             catch (...) {
@@ -159,7 +167,7 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             std::string target = espectro->getPath(0);
             int* intTarget = get_position(target);
             std::string path = trackback.send_route(id, enemyPos, get_position(espectro->getPath(0)));
-            listener->Send(client, msg_arr[0]+":Spectrum:Backtracking:"+path);
+            listener->Send(client, msg_arr[0]+":Spectrum:Backtracking:"+path+target);
             delete enemyPos;
         }else if (msg_arr[2] == "Attack") { //Producir dano
             std::cout << "Spectrum hit player. Player is gonna die";
@@ -197,13 +205,17 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             listener->Send(client, msg_arr[0] + ":Spectrum:Teleport:" + std::to_string(closestPos[0]) + "," + std::to_string(closestPos[1]) + ":");
         }
     }
+    else if (msg_arr[1] == "Trap") {
+        listener->Send(client, "0:Player:Damage:1");
+    }
+
     else if (msg_arr[1] == "Grid") {
         if (msg_arr[2] == "Obstacle") {
             int* pos = get_position(msg_arr[3]);
             mapaActual[(pos[1] * escenario.nMapHeight) + (pos[0] + (pos[1] / escenario.nMapHeight))].bObstacle = true;
             delete pos;
         }else if (msg_arr[2] == "New"){
-            if (!espectros->isEmpty()) {
+            if (espectros->get_object_counter() == 0) {
                 for (int p = 0; p < espectros->get_object_counter(); p++) {
                     delete espectros->get_data_by_pos(p);
                 }
@@ -235,6 +247,35 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
         }
         else if (msg_arr[2] == "Damage") {
             listener->Send(client, msg_arr[0] + ":Chuchu:Dead:");
+        }
+    }
+    else if (msg_arr[1] == "Boss") {
+        if (msg_arr[2] == "New") {
+
+            boss = new FinalBoss();
+            boss->setRoute();
+            std::string startPath = "";
+            for (int j = 0; j < boss->get_path()->get_object_counter(); j++) {
+                startPath += boss->get_path()->get_data_by_pos(j);
+                startPath += ";";
+            }
+            listener->Send(client, "0:Boss:Created:"+startPath+"*"+"6");
+        }if (msg_arr[2] == "Attack"){
+            listener->Send(client, "0:Player:Damage:1");
+        }if (msg_arr[2] == "Damage") {
+            boss->life = boss->life - std::stoi(msg_arr[3]);
+            listener->Send(client, "0:Boss:Damage:1");
+        }if (msg_arr[2] == "Phase"){
+            boss->actualPhase += 1;
+            boss->path->delete_list();
+            boss->path = new lista<std::string>();
+            boss->setRoute();
+            std::string startPath = "";
+            for (int j = 0; j < boss->get_path()->get_object_counter(); j++) {
+                startPath += boss->get_path()->get_data_by_pos(j);
+                startPath += ";";
+            }
+            listener->Send(client, "0:Boss:Phase:" + startPath);
         }
     }
     else if (msg_arr[1] == "Eye") {

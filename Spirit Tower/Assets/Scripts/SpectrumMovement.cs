@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
 
+/***
+ * Clase encargada de administrar todos los
+ * aspectos requeridos por los espectros
+ * de los diferentes niveles
+ */
 public class SpectrumMovement : MonoBehaviour
 {
     //Movimiento
@@ -12,10 +17,16 @@ public class SpectrumMovement : MonoBehaviour
     public float horizontal;
     public float vertical;
     public float gravity = -9.8f;
+    public float startSpeed = 50;
     public float speed = 50;
+    public float followSpeed = 0;
     public int stepPath = 0;
     public bool scared = false;
     public bool perseguir = false;
+    public bool goingBack = false;
+    public string[] path;
+    public string[] patrolPath;
+    private Vector3 target;
 
     //Rango de visión
     public float visionRadius;
@@ -26,8 +37,6 @@ public class SpectrumMovement : MonoBehaviour
     public bool teleport = false;
     public bool teleported = false;
     public CharacterController spectrum;
-    public string[] path;
-    private Vector3 target;
     public float frameInterval;
     public int myId;
     public static bool detected = false;
@@ -39,6 +48,11 @@ public class SpectrumMovement : MonoBehaviour
     Player playerScript;
 
     // Start is called before the first frame update
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     void Start()
     {
         spectrum = GetComponent<CharacterController>();
@@ -46,12 +60,17 @@ public class SpectrumMovement : MonoBehaviour
         visionRadius = 10;
         myId = Client.spectrumId;
         Client.spectrumId += 1;
-        frameInterval = 10+(myId*7);
+        frameInterval = 25+(myId*12)+myId;
         player = GameObject.Find("Damian2.0");
         playerScript = player.GetComponent<Player>();
         //movement = Grid.instance.GetWorldPointFromAxes(14, 51);
     }
-
+    /***
+     * Método que detecta si entra otro collider, 
+     * si entra la espada notifica al server,
+     * si entra una rata evita que el espectro 
+     * se mueva pues está asustado.
+     */
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Rat"))
@@ -72,7 +91,11 @@ public class SpectrumMovement : MonoBehaviour
             }
         }
     }
-
+    /***
+     * Verifica cuando un objeto sale del collider
+     * en caso de ser la rata regresa el estado
+     * de asustado a false y vuelve a caminar.
+     */
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Rat"))
@@ -81,7 +104,24 @@ public class SpectrumMovement : MonoBehaviour
         }
     }
 
+    /***
+     * Método predefinido de Unity para dibujar
+     * figuras utilizadas para el debugging del juego.
+     */
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(transform.position,visionRadius);
+    }
+
     // Update is called once per frame
+
+    /***
+     * Método que se ejecuta una vez por frame
+     * evaluando constantemente la información 
+     * y el estado actual del espectro
+     * para su correcto funcionamiento.
+     */
     void Update()
     {
         if (!addedToList)
@@ -147,31 +187,56 @@ public class SpectrumMovement : MonoBehaviour
                 {
                     Client.instance.tcp.SendData(myId + ":Spectrum:Detected:" + Grid.instance.GetAxesFromWorldPoint(spectrum.transform.position) + ":");
                 }
+                speed = followSpeed;
             }  
         }
         walk();
     }
+    /***
+     * Método que verifica si el jugador está en un rango de ataque.
+     * Calcula un círculo de radio variable dividido por una amplitud
+     * de 160 grados que corresponde al frente del espectro.
+     * True si está en frente, false si se encuentra detrás.
+     * @return bool
+     */
     bool checkVisualRange()
     {
         Vector3 direction = player.transform.position - transform.position;
 
         float angle = Vector3.Angle(direction, transform.forward);
 
-        if (angle < visionAngle * 0.5f){    
-            detected = true;
-            animator.SetInteger("action", 1);
-            animator.SetBool("perseguir", true);
-            return true;
+        if (angle < visionAngle * 0.5f){
+            if (!Safe.safe)
+            {
+                detected = true;
+                animator.SetInteger("action", 1);
+                animator.SetBool("perseguir", true);
+                return true;
+            }
         }
         return false;
     }
-
+    /***
+     * Método encargado de procesar los elementos que tenga en el array
+     * de strings que contiene el camino indicado por el servidor
+     * se encarga de recorrer esta lista y en caso de llegar al final recorre nuevamente la lista
+     * debido a que esta se actualiza constantemente por parte del servidor.
+     */
     private void walk()
     {
         if (path.Length > 0)
         {
             try
             {
+                if (goingBack)
+                {
+                    if (stepPath == path.Length - 1)
+                    {
+                        path = patrolPath;
+                        goingBack = false;
+                        stepPath = 0;
+                    }
+                }
                 if (stepPath == path.Length - 1)
                 {
                     stepPath = 0;
@@ -181,10 +246,6 @@ public class SpectrumMovement : MonoBehaviour
                 string y = pos_grid[1];
                 int posX = Int32.Parse(x);
                 int posZ = Int32.Parse(y);
-                /*int x;
-                int z;
-                Int32.TryParse(pos_grid[0], out x);
-                Int32.TryParse(pos_grid[1], out z);*/
                 
                 target = Grid.instance.GetWorldPointFromAxes(posX, posZ);
                 
@@ -214,6 +275,11 @@ public class SpectrumMovement : MonoBehaviour
         }
     }
 
+    /***
+     * Método que calcula la rotación necesaria 
+     * para el objeto con el propósito de que mire 
+     * al objetivo actual de su ruta.
+     */
     void FaceTarget()
     {
         Vector3 direction = (target - transform.position).normalized;
@@ -222,12 +288,20 @@ public class SpectrumMovement : MonoBehaviour
 
     }
 
+    /***
+     * Método que es llamado cuando el espectro deberá 
+     * moverse en acciones de atacar al jugador.
+     */
     void attacking()
     {
         StartCoroutine(AttackRoutine());
     }
 
-
+    /***
+     * Método donde se ejecuta la rutina
+     * que corresponde a la acción de 
+     * atacar del espectro
+     */
     IEnumerator AttackRoutine()
     {
         animator.SetBool("atacar", true);

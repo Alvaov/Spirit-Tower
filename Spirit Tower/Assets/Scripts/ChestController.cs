@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 
+/***
+ * Clase encargada de el manejo del comportamiento de los cofres, sus animaciones, su estado y el item que guarda.
+ */
 public class ChestController : MonoBehaviour
 {
     public Animator animator;
@@ -28,6 +31,13 @@ public class ChestController : MonoBehaviour
 
     public List<Tesoros> Contenidos = new List<Tesoros>();
     
+    /***
+     * Función encargada de aplicar el efecto del objeto en el cofre al jugador, 
+     * de manera que el contenido del cofre cumpla con su propósito.
+     * Así sea una llave, un corazón o una llave maestra.
+     * @params none
+     * @return none
+     */
     public void sacarObjeto()
     {
         for (int j = 0; j < Contenidos.Count; j++)
@@ -54,7 +64,12 @@ public class ChestController : MonoBehaviour
             }
         }
     }
-        
+    /***
+     * Método encargada de inicializar los valores necesarios para los objetos de esta clase,
+     * se ejecuta únicamente en el primer frame.
+     * @params none
+     * @return none
+     */
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -62,7 +77,14 @@ public class ChestController : MonoBehaviour
         player = GameObject.Find("Damian2.0");
         playerScript = player.GetComponent<Player>();
     }
-   private void Update()
+
+    /***
+     * Método que se ejecuta una vez por frame, donde se revisa la interacción del usuario con el cofre
+     * así como se eleva, gira y elimina el contenido de los cofres.
+     * @params none
+     * @return none
+     */
+    private void Update()
     {
         if (openChest == true & (Input.GetKeyDown(KeyCode.Z) & (ChestOpened == false))){
             Avisos.text = " ";
@@ -88,6 +110,14 @@ public class ChestController : MonoBehaviour
         }
 
     }
+
+    /***
+     * Método activado cuando un objeto entra en el collider definido, en caso de que el oobjeto
+     * sea el jugador mismo, este muestra un texto con el aviso de la acción que debe hacer el jugador 
+     * para abrir el cofre.
+     * @params none
+     * @return none
+     */
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -101,6 +131,14 @@ public class ChestController : MonoBehaviour
 
         }
     }
+
+    /***
+     * Método activado cuando un objeto entra en el collider definido, 
+     * este reinicia el texto con el aviso de la acción que debe hacer el jugador 
+     * para abrir el cofre eliminandola de la vista del jugador.
+     * @params none
+     * @return none
+     */
     private void OnTriggerExit(Collider other)
     {
         Avisos.text = " ";

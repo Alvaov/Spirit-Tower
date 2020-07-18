@@ -1,0 +1,285 @@
+\hypertarget{classPerson}{}\doxysection{Person Class Reference}
+\label{classPerson}\index{Person@{Person}}
+
+
+clase que representa a los individuos del algoritmo genetico  
+
+
+
+
+{\ttfamily \#include $<$Genetic\+\_\+\+Algorithm.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classPerson_a0397c6f89fafc12e738923f612bc41a3}{Person}} ()
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classPerson}{Person}} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classPerson_a700ffd693321c5fe6880262acf43d4da}{$\sim$\+Person}} ()
+\begin{DoxyCompactList}\small\item\em Destroy the \mbox{\hyperlink{classPerson}{Person}} object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classPerson_a67fdb928c1133075cc7333664fe0bf9c}{get\+\_\+health}} ()
+\begin{DoxyCompactList}\small\item\em Get the health object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classPerson_a290ee009d6f184d4a13e5dd98b0cf8f2}{get\+\_\+speed}} ()
+\begin{DoxyCompactList}\small\item\em Get the speed object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classPerson_a355fe93e6af5bf84bab17b5c118ce67c}{get\+\_\+vision\+\_\+range}} ()
+\begin{DoxyCompactList}\small\item\em Get the vision range object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classPerson_aa161ffa7b0e52102fdd68cc51b25f877}{get\+\_\+follow\+\_\+speed}} ()
+\begin{DoxyCompactList}\small\item\em Get the follow speed object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classPerson_aedcaba2f5964623938c3548af02bec96}{random\+Bool}} ()
+\begin{DoxyCompactList}\small\item\em generar un booleano al azar \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classPerson_a91c13ab02b7bbb4f7a23197672547c11}{random\+Num}} (int min, int max)
+\begin{DoxyCompactList}\small\item\em generar un numero al azar entre max y min \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classPerson_abf52757111c0020af9085edffc97d31c}{get\+Bit}} (int index)
+\begin{DoxyCompactList}\small\item\em Get the Bit object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPerson_a134b1899e444cab5cdf08668ea540485}{set\+Bit}} (int index, int value)
+\begin{DoxyCompactList}\small\item\em Set the Bit object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPerson_ad7921baf1f1fb5584a2b7573a7f01817}{map}} ()
+\begin{DoxyCompactList}\small\item\em asigna las caracteristicas a los cromosomas \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPerson_ad8e55c1d9e3cf6a4535ab484cad103ad}{calculate\+Fitness}} ()
+\begin{DoxyCompactList}\small\item\em calcula el fitness \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classPerson_a20df89344eae761f231a6f7e14061271}{get\+Fitness}} ()
+\begin{DoxyCompactList}\small\item\em Get the Fitness. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPerson_af8b189b77342c9b98dbd8b7b97e86da6}{selection}} ()
+\begin{DoxyCompactList}\small\item\em decide si deberian vivir o morir \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classPerson}{Person}} $\ast$ \mbox{\hyperlink{classPerson_adff956752fa8c8757363b4b99449329f}{crossover}} (\mbox{\hyperlink{classPerson}{Person}} $\ast$person)
+\begin{DoxyCompactList}\small\item\em cruce entre individuos \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPerson_a9280138ffac9793d7055090a8784d612}{mutation}} ()
+\begin{DoxyCompactList}\small\item\em muta bits del cromosoma \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classPerson_a6c73cfbd8eea98428c8d238c3ddc0b47}{inversion}} ()
+\begin{DoxyCompactList}\small\item\em invierte cierta cantidad de bits \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+clase que representa a los individuos del algoritmo genetico 
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classPerson_a0397c6f89fafc12e738923f612bc41a3}\label{classPerson_a0397c6f89fafc12e738923f612bc41a3}} 
+\index{Person@{Person}!Person@{Person}}
+\index{Person@{Person}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{Person()}{Person()}}
+{\footnotesize\ttfamily Person\+::\+Person (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new \mbox{\hyperlink{classPerson}{Person}} object. 
+
+\mbox{\Hypertarget{classPerson_a700ffd693321c5fe6880262acf43d4da}\label{classPerson_a700ffd693321c5fe6880262acf43d4da}} 
+\index{Person@{Person}!````~Person@{$\sim$Person}}
+\index{````~Person@{$\sim$Person}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{$\sim$Person()}{~Person()}}
+{\footnotesize\ttfamily Person\+::$\sim$\+Person (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destroy the \mbox{\hyperlink{classPerson}{Person}} object. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classPerson_ad8e55c1d9e3cf6a4535ab484cad103ad}\label{classPerson_ad8e55c1d9e3cf6a4535ab484cad103ad}} 
+\index{Person@{Person}!calculateFitness@{calculateFitness}}
+\index{calculateFitness@{calculateFitness}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{calculateFitness()}{calculateFitness()}}
+{\footnotesize\ttfamily void Person\+::calculate\+Fitness (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+calcula el fitness 
+
+\mbox{\Hypertarget{classPerson_adff956752fa8c8757363b4b99449329f}\label{classPerson_adff956752fa8c8757363b4b99449329f}} 
+\index{Person@{Person}!crossover@{crossover}}
+\index{crossover@{crossover}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{crossover()}{crossover()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classPerson}{Person}}$\ast$ Person\+::crossover (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classPerson}{Person}} $\ast$}]{person }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+cruce entre individuos 
+
+
+\begin{DoxyParams}{Parameters}
+{\em person} & persona a cruzar con \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Person$\ast$ nueva persona 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPerson_aa161ffa7b0e52102fdd68cc51b25f877}\label{classPerson_aa161ffa7b0e52102fdd68cc51b25f877}} 
+\index{Person@{Person}!get\_follow\_speed@{get\_follow\_speed}}
+\index{get\_follow\_speed@{get\_follow\_speed}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{get\_follow\_speed()}{get\_follow\_speed()}}
+{\footnotesize\ttfamily int Person\+::get\+\_\+follow\+\_\+speed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the follow speed object. 
+
+\begin{DoxyReturn}{Returns}
+velocidad de persecusion 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPerson_a67fdb928c1133075cc7333664fe0bf9c}\label{classPerson_a67fdb928c1133075cc7333664fe0bf9c}} 
+\index{Person@{Person}!get\_health@{get\_health}}
+\index{get\_health@{get\_health}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{get\_health()}{get\_health()}}
+{\footnotesize\ttfamily int Person\+::get\+\_\+health (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the health object. 
+
+\begin{DoxyReturn}{Returns}
+vida 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPerson_a290ee009d6f184d4a13e5dd98b0cf8f2}\label{classPerson_a290ee009d6f184d4a13e5dd98b0cf8f2}} 
+\index{Person@{Person}!get\_speed@{get\_speed}}
+\index{get\_speed@{get\_speed}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{get\_speed()}{get\_speed()}}
+{\footnotesize\ttfamily int Person\+::get\+\_\+speed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the speed object. 
+
+\begin{DoxyReturn}{Returns}
+velocidad 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPerson_a355fe93e6af5bf84bab17b5c118ce67c}\label{classPerson_a355fe93e6af5bf84bab17b5c118ce67c}} 
+\index{Person@{Person}!get\_vision\_range@{get\_vision\_range}}
+\index{get\_vision\_range@{get\_vision\_range}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{get\_vision\_range()}{get\_vision\_range()}}
+{\footnotesize\ttfamily int Person\+::get\+\_\+vision\+\_\+range (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the vision range object. 
+
+\begin{DoxyReturn}{Returns}
+rango de vision 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPerson_abf52757111c0020af9085edffc97d31c}\label{classPerson_abf52757111c0020af9085edffc97d31c}} 
+\index{Person@{Person}!getBit@{getBit}}
+\index{getBit@{getBit}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{getBit()}{getBit()}}
+{\footnotesize\ttfamily int Person\+::get\+Bit (\begin{DoxyParamCaption}\item[{int}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the Bit object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & indice del bit \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bit del array 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPerson_a20df89344eae761f231a6f7e14061271}\label{classPerson_a20df89344eae761f231a6f7e14061271}} 
+\index{Person@{Person}!getFitness@{getFitness}}
+\index{getFitness@{getFitness}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{getFitness()}{getFitness()}}
+{\footnotesize\ttfamily double Person\+::get\+Fitness (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the Fitness. 
+
+\begin{DoxyReturn}{Returns}
+fitness del individuo 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPerson_a6c73cfbd8eea98428c8d238c3ddc0b47}\label{classPerson_a6c73cfbd8eea98428c8d238c3ddc0b47}} 
+\index{Person@{Person}!inversion@{inversion}}
+\index{inversion@{inversion}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{inversion()}{inversion()}}
+{\footnotesize\ttfamily void Person\+::inversion (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+invierte cierta cantidad de bits 
+
+\mbox{\Hypertarget{classPerson_ad7921baf1f1fb5584a2b7573a7f01817}\label{classPerson_ad7921baf1f1fb5584a2b7573a7f01817}} 
+\index{Person@{Person}!map@{map}}
+\index{map@{map}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}}
+{\footnotesize\ttfamily void Person\+::map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+asigna las caracteristicas a los cromosomas 
+
+\mbox{\Hypertarget{classPerson_a9280138ffac9793d7055090a8784d612}\label{classPerson_a9280138ffac9793d7055090a8784d612}} 
+\index{Person@{Person}!mutation@{mutation}}
+\index{mutation@{mutation}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{mutation()}{mutation()}}
+{\footnotesize\ttfamily void Person\+::mutation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+muta bits del cromosoma 
+
+\mbox{\Hypertarget{classPerson_aedcaba2f5964623938c3548af02bec96}\label{classPerson_aedcaba2f5964623938c3548af02bec96}} 
+\index{Person@{Person}!randomBool@{randomBool}}
+\index{randomBool@{randomBool}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{randomBool()}{randomBool()}}
+{\footnotesize\ttfamily int Person\+::random\+Bool (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+generar un booleano al azar 
+
+\begin{DoxyReturn}{Returns}
+booleano al azar 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPerson_a91c13ab02b7bbb4f7a23197672547c11}\label{classPerson_a91c13ab02b7bbb4f7a23197672547c11}} 
+\index{Person@{Person}!randomNum@{randomNum}}
+\index{randomNum@{randomNum}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{randomNum()}{randomNum()}}
+{\footnotesize\ttfamily int Person\+::random\+Num (\begin{DoxyParamCaption}\item[{int}]{min,  }\item[{int}]{max }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+generar un numero al azar entre max y min 
+
+
+\begin{DoxyParams}{Parameters}
+{\em min} & minimo \\
+\hline
+{\em max} & maximo \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+numero generado 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPerson_af8b189b77342c9b98dbd8b7b97e86da6}\label{classPerson_af8b189b77342c9b98dbd8b7b97e86da6}} 
+\index{Person@{Person}!selection@{selection}}
+\index{selection@{selection}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{selection()}{selection()}}
+{\footnotesize\ttfamily void Person\+::selection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+decide si deberian vivir o morir 
+
+\mbox{\Hypertarget{classPerson_a134b1899e444cab5cdf08668ea540485}\label{classPerson_a134b1899e444cab5cdf08668ea540485}} 
+\index{Person@{Person}!setBit@{setBit}}
+\index{setBit@{setBit}!Person@{Person}}
+\doxysubsubsection{\texorpdfstring{setBit()}{setBit()}}
+{\footnotesize\ttfamily void Person\+::set\+Bit (\begin{DoxyParamCaption}\item[{int}]{index,  }\item[{int}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set the Bit object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & indice del bit a setear \\
+\hline
+{\em value} & valor nuevo del bit \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Genetic\+\_\+\+Algorithm.\+h\end{DoxyCompactItemize}

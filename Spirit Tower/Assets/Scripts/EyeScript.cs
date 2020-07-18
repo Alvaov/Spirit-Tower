@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/***
+ * Clase encargada de la administración
+ * del comportamiento completo del ojo espectral.
+ */
 public class EyeScript : MonoBehaviour
 {
     //Aspectos generales
     public GameObject player;
+    public AudioSource alert;
     public CharacterController spectralEye;
     public float frameInterval;
     public bool addedToList = false;
@@ -16,17 +21,29 @@ public class EyeScript : MonoBehaviour
     public float visionAngle = 160f;
 
     // Start is called before the first frame update
+
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     void Start()
     {
         spectralEye = GetComponent<CharacterController>();
         player = GameObject.FindGameObjectWithTag("Player");
-        frameInterval = 10;
+        alert = GetComponent<AudioSource>();
+        frameInterval = 60+(id*12)+id;
         visionRadius = 20;
         id = Client.eyeId;
         Client.eyeId += 1;
     }
 
-
+    /***
+     * Método que detecta si entra otro collider, 
+     * si entra la espada notifica al server,
+     * si entra el jugador alerta al resto de espectros
+     * para iniciar la persecusión;
+     */
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Sword"))
@@ -36,9 +53,21 @@ public class EyeScript : MonoBehaviour
                     Client.instance.tcp.SendData(id + ":Eye:Damage:1:");
             }
         }
+        if (other.gameObject.CompareTag("Player"))
+        {
+            alert.Play();
+            SpectrumMovement.detected = true;
+        }
     }
 
     // Update is called once per frame
+
+    /***
+     * Método que se ejecuta una vez por frame
+     * evaluando constantemente la información 
+     * y el estado actual del ojo espectral
+     * para su correcto funcionamiento.
+     */
     void Update()
     {
         if (!addedToList)
@@ -59,29 +88,6 @@ public class EyeScript : MonoBehaviour
             Client.instance.tcp.SendData(id + ":Eye:New:" + Grid.instance.GetAxesFromWorldPoint(spectralEye.transform.position) + ":");
         }
 
-        float distance = Vector3.Distance(player.transform.position, transform.position); // faster than Vector3.Distance
 
-        if (Time.frameCount % frameInterval == 0)
-        {
-            if (distance < visionRadius)
-            {
-                checkVisualRange();
-            }
-        }
-    }
-
-
-    bool checkVisualRange()
-    {
-        Vector3 direction = player.transform.position - transform.position;
-
-        float angle = Vector3.Angle(direction, transform.forward);
-
-        if (angle < visionAngle * 0.5f)
-        {
-            SpectrumMovement.detected = true;
-            return true;
-        }
-        return false;
     }
 }

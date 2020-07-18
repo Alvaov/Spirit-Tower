@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
 
-
+/***
+ * Clase encargada de toda la lógica y comportamiento 
+ * que debe presentar la rata en el juego.
+ */
 public class RatScript : MonoBehaviour
 {
 
@@ -12,20 +15,32 @@ public class RatScript : MonoBehaviour
     public int id;
     public int speed = 1;
     private Vector3 target;
-    public float frameInterval = 30;
+    public float frameInterval;
     public bool addedToList = false;
     public string[] path;
 
 
     // Start is called before the first frame update
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     void Start()
     {
         rat = GetComponent<CharacterController>();
         id = Client.ratId;
+        frameInterval = 500 + (id * 5) + id;
         Client.ratId += 1;
     }
 
     // Update is called once per frame
+    /***
+     * Método que se ejecuta una vez por frame
+     * evaluando constantemente la información 
+     * y el estado actual de la rata
+     * para su correcto funcionamiento.
+     */
     void Update()
     {
         if (!addedToList)
@@ -54,7 +69,12 @@ public class RatScript : MonoBehaviour
         Walk();
     }
 
-
+    /***
+     * Método encargado de procesar los elementos que tenga en el array
+     * de strings que contiene el camino indicado por el servidor
+     * se encarga de recorrer esta lista y en caso de llegar al final recorre nuevamente la lista
+     * debido a que esta se actualiza constantemente por parte del servidor.
+     */
     void Walk()
     {
         try
@@ -79,6 +99,11 @@ public class RatScript : MonoBehaviour
         }
     }
 
+    /***
+     * Método que calcula la rotación necesaria 
+     * para el objeto con el propósito de que mire 
+     * al objetivo actual de su ruta.
+     */
     void FaceTarget()
     {
         Vector3 direction = (transform.position - target).normalized;

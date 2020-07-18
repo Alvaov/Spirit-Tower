@@ -5,7 +5,11 @@ using System.Collections.Specialized;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
-
+/***
+ * Clase encargada de administrar todos los
+ * aspectos requeridos por el jugador
+ * de los diferentes niveles
+ */
 public class Player : MonoBehaviour{
 
     //Movimiento
@@ -23,7 +27,7 @@ public class Player : MonoBehaviour{
     //Acciones
     public bool agacharse = false;
     public static bool atacar = false;
-    public bool defender = false;
+    public static bool defender = false;
 
     //Salud
     public int health;
@@ -63,6 +67,11 @@ public class Player : MonoBehaviour{
 
 
     // Start is called before the first frame update
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     void Start()
     {
         player = GetComponent<CharacterController>();
@@ -74,6 +83,12 @@ public class Player : MonoBehaviour{
     }
 
     // Update is called once per frame
+    /***
+     * Método que se ejecuta una vez por frame
+     * evaluando constantemente la información 
+     * y el estado actual del jugador
+     * para su correcto funcionamiento.
+     */
     void Update()
     {
         if (ImDead)
@@ -120,8 +135,14 @@ public class Player : MonoBehaviour{
         }
         if (health <= 0)
         {
-            health = 0;
-            Client.instance.Send_Data("0:Player:Health:" + health + ":");
+            if (!ImDead)
+            {
+                health = 0;
+                Client.instance.Send_Data("0:Player:Health:" + health + ":");
+                GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
+                transform.position = spawn.transform.position;
+                health = 5;
+            }
         }
         //Enviar datos al server
         if (health != vidaTemp)
@@ -194,7 +215,10 @@ public class Player : MonoBehaviour{
             masterKey.enabled = false;
         }
     }
-
+    /***
+     * Función encargada de tomar los inputs del jugador
+     * para definir su movimiento, así como sus animaciones.
+     */
     void Movement()
     {
         if (player.isGrounded)
@@ -255,7 +279,11 @@ public class Player : MonoBehaviour{
         player.Move(movement);
 
     }
-
+    /***
+     * Método encargado de obtener los inputs 
+     * del mouse para así realizar las acciones
+     * correspondientes.
+     */
     void GetInput()
     {
         if (Input.GetMouseButtonDown(0))
@@ -286,26 +314,43 @@ public class Player : MonoBehaviour{
             }
         }
     }
-
+    /***
+     * Método que es llamado cuando el jugador ataca.
+     */
     void Attacking()
     {
         StartCoroutine(AttackRoutine());
     }
 
+    /***
+     * Método que es llamado cuando el jugador defiende.
+     */
     void Deffending()
     {
         StartCoroutine(DeffendRoutine());
     }
 
+    /***
+    * Método donde se ejecuta la rutina
+    * que corresponde a la acción de 
+    * defender del jugador
+    */
     IEnumerator DeffendRoutine()
     {
+        defender = true;
         animator.SetBool("defender", true);
         animator.SetInteger("action", 3);
         yield return new WaitForSeconds(1);
         animator.SetInteger("action", 0);
         animator.SetBool("defender", false);
+        defender = false;
     }
 
+    /***
+    * Método donde se ejecuta la rutina
+    * que corresponde a la acción de 
+    * atacar del jugador
+    */
     IEnumerator AttackRoutine()
     {
         atacar = true;

@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Threading;
 
+/***
+ * Clase encargada del manejo completo del grid necesario
+ * para gran mayoría de funcionalidades del juego
+ */
 public class Grid : MonoBehaviour
 {
     public LayerMask unwalkableMask;
@@ -12,6 +16,12 @@ public class Grid : MonoBehaviour
     int gridSizeX, gridSizeY;
     public Transform player;
     public static Grid instance;
+
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     private void Start(){
         instance = this;
         //size
@@ -22,7 +32,10 @@ public class Grid : MonoBehaviour
 
     }
 
-    void CreateGrid(){
+    /***
+     * Crea el grid basado en el tamaño del mapa y el tamaño del grid predefinido
+     */
+    public void CreateGrid(){
         grid = new Node[gridSizeX, gridSizeY];
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
@@ -34,7 +47,11 @@ public class Grid : MonoBehaviour
             }
         }
     }
-    //Convert real world position into exact grid location
+
+    /***
+     * Convierte un punto del mundo 3D a un punto de dos dimensiones
+     * @return string
+     */
     public string GetAxesFromWorldPoint(Vector3 worldPosition){
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
         float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y; //z because the axis
@@ -47,6 +64,10 @@ public class Grid : MonoBehaviour
         
     }
 
+    /***
+     * Convierte un punto del mundo 2D a un punto de tres dimensiones
+     * @return string
+     */
     public Vector3 GetWorldPointFromAxes(int x, int y)
     {
         float horizontal = 5*x-299.3f;
@@ -56,6 +77,10 @@ public class Grid : MonoBehaviour
 
     }
 
+    /***
+     * Convierte un punto del mundo 2D a un punto de tres dimensiones
+     * @return Node
+     */
     public Node GetNodeFromWorldPoint(Vector3 worldPosition)
     {
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
@@ -91,6 +116,12 @@ public class Grid : MonoBehaviour
         }
     }*/
 
+
+    /***
+     * Se encarga de obtener los nodos que son obstáculos 
+     * y los envía al server para obtener un reflejo del mapa
+     * del lado del servidor
+     */
     public static void getGridWalls()
     {   
         Thread.Sleep(20);

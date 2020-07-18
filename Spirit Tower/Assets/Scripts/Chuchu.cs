@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
 
+/***
+ * Clase encargada de administrar las acciones,
+ * en general, que require el chuchu
+ * para su correcto funcionamiento.
+ */
 public class Chuchu : MonoBehaviour
 {
 
@@ -23,24 +28,41 @@ public class Chuchu : MonoBehaviour
 
 
     // Start is called before the first frame update
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     void Start()
     {
         chuchu = GetComponent<CharacterController>();
-        frameInterval = 15 + ((id + 1) * 15);
         id = Client.chuchuId;
+        frameInterval = 160 + (id * 10) + id;
         Client.chuchuId += 1;
         player = GameObject.Find("Damian2.0");
         playerScript = player.GetComponent<Player>();
     }
-
+    /***
+     * Método que detecta mientras haya otro collider dentro de sí mismo, 
+     * si es el jugador lo ataca y
+     * notifica al servidor.
+     */
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Client.instance.tcp.SendData("0:Chuchu:Attack::");
+            if (!Player.defender)
+            {
+                Client.instance.tcp.SendData("0:Chuchu:Attack::");
+            }
         }
     }
 
+    /***
+     * Método que detecta colisiones con collider, 
+     * si es la espada el chuchu se muere y
+     * notifica al servidor.
+     */
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Sword"))
@@ -55,8 +77,11 @@ public class Chuchu : MonoBehaviour
     }
 
 
-        // Update is called once per frame
-        void Update()
+    /***
+     * Método que se ejecuta cada frame en el cual se realizan las acciones
+     * necesarias para una correcta operación del chuchu.
+     */
+    void Update()
     {
         if (!addedToList)
         {
@@ -84,6 +109,12 @@ public class Chuchu : MonoBehaviour
         Walk();
     }
 
+    /***
+     * Método encargado de procesar los elementos que tenga en el array
+     * de strings que contiene el camino indicado por el servidor
+     * se encarga de recorrer esta lista y en caso de llegar al final recorre nuevamente la lista
+     * debido a que esta se actualiza constantemente por parte del servidor.
+     */
     void Walk()
     {
         if (path.Length > 0)
@@ -129,7 +160,11 @@ public class Chuchu : MonoBehaviour
             }
         }
     }
-
+    /***
+     * Método que calcula la rotación necesaria 
+     * para el objeto con el propósito de que mire 
+     * al objetivo actual de su ruta.
+     */
     void FaceTarget()
     {
         Vector3 direction = (target - transform.position).normalized;

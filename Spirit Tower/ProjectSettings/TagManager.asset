@@ -11,6 +11,11 @@ TagManager:
   - Sword
   - Rat
   - Wall
+  - Shield
+  - PlayerInfo
+  - Keep
+  - Destroy
+  - Boss
   layers:
   - Default
   - TransparentFX

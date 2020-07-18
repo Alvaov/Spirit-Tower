@@ -6,6 +6,11 @@ using System.Net.Sockets;
 using System;
 using System.Text;
 
+/***
+ * Clase encargada de ser el cliente, comunicación con el server,
+ * interpretación de mensajes así como de ejecutar las acciones
+ * que indique el servidor por medio de estos mensajes
+ */
 public class Client : MonoBehaviour
 {
     public static Client instance;
@@ -25,7 +30,12 @@ public class Client : MonoBehaviour
 
     GameObject player;
     static Player playerScript;
+    static BossScript boss;
 
+    /***
+     * Método que se ejecuta apenas se crea el objeto, asigna una instancia
+     * en una variable.
+     */
     private void Awake()
     {
         if (instance == null)
@@ -38,23 +48,45 @@ public class Client : MonoBehaviour
             Destroy(this);
         }
     }
-
+    /***
+     * Método que se ejecuta en el primer frame y 
+     * se encarga de inicializar las variables 
+     * necesarias para el correcto funcionamiento.
+     */
     public void Start()
     {
         tcp = new TCP();
         spectrums = new Lista<SpectrumMovement>();
         rats = new Lista<RatScript>();
         player = GameObject.Find("Damian2.0");
+        try
+        {
+            boss = GameObject.Find("DemonGirlMesh").GetComponent<BossScript>();
+        }
+        catch(Exception e)
+        {
+            Debug.Log("No se asignó el jefe");
+            Debug.Log(e);
+        }
         playerScript = player.GetComponent<Player>();
         chuchus = new Lista<Chuchu>();
         spectralEyes = new Lista<EyeScript>();
     }
 
+    /***
+     * Método que se conecta al servidor de igual forma que envía 
+     * el estado de las paredes al servidor para el reflejo del mapa.
+     */
     public void ConnectToServer()
     {
         tcp.Connect();
         Grid.getGridWalls();
     }
+
+    /***
+     * Método que envía datos al servidor
+     * @parameter string msg
+     */
     public void Send_Data(string msg)
     {
         if (instance.tcp != null)
@@ -62,12 +94,20 @@ public class Client : MonoBehaviour
             tcp.SendData(msg);
         }
     }
+    /***
+     * Clase que comprende el socket TCP que se conecta al servidor.
+     */
     public class TCP
     {
         public TcpClient socket;
 
         private NetworkStream stream;
         private byte[] receiveBuffer;
+
+        /***
+         * Método que conecta el socket al servidor según el ip
+         * y el puerto establecidos.
+        */
         public void Connect()
         {
             socket = new TcpClient
@@ -80,6 +120,9 @@ public class Client : MonoBehaviour
             socket.BeginConnect(instance.ip, instance.port, ConnectCallback, socket);
         }
 
+        /***
+         * Método que realiza una conexión tipo callback.
+         */
         private void ConnectCallback(IAsyncResult _result)
         {
             socket.EndConnect(_result);
@@ -94,6 +137,10 @@ public class Client : MonoBehaviour
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
         }
 
+        /***
+         * Método que envía la información codificada en byte[] al servidor directamente
+         * del socket.
+         */
         public void SendData(String dataToSend)
         {
             try
@@ -110,6 +157,10 @@ public class Client : MonoBehaviour
             }
         }
 
+        /***
+         * Método encargado de recibir la información del servidor
+         * de manera asicnrónica.
+         */
         private void ReceiveCallback(IAsyncResult _result)
         {
             try
@@ -133,6 +184,10 @@ public class Client : MonoBehaviour
             }
         }
 
+        /***
+         * Método encargado de parsear, interpretar y ejecutar los mensaje
+         * que recibe del servidor.
+         */
         private void handleData(string msg)
         {
             string[] msg_arr = msg.Split(':');
@@ -179,6 +234,8 @@ public class Client : MonoBehaviour
                             espectroActual.path = actualPath;
                             espectroActual.localDetected = false;
                             espectroActual.teleported = false;
+                            espectroActual.goingBack = true;
+                            espectroActual.speed = espectroActual.startSpeed;
                         }
                     }
                 }
@@ -188,19 +245,19 @@ public class Client : MonoBehaviour
                     {
                         if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
                         {
-                            Client.instance.spectrums.getValorEnIndice(i).addedToList = true;
+                            SpectrumMovement espectro = Client.instance.spectrums.getValorEnIndice(i);
+                            string[] spectrumInfo = msg_arr[3].Split('*');
+                            espectro.addedToList = true;
+                            espectro.patrolPath = spectrumInfo[0].Split(';');
+                            espectro.path = spectrumInfo[0].Split(';');
 
-                        }
-                    }
-                }
+                            //Asignar genéticos
+                            string[] DNA = spectrumInfo[1].Split(',');
+                            espectro.followSpeed = float.Parse(DNA[0]) / 10;
+                            espectro.startSpeed = float.Parse(DNA[1]) / 10;
+                            espectro.speed = float.Parse(DNA[1]) / 10;
+                            espectro.visionRadius = float.Parse(DNA[2]) / 10;
 
-                if (msg_arr[2] == "Dead")
-                {
-                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
-                    {
-                        if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
-                        {
-                            Client.instance.spectrums.Eliminar(i);
                         }
                     }
                 }
@@ -218,30 +275,37 @@ public class Client : MonoBehaviour
                             string y = target[1];
                             int posX = Int32.Parse(x);
                             int posY = Int32.Parse(y);
-                            Vector3 position = Grid.instance.GetWorldPointFromAxes(posX,posY);
+                            Vector3 position = Grid.instance.GetWorldPointFromAxes(posX, posY);
                             espectro.teleportPoint = position;
                             espectro.teleport = true;
 
                         }
                     }
                 }
+                else if (msg_arr[2] == "Dead")
+                {
+                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                    {
+                        if (Client.instance.spectrums.getValorEnIndice(i).myId == int.Parse(msg_arr[0]))
+                        {
+                            Client.instance.spectrums.Eliminar(i);
+                            Debug.Log("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHH M");
+                        }
+                    }
+                }
             }
 
-            /* *** RATA *** */
             if (msg_arr[1] == "Rat")
             {
-                // Debug.Log("a");
                 if (msg_arr[2] == "Created")
                 {
-                    Debug.Log("Rata creada");
                     for (int i = 0; i < Client.instance.rats.getTamaño(); i++)
                     {
                         if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
                         {
-                            Debug.Log("rata encontrada");
                             Client.instance.rats.getValorEnIndice(i).addedToList = true;
 
-                        }
+                            }
                     }
                 }
                 if (msg_arr[2] == "Move")
@@ -250,15 +314,13 @@ public class Client : MonoBehaviour
                     {
                         if (Client.instance.rats.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
                         {
-                        string[] actualPath = { msg_arr[3] };
-                        Client.instance.rats.getValorEnIndice(i).path = actualPath;
-                        }
+                            string[] actualPath = { msg_arr[3] };
+                            Client.instance.rats.getValorEnIndice(i).path = actualPath;
+
+                            }
                     }
                 }
-                
             }
-
-            /* *** CHUCHU *** */ 
             if (msg_arr[1] == "Chuchu")
             {
                 if (msg_arr[2] == "Created")
@@ -269,7 +331,7 @@ public class Client : MonoBehaviour
                         {
                             Client.instance.chuchus.getValorEnIndice(i).addedToList = true;
 
-                        }
+                            }
                     }
                 }
                 if (msg_arr[2] == "Move")
@@ -281,11 +343,11 @@ public class Client : MonoBehaviour
                             string[] actualPath = msg_arr[3].Split(';');
                             Client.instance.chuchus.getValorEnIndice(i).path = actualPath;
 
-                        }
+                            }
                     }
                 }
 
-                if (msg_arr[2] == "Dead")
+                    if (msg_arr[2] == "Dead")
                 {
                     for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
                     {
@@ -296,10 +358,9 @@ public class Client : MonoBehaviour
                     }
                 }
             }
-
-            /* *** OJO ESPECTRAL *** */ 
+            
             if (msg_arr[1] == "Eye")
-            {
+            {                
                 if (msg_arr[2] == "Created")
                 {
                     for (int i = 0; i < Client.instance.spectralEyes.getTamaño(); i++)
@@ -310,6 +371,32 @@ public class Client : MonoBehaviour
 
                         }
                     }
+                }
+            }
+            if(msg_arr[1] == "Boss")
+            {
+                if (msg_arr[2] == "Created")
+                {
+                    try
+                    {
+                        boss.created = true;
+                        string[] bossInfo = msg_arr[3].Split('*');
+                        boss.life = Int32.Parse(bossInfo[1]);
+                        boss.movementPath = bossInfo[0].Split(';');
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.Log(e);
+                    }
+                }
+                if (msg_arr[2] == "Damage")
+                {
+                    boss.life -= 1;
+                }
+                if (msg_arr[2] == "Phase")
+                {
+                    boss.movementPath = msg_arr[3].Split(';');
+                    boss.actualPhase += 1;
                 }
             }
         }
