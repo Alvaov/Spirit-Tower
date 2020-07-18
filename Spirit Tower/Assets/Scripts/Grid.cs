@@ -35,7 +35,7 @@ public class Grid : MonoBehaviour
     /***
      * Crea el grid basado en el tamaño del mapa y el tamaño del grid predefinido
      */
-    void CreateGrid(){
+    public void CreateGrid(){
         grid = new Node[gridSizeX, gridSizeY];
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 

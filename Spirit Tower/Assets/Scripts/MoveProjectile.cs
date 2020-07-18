@@ -39,7 +39,7 @@ public class MoveProjectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        else
+        else 
         {
             Destroy(gameObject);
         }
@@ -56,5 +56,9 @@ public class MoveProjectile : MonoBehaviour
     {
         transform.position += transform.forward * speed * Time.deltaTime;
         transform.Rotate(0,0,2);
+        if(Time.frameCount % 500 == 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
