@@ -1,0 +1,101 @@
+\hypertarget{classTcplistener}{}\doxysection{Tcplistener Class Reference}
+\label{classTcplistener}\index{Tcplistener@{Tcplistener}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTcplistener_a856cf9f957efd28d121edca22d0e7eb1}{Tcplistener}} (int \+\_\+port, std\+::string \+\_\+ip, Message\+Recieved\+Handler handler)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classTcplistener}{Tcplistener}} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classTcplistener_abf732fcc95d1e03ca5e7a71b0ac7bd22}{$\sim$\+Tcplistener}} ()
+\begin{DoxyCompactList}\small\item\em Destroy the \mbox{\hyperlink{classTcplistener}{Tcplistener}} object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTcplistener_a27d11ef631a22ac4bf391baa93772373}{Send}} (int client\+Socket, std\+::string msg)
+\begin{DoxyCompactList}\small\item\em envia un mensaje al socket cliente \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTcplistener_a502125edc940fbdbd25cde727897338f}{Init}} ()
+\begin{DoxyCompactList}\small\item\em iniciar el servidor \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTcplistener_a03ad8c51e57df40f8880782e91369ead}{Run}} ()
+\begin{DoxyCompactList}\small\item\em ejecutar el servidor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classTcplistener_aab9ac3cb6d9cf4cde1da66939608f4d8}\label{classTcplistener_aab9ac3cb6d9cf4cde1da66939608f4d8}} 
+void \mbox{\hyperlink{classTcplistener_aab9ac3cb6d9cf4cde1da66939608f4d8}{cleanup}} ()
+\begin{DoxyCompactList}\small\item\em limpiar el socket \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classTcplistener_a856cf9f957efd28d121edca22d0e7eb1}\label{classTcplistener_a856cf9f957efd28d121edca22d0e7eb1}} 
+\index{Tcplistener@{Tcplistener}!Tcplistener@{Tcplistener}}
+\index{Tcplistener@{Tcplistener}!Tcplistener@{Tcplistener}}
+\doxysubsubsection{\texorpdfstring{Tcplistener()}{Tcplistener()}}
+{\footnotesize\ttfamily Tcplistener\+::\+Tcplistener (\begin{DoxyParamCaption}\item[{int}]{\+\_\+port,  }\item[{std\+::string}]{\+\_\+ip,  }\item[{Message\+Recieved\+Handler}]{handler }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{classTcplistener}{Tcplistener}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+port} & puerto para hacer bind \\
+\hline
+{\em \+\_\+ip} & ip del servidor \\
+\hline
+{\em handler} & funcion a encargarse del mensaje \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTcplistener_abf732fcc95d1e03ca5e7a71b0ac7bd22}\label{classTcplistener_abf732fcc95d1e03ca5e7a71b0ac7bd22}} 
+\index{Tcplistener@{Tcplistener}!````~Tcplistener@{$\sim$Tcplistener}}
+\index{````~Tcplistener@{$\sim$Tcplistener}!Tcplistener@{Tcplistener}}
+\doxysubsubsection{\texorpdfstring{$\sim$Tcplistener()}{~Tcplistener()}}
+{\footnotesize\ttfamily Tcplistener\+::$\sim$\+Tcplistener (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destroy the \mbox{\hyperlink{classTcplistener}{Tcplistener}} object. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classTcplistener_a502125edc940fbdbd25cde727897338f}\label{classTcplistener_a502125edc940fbdbd25cde727897338f}} 
+\index{Tcplistener@{Tcplistener}!Init@{Init}}
+\index{Init@{Init}!Tcplistener@{Tcplistener}}
+\doxysubsubsection{\texorpdfstring{Init()}{Init()}}
+{\footnotesize\ttfamily bool Tcplistener\+::\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+iniciar el servidor 
+
+\begin{DoxyReturn}{Returns}
+true se logra crear el socket 
+
+false no se creo el socket 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTcplistener_a03ad8c51e57df40f8880782e91369ead}\label{classTcplistener_a03ad8c51e57df40f8880782e91369ead}} 
+\index{Tcplistener@{Tcplistener}!Run@{Run}}
+\index{Run@{Run}!Tcplistener@{Tcplistener}}
+\doxysubsubsection{\texorpdfstring{Run()}{Run()}}
+{\footnotesize\ttfamily void Tcplistener\+::\+Run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+ejecutar el servidor 
+
+\mbox{\Hypertarget{classTcplistener_a27d11ef631a22ac4bf391baa93772373}\label{classTcplistener_a27d11ef631a22ac4bf391baa93772373}} 
+\index{Tcplistener@{Tcplistener}!Send@{Send}}
+\index{Send@{Send}!Tcplistener@{Tcplistener}}
+\doxysubsubsection{\texorpdfstring{Send()}{Send()}}
+{\footnotesize\ttfamily void Tcplistener\+::\+Send (\begin{DoxyParamCaption}\item[{int}]{client\+Socket,  }\item[{std\+::string}]{msg }\end{DoxyParamCaption})}
+
+
+
+envia un mensaje al socket cliente 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client\+Socket} & cliente a enviar \\
+\hline
+{\em msg} & mensaje a enviar \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Tcplistener.\+h\item 
+Tcplistener.\+cpp\end{DoxyCompactItemize}

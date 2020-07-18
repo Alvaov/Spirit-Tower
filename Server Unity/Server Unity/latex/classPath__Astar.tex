@@ -1,0 +1,123 @@
+\hypertarget{classPath__Astar}{}\doxysection{Path\+\_\+\+Astar Class Reference}
+\label{classPath__Astar}\index{Path\_Astar@{Path\_Astar}}
+
+
+calcula el algoritmo A$\ast$ por una matriz de una dimension  
+
+
+
+
+{\ttfamily \#include $<$Pathfinding\+\_\+\+A.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classPath__Astar_af994ea24f76dde77ef18f0901851c470}{Path\+\_\+\+Astar}} ()
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classPath__Astar}{Path\+\_\+\+Astar}} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$ \mbox{\hyperlink{classPath__Astar_a459b8876911d10ef0d724407d3f5fbf6}{Create\+Map}} (int size=120)
+\begin{DoxyCompactList}\small\item\em Create a Map object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classPath__Astar_a30d73b1987678d5a7c925047f7928413}{Solve\+\_\+\+A\+Star}} (int pos\+Player\mbox{[}2\mbox{]}, int pos\+Enemy\mbox{[}2\mbox{]})
+\begin{DoxyCompactList}\small\item\em resuelve el camino del enemigo al jugador \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classPath__Astar_a17d16504c8298e676aa5a4556458dc4d}{send\+\_\+route}} (std\+::string spectrum\+Id, int pos\+Player\mbox{[}2\mbox{]}, int pos\+Enemy\mbox{[}2\mbox{]})
+\begin{DoxyCompactList}\small\item\em manda la ruta calculada al servidor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPath__Astar_a196a7c496c1a549f4036a8131aad7f8c}\label{classPath__Astar_a196a7c496c1a549f4036a8131aad7f8c}} 
+int {\bfseries n\+Map\+Width} = 120
+\item 
+\mbox{\Hypertarget{classPath__Astar_ae12529e4b47c646a58dbef30adbd1cef}\label{classPath__Astar_ae12529e4b47c646a58dbef30adbd1cef}} 
+int {\bfseries n\+Map\+Height} = 120
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+calcula el algoritmo A$\ast$ por una matriz de una dimension 
+
+\begin{DoxyAuthor}{Author}
+Javidx9 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classPath__Astar_af994ea24f76dde77ef18f0901851c470}\label{classPath__Astar_af994ea24f76dde77ef18f0901851c470}} 
+\index{Path\_Astar@{Path\_Astar}!Path\_Astar@{Path\_Astar}}
+\index{Path\_Astar@{Path\_Astar}!Path\_Astar@{Path\_Astar}}
+\doxysubsubsection{\texorpdfstring{Path\_Astar()}{Path\_Astar()}}
+{\footnotesize\ttfamily Path\+\_\+\+Astar\+::\+Path\+\_\+\+Astar (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{classPath__Astar}{Path\+\_\+\+Astar}} object. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classPath__Astar_a459b8876911d10ef0d724407d3f5fbf6}\label{classPath__Astar_a459b8876911d10ef0d724407d3f5fbf6}} 
+\index{Path\_Astar@{Path\_Astar}!CreateMap@{CreateMap}}
+\index{CreateMap@{CreateMap}!Path\_Astar@{Path\_Astar}}
+\doxysubsubsection{\texorpdfstring{CreateMap()}{CreateMap()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structnode__map}{node\+\_\+map}} $\ast$ Path\+\_\+\+Astar\+::\+Create\+Map (\begin{DoxyParamCaption}\item[{int}]{size = {\ttfamily 120} }\end{DoxyParamCaption})}
+
+
+
+Create a Map object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & tamaño del mapa a crear \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+node\+\_\+map$\ast$ array del mapa 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPath__Astar_a17d16504c8298e676aa5a4556458dc4d}\label{classPath__Astar_a17d16504c8298e676aa5a4556458dc4d}} 
+\index{Path\_Astar@{Path\_Astar}!send\_route@{send\_route}}
+\index{send\_route@{send\_route}!Path\_Astar@{Path\_Astar}}
+\doxysubsubsection{\texorpdfstring{send\_route()}{send\_route()}}
+{\footnotesize\ttfamily std\+::string Path\+\_\+\+Astar\+::send\+\_\+route (\begin{DoxyParamCaption}\item[{std\+::string}]{spectrum\+Id,  }\item[{int}]{pos\+Player\mbox{[}2\mbox{]},  }\item[{int}]{pos\+Enemy\mbox{[}2\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+manda la ruta calculada al servidor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em spectrum\+Id} & id \\
+\hline
+{\em pos\+Player} & posicion del jugador \\
+\hline
+{\em pos\+Enemy} & posicion del enemigo \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::string ruta encontrada 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPath__Astar_a30d73b1987678d5a7c925047f7928413}\label{classPath__Astar_a30d73b1987678d5a7c925047f7928413}} 
+\index{Path\_Astar@{Path\_Astar}!Solve\_AStar@{Solve\_AStar}}
+\index{Solve\_AStar@{Solve\_AStar}!Path\_Astar@{Path\_Astar}}
+\doxysubsubsection{\texorpdfstring{Solve\_AStar()}{Solve\_AStar()}}
+{\footnotesize\ttfamily bool Path\+\_\+\+Astar\+::\+Solve\+\_\+\+A\+Star (\begin{DoxyParamCaption}\item[{int}]{pos\+Player\mbox{[}2\mbox{]},  }\item[{int}]{pos\+Enemy\mbox{[}2\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+resuelve el camino del enemigo al jugador 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos\+Player} & tupla con la posicion del jugador \\
+\hline
+{\em pos\+Enemy} & tupla con la posicion del enemigo \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true si existe una ruta 
+
+false no exite ruta 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Pathfinding\+\_\+\+A.\+h\item 
+Pathfinding\+\_\+\+A.\+cpp\end{DoxyCompactItemize}
