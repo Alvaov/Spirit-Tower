@@ -20,7 +20,7 @@ node_map* mapaActual;
 Path_Astar escenario;
 node_map* mapa_backtracking;
 Enemy_Genetics* enemy_genetics;
-int lvl = 0;
+int lvl = 1;
 int coins;
 int health;
 
@@ -215,12 +215,17 @@ void Listener_MesssageRec(Tcplistener* listener, int client, std::string msg) {
             mapaActual[(pos[1] * escenario.nMapHeight) + (pos[0] + (pos[1] / escenario.nMapHeight))].bObstacle = true;
             delete pos;
         }else if (msg_arr[2] == "New"){
-            if (espectros->get_object_counter() == 0) {
-                for (int p = 0; p < espectros->get_object_counter(); p++) {
-                    delete espectros->get_data_by_pos(p);
-                }
+            if (espectros->get_object_counter() != 0) {
+                /*while (espectros->get_object_counter() > 0) {
+                    delete espectros->get_data_by_pos(0);
+                }*/
                 espectros->delete_list();
             }
+            if (spectralEyes->get_object_counter() != 0) {
+           
+                spectralEyes->delete_list();
+            }
+           
             lvl++;
             mapaActual = escenario.CreateMap();
             for (int p = 0; p < 50; p++) {

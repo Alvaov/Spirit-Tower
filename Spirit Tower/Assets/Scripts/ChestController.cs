@@ -48,9 +48,9 @@ public class ChestController : MonoBehaviour
                 playerScript.health += 1;
             }
 
-            if (Contenidos[j].item.name == "masterKey")
+            if (Contenidos[j].item.name == "masterkey")
             {
-                playerScript.hasMasterKey = 1;
+                playerScript.hasMasterKey += 1;
             }
 
             if (Contenidos[j].item.name == "extraHeart")

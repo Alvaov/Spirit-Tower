@@ -26,7 +26,7 @@ public class SpectrumMovement : MonoBehaviour
     public bool goingBack = false;
     public string[] path;
     public string[] patrolPath;
-    private Vector3 target;
+    public Vector3 target;
 
     //Rango de visión
     public float visionRadius;
@@ -110,8 +110,8 @@ public class SpectrumMovement : MonoBehaviour
      */
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(transform.position,visionRadius);
+       /* Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(transform.position,visionRadius);*/
     }
 
     // Update is called once per frame

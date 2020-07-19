@@ -58,7 +58,7 @@ public class MoveProjectile : MonoBehaviour
         transform.Rotate(0,0,2);
         if(Time.frameCount % 500 == 0)
         {
-            Destroy(gameObject);
+          //  Destroy(gameObject);
         }
     }
 }

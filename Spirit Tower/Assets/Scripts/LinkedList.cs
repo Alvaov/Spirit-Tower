@@ -183,8 +183,11 @@ public class Lista<Object>{
      */
     public void Eliminar(int indice){
         if (indice == 0){
-            primerElemento = primerElemento.getSiguiente();
-            primerElemento.setAnterior(null);
+            if (cantidadElementos > 0)
+            {
+                primerElemento = primerElemento.getSiguiente();
+            }
+          //  primerElemento.setAnterior(null);
         }
         if (indice == cantidadElementos-1){
             ultimoElemento = ultimoElemento.getAnterior();
