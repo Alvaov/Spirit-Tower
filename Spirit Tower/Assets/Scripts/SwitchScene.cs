@@ -2,17 +2,77 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using System.Threading;
+using UnityEngine.UI;
 public class SwitchScene : MonoBehaviour
 {
+    GameObject A;
     bool done = false;
-    void OnTriggerEnter(Collider other){
-        if (other.gameObject.CompareTag("Player") && done == false){
+    public string levelName;
+    public int sceneIndex;
+    public GameObject loadingScreen;
+    public Slider slider;
+    public Text progressText;
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") && done == false)
+        {
             done = true;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            Grid.instance.CreateGrid();
-            Grid.getGridWalls();
+
+            SpectrumMovement.detected = false;
+            A = other.gameObject;
+            while (Client.instance.spectralEyes.getTamaño() > 0)
+            {
+                Client.instance.spectralEyes.Eliminar(0);
+            }
+
+            while (Client.instance.rats.getTamaño() > 0)
+            {
+                Client.instance.rats.Eliminar(0);
+            }
+            while (Client.instance.chuchus.getTamaño() > 0)
+            {
+                Client.instance.chuchus.Eliminar(0);
+            }
+
+            while (Client.instance.spectrums.getTamaño() > 0)
+            {
+                Client.instance.spectrums.Eliminar(0);
+            }
+            Client.spectrumId = 0;
+            Client.chuchuId = 0;
+            Client.ratId = 0;
+            Client.eyeId = 0;
+
+            //SceneManager.LoadScene(sceneIndex);
+            //SceneManager.LoadScene(levelName);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            LoadLevel(levelName);
+            Debug.Log("Escena cargada");
         }
     }
-}
 
+    public void LoadLevel(string levelName)
+    {
+        StartCoroutine(LoadAsynchronously(levelName));
+    }
+
+    IEnumerator LoadAsynchronously(string levelName)
+    {
+        // guarda el estado de la operacion actual
+        AsyncOperation operation = SceneManager.LoadSceneAsync(levelName);
+
+        loadingScreen.SetActive(true);
+
+        while (!operation.isDone)
+        {
+            float progress = Mathf.Clamp01(operation.progress / .9f);
+
+            slider.value = progress;
+            progressText.text = progress * 100f + "%";
+
+            yield return null;
+        }
+
+    }
+}

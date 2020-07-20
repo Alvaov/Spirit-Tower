@@ -69,7 +69,7 @@ public class Grid : MonoBehaviour
 
     }
 
-    /*private void OnDrawGizmos()
+   /* private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
         if(grid!= null)
