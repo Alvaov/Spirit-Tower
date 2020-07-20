@@ -34,6 +34,8 @@ public class DoorController : MonoBehaviour
         animator = GetComponent<Animator>();
         player = GameObject.Find("Damian2.0");
         playerScript = player.GetComponent<Player>();
+        Avisos = GameObject.Find("Avisos").GetComponent<Text>();
+
     }
 
     /***

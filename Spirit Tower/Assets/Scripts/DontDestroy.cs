@@ -8,13 +8,13 @@ public class DontDestroy : MonoBehaviour
     void Awake()
     {
         GameObject player = GameObject.Find("Damian2.0");
-        GameObject clientManger = GameObject.Find("ClientManager");
-        //GameObject playerInfo = GameObject.Find("PlayerInfo");
+        GameObject clientManger = GameObject.Find("ClientManager");     
+        GameObject playerInfo = GameObject.Find("PlayerInfo");
         if (player.gameObject.CompareTag("Player") && clientManger.gameObject.CompareTag("Keep")){
             //DontDestroyOnLoad(this.gameObject);
             DontDestroyOnLoad(player);
             DontDestroyOnLoad(clientManger);
-
+            DontDestroyOnLoad(playerInfo);
         }
 
         /*if (playerInfo.gameObject.CompareTag("Destroy"))

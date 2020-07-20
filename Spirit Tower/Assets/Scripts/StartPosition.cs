@@ -14,6 +14,7 @@ public class StartPosition : MonoBehaviour
             created = true;
             Grid.instance.CreateGrid();
             Grid.getGridWalls();
+            Client.instance.createBoss();
         }
     }
 

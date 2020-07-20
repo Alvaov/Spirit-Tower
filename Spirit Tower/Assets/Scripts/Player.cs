@@ -25,45 +25,43 @@ public class Player : MonoBehaviour{
     public Animator animator;
 
     //Acciones
-    public bool agacharse = false;
     public static bool atacar = false;
     public static bool defender = false;
 
     //Salud
-    public int health;
     int numOfHearts = 5;
-    public Image[] hearts;
-    public Sprite fullHeart;
-    public Sprite emptyHeart;
-
-    public Image[] extraHearts;
-    public int extraHealth;
-    public Sprite extraHeart;
     int numOfextraHearts = 5;
 
-    public int DamageTaken;
-    public bool ImDead;
-
-    //Monedas y tesoros
-    public int monedas;
-    public Text monedasText;
-    public int tesoros;
-    public Text tesorosText;
-    public int tesorosMAX; //Numero de cofres que existan en el nivel 
-    public Text Avisos;
-
-
-    public Text llavesText;
-    public int llaves;
-    public int hasMasterKey;
+    public Image[] hearts;
+    public Image[] extraHearts;
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
+    public Sprite extraHeart;
     public Image masterKey;
 
+    public Text monedasText;
+    public Text tesorosText;
+    public Text Avisos;
+    public Text llavesText;
+
+    //Monedas y tesoros
+    public int health;
+    public int extraHealth;
+    public int DamageTaken;
+    public int monedas;
+    public int tesoros;
+    public int tesorosMAX; //Numero de cofres que existan en el nivel 
+    public int llaves;
+    public int hasMasterKey;
+
+
     //Variables para el server
-
-
     public int tesorosTemp = 0;
     public int vidaTemp = 5;
     public int monedasTemp = 0;
+
+
+    public bool ImDead;
 
 
     // Start is called before the first frame update
@@ -74,6 +72,22 @@ public class Player : MonoBehaviour{
      */
     void Start()
     {
+        for (int i = 1; i < hearts.Length + 1; i++)
+        {
+            hearts[i - 1] = GameObject.Find("Heart" + i).GetComponent<Image>();
+        }
+
+        for(int i = 1; i < extraHearts.Length + 1; i++)
+        {
+            extraHearts[i - 1] = GameObject.Find("extraHeart" + i).GetComponent<Image>();
+        }
+
+        masterKey = GameObject.Find("masterKey").GetComponent<Image>();
+        monedasText = GameObject.Find("monedasText").GetComponent<Text>();
+        tesorosText = GameObject.Find("tesorosText").GetComponent<Text>();
+        Avisos = GameObject.Find("Avisos").GetComponent<Text>();
+        llavesText = GameObject.Find("llavesText").GetComponent<Text>();
+
         player = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
@@ -102,12 +116,6 @@ public class Player : MonoBehaviour{
         if (Time.frameCount % frameInterval == 0)
         {
             Client.instance.tcp.SendData("0:Player:Position:" + Grid.instance.GetAxesFromWorldPoint(player.transform.position)+":");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            agacharse = true;
-            animator.SetBool("agacharse", true);
         }
 
         //LIMITES
@@ -189,7 +197,7 @@ public class Player : MonoBehaviour{
         }
 
         //MONEDAS Y TESOROS
-        monedasText.text = ":" + monedas;
+        monedasText.text = monedas.ToString();
 
         if ((monedas != monedasTemp)){
             Client.instance.Send_Data("0:Player:Coins:" + monedas + ":");
@@ -198,7 +206,7 @@ public class Player : MonoBehaviour{
         
         
         tesorosMAX = 4; //Depende del nivel
-        tesorosText.text = ":" + tesoros + "/" + tesorosMAX;
+        tesorosText.text = tesoros.ToString() + "/" + tesorosMAX;
         if ((tesoros != tesorosTemp))
         {
             Client.instance.Send_Data("0:Player:Treasures:" + tesoros + "/" + tesorosMAX + ":");
@@ -206,7 +214,7 @@ public class Player : MonoBehaviour{
         }
 
         //LLaves
-        llavesText.text = ":" + llaves;
+        llavesText.text = llaves.ToString();
         if (hasMasterKey == 1)
         {
             masterKey.enabled = true;

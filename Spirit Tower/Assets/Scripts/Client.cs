@@ -59,18 +59,32 @@ public class Client : MonoBehaviour
         spectrums = new Lista<SpectrumMovement>();
         rats = new Lista<RatScript>();
         player = GameObject.Find("Damian2.0");
+
+        createBoss();
+        /*try
+        {
+            boss = GameObject.Find("DemonGirlMesh").GetComponent<BossScript>();
+        }
+        catch (Exception e)
+        {
+            Debug.Log("No se asignó el jefe");
+            Debug.Log(e);
+        }*/
+        playerScript = player.GetComponent<Player>();
+        chuchus = new Lista<Chuchu>();
+        spectralEyes = new Lista<EyeScript>();
+    }
+
+    public void createBoss() {
         try
         {
             boss = GameObject.Find("DemonGirlMesh").GetComponent<BossScript>();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.Log("No se asignó el jefe");
             Debug.Log(e);
         }
-        playerScript = player.GetComponent<Player>();
-        chuchus = new Lista<Chuchu>();
-        spectralEyes = new Lista<EyeScript>();
     }
 
     /***
@@ -358,9 +372,9 @@ public class Client : MonoBehaviour
                     }
                 }
             }
-            
+
             if (msg_arr[1] == "Eye")
-            {                
+            {
                 if (msg_arr[2] == "Created")
                 {
                     for (int i = 0; i < Client.instance.spectralEyes.getTamaño(); i++)
@@ -376,13 +390,14 @@ public class Client : MonoBehaviour
                 if (msg_arr[2] == "Dead")
                 {
                     for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
-                {
-                    if (Client.instance.spectralEyes.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
                     {
-                        Client.instance.spectralEyes.Eliminar(i);
+                        if (Client.instance.spectralEyes.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                        {
+                            Client.instance.spectralEyes.Eliminar(i);
+                        }
                     }
-                }
 
+                }
             }
             if(msg_arr[1] == "Boss")
             {
