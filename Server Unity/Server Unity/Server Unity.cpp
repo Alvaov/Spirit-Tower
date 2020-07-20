@@ -20,7 +20,7 @@ node_map* mapaActual;
 Path_Astar escenario;
 node_map* mapa_backtracking;
 Enemy_Genetics* enemy_genetics;
-int lvl = 1;
+int lvl = 0;
 int coins;
 int health;
 

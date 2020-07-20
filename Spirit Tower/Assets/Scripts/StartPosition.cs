@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class StartPosition : MonoBehaviour
 {
+    public bool created = false;
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (!created)
+        {
+            Debug.Log("collided");
+            created = true;
+            Grid.instance.CreateGrid();
+            Grid.getGridWalls();
+        }
+    }
+
     private void Start()
     {
         GameObject player = GameObject.Find("Damian2.0");

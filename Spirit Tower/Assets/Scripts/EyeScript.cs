@@ -50,7 +50,8 @@ public class EyeScript : MonoBehaviour
         {
             if (Player.atacar)
             {
-                    Client.instance.tcp.SendData(id + ":Eye:Damage:1:");
+                Client.instance.tcp.SendData(id + ":Eye:Damage:1:");
+                Destroy(gameObject);
             }
         }
         if (other.gameObject.CompareTag("Player"))

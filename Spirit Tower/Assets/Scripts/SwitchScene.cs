@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading;
 
 public class SwitchScene : MonoBehaviour
 {
-    public GameObject A;
+    GameObject A;
     bool done = false;
-    void OnTriggerEnter(Collider other){
-        if (other.gameObject.CompareTag("Player") && done == false){
+    public string levelName;
+    public int sceneIndex;
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") && done == false)
+        {
             done = true;
+
             SpectrumMovement.detected = false;
             A = other.gameObject;
             while (Client.instance.spectralEyes.getTamaño() > 0)
@@ -35,11 +41,10 @@ public class SwitchScene : MonoBehaviour
             Client.ratId = 0;
             Client.eyeId = 0;
 
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            Grid.instance.CreateGrid();
-            Grid.getGridWalls();
+            //SceneManager.LoadScene(sceneIndex);
+            SceneManager.LoadScene(levelName);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             Debug.Log("Escena cargada");
         }
     }
 }
-

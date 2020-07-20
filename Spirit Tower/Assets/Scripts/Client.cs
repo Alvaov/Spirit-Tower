@@ -347,7 +347,7 @@ public class Client : MonoBehaviour
                     }
                 }
 
-                    if (msg_arr[2] == "Dead")
+                if (msg_arr[2] == "Dead")
                 {
                     for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
                     {
@@ -372,6 +372,17 @@ public class Client : MonoBehaviour
                         }
                     }
                 }
+
+                if (msg_arr[2] == "Dead")
+                {
+                    for (int i = 0; i < Client.instance.spectrums.getTamaño(); i++)
+                {
+                    if (Client.instance.spectralEyes.getValorEnIndice(i).id == int.Parse(msg_arr[0]))
+                    {
+                        Client.instance.spectralEyes.Eliminar(i);
+                    }
+                }
+
             }
             if(msg_arr[1] == "Boss")
             {

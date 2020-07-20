@@ -47,7 +47,7 @@ public class Chuchu : MonoBehaviour
      * si es el jugador lo ataca y
      * notifica al servidor.
      */
-    private void OnTriggerStay(Collider other)
+   /* private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
@@ -56,7 +56,7 @@ public class Chuchu : MonoBehaviour
                 Client.instance.tcp.SendData("0:Chuchu:Attack::");
             }
         }
-    }
+    }*/
 
     /***
      * Método que detecta colisiones con collider, 
@@ -65,6 +65,14 @@ public class Chuchu : MonoBehaviour
      */
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            if (!Player.defender)
+            {
+                Client.instance.tcp.SendData("0:Chuchu:Attack::");
+            }
+        }
+
         if (other.gameObject.CompareTag("Sword"))
         {
             if (Player.atacar) 

@@ -16,6 +16,7 @@ TagManager:
   - Keep
   - Destroy
   - Boss
+  - LeftHip
   layers:
   - Default
   - TransparentFX
