@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StartPosition : MonoBehaviour
 {
-    public bool created = false;
+    public static bool created = false;
 
     public void OnTriggerEnter(Collider other)
     {

@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     public GameObject startMenu;
     public InputField userNameField;
+    public AudioSource clip;
     
     /***
      * Es la función con la cual se crea el objeto, previo a cualquier frame, 
@@ -42,5 +43,6 @@ public class UIManager : MonoBehaviour
         startMenu.SetActive(false);
         userNameField.interactable = false;
         Client.instance.ConnectToServer();
+        Destroy(clip);
     }
 }

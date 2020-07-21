@@ -95,6 +95,9 @@ public class Client : MonoBehaviour
     {
         tcp.Connect();
         Grid.getGridWalls();
+
+        StartPosition.created = true;
+
     }
 
     /***
