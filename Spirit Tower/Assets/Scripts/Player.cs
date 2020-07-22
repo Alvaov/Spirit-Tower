@@ -27,6 +27,7 @@ public class Player : MonoBehaviour{
     //Acciones
     public static bool atacar = false;
     public static bool defender = false;
+    public static bool agacharse = false;
 
     //Salud
     int numOfHearts = 5;
@@ -62,6 +63,8 @@ public class Player : MonoBehaviour{
 
 
     public bool ImDead;
+    public AudioSource caminar;
+    public AudioClip[] jogging;
 
 
     // Start is called before the first frame update
@@ -261,7 +264,10 @@ public class Player : MonoBehaviour{
                     movement = transform.TransformDirection(movement);
                 }
             }
-
+            else if (Input.GetKey(KeyCode.Q))
+            {
+                StartCoroutine(AgacharseRoutine());
+            }
         }
         if (Input.GetKeyUp(KeyCode.W))
         {
@@ -354,6 +360,22 @@ public class Player : MonoBehaviour{
         defender = false;
     }
 
+    IEnumerator AgacharseRoutine()
+    {
+        agacharse = true;
+        animator.SetBool("agacharse", true);
+        animator.SetInteger("action", 5);
+        yield return new WaitForSeconds(1);
+        animator.SetInteger("action", 0);
+        animator.SetBool("agacharse", false);
+        agacharse = false;
+    }
+
+    private void Step()
+    {
+        AudioClip playClip = jogging[UnityEngine.Random.Range(0,jogging.Length)];
+        caminar.PlayOneShot(playClip);
+    }
     /***
     * Método donde se ejecuta la rutina
     * que corresponde a la acción de 
