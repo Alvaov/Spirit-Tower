@@ -43,6 +43,8 @@ public class SpectrumMovement : MonoBehaviour
     public bool localDetected = false;
     public bool attack = false;
     public bool addedToList = false;
+    public AudioSource actualSound;
+    public AudioClip[] sounds;
     Animator animator;
     GameObject player;
     Player playerScript;
@@ -63,6 +65,7 @@ public class SpectrumMovement : MonoBehaviour
         frameInterval = 25+(myId*12)+myId;
         player = GameObject.Find("Damian2.0");
         playerScript = player.GetComponent<Player>();
+        actualSound = GetComponent<AudioSource>();
         //movement = Grid.instance.GetWorldPointFromAxes(14, 51);
     }
     /***
@@ -102,6 +105,12 @@ public class SpectrumMovement : MonoBehaviour
         {
             scared = false;
         }
+    }
+
+    public void MoveSound()
+    {
+        actualSound.clip = sounds[0];
+        actualSound.Play();
     }
 
     /***

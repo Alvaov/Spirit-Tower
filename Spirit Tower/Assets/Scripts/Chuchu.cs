@@ -21,7 +21,7 @@ public class Chuchu : MonoBehaviour
     public float frameInterval;
     public bool addedToList = false;
     public string[] path;
-
+    public AudioSource spit;
 
     GameObject player;
     Player playerScript;
@@ -36,6 +36,7 @@ public class Chuchu : MonoBehaviour
     void Start()
     {
         chuchu = GetComponent<CharacterController>();
+        spit = GetComponent<AudioSource>();
         id = Client.chuchuId;
         frameInterval = 160 + (id * 10) + id;
         Client.chuchuId += 1;
@@ -58,6 +59,10 @@ public class Chuchu : MonoBehaviour
         }
     }*/
 
+    public void Spit()
+    {
+        spit.Play();
+    }
     /***
      * Método que detecta colisiones con collider, 
      * si es la espada el chuchu se muere y

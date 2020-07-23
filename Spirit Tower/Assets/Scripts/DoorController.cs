@@ -18,6 +18,7 @@ public class DoorController : MonoBehaviour
     public bool isLocked;
     public bool MasterDoor;
     public bool doorUnlocked;
+    public AudioSource open;
 
     GameObject player;
     Player playerScript;
@@ -50,12 +51,14 @@ public class DoorController : MonoBehaviour
         {
             if (!isLocked || doorUnlocked)
             {
+                open.Play();
                 openDoor = true;
                 animator.SetBool("openDoor", true);
             }
 
             if (isLocked && Input.GetKeyDown(KeyCode.Z) && playerScript.llaves > 0 && !MasterDoor)
             {
+                open.Play();
                 playerScript.llaves -= 1;
                 openDoor = true;
                 animator.SetBool("openDoor", true);
@@ -63,7 +66,8 @@ public class DoorController : MonoBehaviour
             }
 
             if (MasterDoor && Input.GetKeyDown(KeyCode.Z) && playerScript.hasMasterKey == 1)
-            {   
+            {
+                open.Play();
                 openDoor = true;
                 animator.SetBool("openDoor", true);
                 doorUnlocked = true;

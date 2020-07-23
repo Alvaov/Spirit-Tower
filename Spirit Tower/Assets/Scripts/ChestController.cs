@@ -16,6 +16,7 @@ public class ChestController : MonoBehaviour
     public bool ChestOpened = false; 
     public Text Avisos;
     public GameObject mark;
+    public AudioSource openSound;
 
     public GameObject tempObj;
 
@@ -77,6 +78,7 @@ public class ChestController : MonoBehaviour
         player = GameObject.Find("Damian2.0");
         playerScript = player.GetComponent<Player>();
         Avisos = GameObject.Find("Avisos").GetComponent<Text>();
+        openSound = GetComponent<AudioSource>();
 
     }
 
@@ -90,6 +92,7 @@ public class ChestController : MonoBehaviour
     {
         if (openChest == true & (Input.GetKeyDown(KeyCode.Z) & (ChestOpened == false))){
             Avisos.text = " ";
+            openSound.Play();
             animator.SetBool("openChest", true);
             playerScript.tesoros += 1;
             playerScript.monedas += 500;

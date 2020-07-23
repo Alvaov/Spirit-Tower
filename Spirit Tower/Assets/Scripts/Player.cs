@@ -374,7 +374,8 @@ public class Player : MonoBehaviour{
     private void Step()
     {
         AudioClip playClip = jogging[UnityEngine.Random.Range(0,jogging.Length)];
-        caminar.PlayOneShot(playClip);
+        caminar.clip = playClip;
+        caminar.Play();
     }
     /***
     * Método donde se ejecuta la rutina
