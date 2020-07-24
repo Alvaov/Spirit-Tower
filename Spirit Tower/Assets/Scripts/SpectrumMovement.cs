@@ -45,6 +45,8 @@ public class SpectrumMovement : MonoBehaviour
     public bool addedToList = false;
     public AudioSource actualSound;
     public AudioClip[] sounds;
+    private bool breathing = false;
+    private bool sonando = false;
     Animator animator;
     GameObject player;
     Player playerScript;
@@ -109,8 +111,11 @@ public class SpectrumMovement : MonoBehaviour
 
     public void MoveSound()
     {
-        actualSound.clip = sounds[0];
-        actualSound.Play();
+        if (Time.frameCount % frameInterval != 0)
+        {
+            actualSound.clip = sounds[0];
+            actualSound.Play();
+        }
     }
 
     /***
@@ -199,6 +204,13 @@ public class SpectrumMovement : MonoBehaviour
                 speed = followSpeed;
             }  
         }
+
+        if(Time.frameCount % frameInterval == 0 && !sonando)
+        {
+            actualSound.clip = sounds[1];
+            actualSound.Play();
+        }
+
         walk();
     }
     /***
@@ -313,9 +325,12 @@ public class SpectrumMovement : MonoBehaviour
      */
     IEnumerator AttackRoutine()
     {
+        sonando = true;
+        actualSound.clip = sounds[2];
+        actualSound.Play();
         animator.SetBool("atacar", true);
         animator.SetInteger("action", 2);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         if (detected)
         {
             animator.SetInteger("action", 1);
@@ -326,5 +341,6 @@ public class SpectrumMovement : MonoBehaviour
             animator.SetInteger("action", 0);
             animator.SetBool("atacar", false);
         }
+        sonando = false;
     }
 }
