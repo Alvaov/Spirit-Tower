@@ -207,9 +207,13 @@ public class SpectrumMovement : MonoBehaviour
 
         if(Time.frameCount % frameInterval == 0 && !sonando)
         {
-            actualSound.clip = sounds[1];
-            actualSound.Play();
+            if (tipo != "red")
+            {
+                actualSound.clip = sounds[1];
+                actualSound.Play();
+            }
         }
+
 
         walk();
     }
@@ -325,12 +329,25 @@ public class SpectrumMovement : MonoBehaviour
      */
     IEnumerator AttackRoutine()
     {
-        sonando = true;
-        actualSound.clip = sounds[2];
-        actualSound.Play();
-        animator.SetBool("atacar", true);
-        animator.SetInteger("action", 2);
-        yield return new WaitForSeconds(2);
+        if(tipo != "red")
+        {
+            sonando = true;
+            actualSound.clip = sounds[2];
+            actualSound.Play();
+            animator.SetBool("atacar", true);
+            animator.SetInteger("action", 2);
+            yield return new WaitForSeconds(2);
+        }
+        if(tipo == "red")
+        {
+            sonando = true;
+            actualSound.clip = sounds[2];
+            actualSound.Play();
+            animator.SetBool("atacar", true);
+            animator.SetInteger("action", 2);
+            yield return new WaitForSeconds(5);
+            actualSound.clip = sounds[0];
+        }
         if (detected)
         {
             animator.SetInteger("action", 1);
