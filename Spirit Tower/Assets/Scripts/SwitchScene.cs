@@ -12,8 +12,8 @@ public class SwitchScene : MonoBehaviour
     public string levelName;
     public int sceneIndex;
     public GameObject loadingScreen;
-    public Slider slider;
-    public Text progressText;
+    public AudioSource clip;
+
     void OnTriggerEnter(Collider other)
     {
         if (StartPosition.created){
@@ -55,7 +55,7 @@ public class SwitchScene : MonoBehaviour
                 Debug.Log("Escena cargada");
             }
         }
-
+        
         void LoadLevel(string levelName)
         {
             StartCoroutine(LoadAsynchronously(levelName));
@@ -63,24 +63,26 @@ public class SwitchScene : MonoBehaviour
 
         IEnumerator LoadAsynchronously(string levelName)
         {
+            clip.Play();
             loadingScreen.SetActive(true);
             // guarda el estado de la operacion actual
             AsyncOperation operation = SceneManager.LoadSceneAsync(levelName);
-            operation.allowSceneActivation = false;
-            
+            operation.allowSceneActivation = true;
+            yield return null;
+            /*
             while (operation.isDone == false)
             {
-                //float progress = Mathf.Clamp(operation.progress / .9f);
+                //float progress = Mathf.Clamp01(operation.progress / .9f);
 
                 slider.value = operation.progress;
                 if(operation.progress == 0.9f)
                 {
                     slider.value = 20f;
                     operation.allowSceneActivation = true;
-                    progressText.text = operation.progress * 100f + "%";
+                    //progressText.text = operation.progress * 100f + "%";
                 }       
                 yield return null;
-            }
+            }*/
         }
     }
 }

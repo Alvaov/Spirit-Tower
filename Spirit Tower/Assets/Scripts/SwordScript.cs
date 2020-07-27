@@ -20,6 +20,7 @@ public class SwordScript : MonoBehaviour
     {
         rightHand = GameObject.FindGameObjectWithTag("RightHand");
         player = GameObject.FindGameObjectWithTag("Player");
+        
     }
 
     /***
